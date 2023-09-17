@@ -1,0 +1,3 @@
+select distinct look.Account_Number,  look.File_number
+FROM  [Latitude].[Collect].[Account_Reference_Lookup] look
+ order by File_Number
