@@ -10,3 +10,4 @@ Feature: Checking The Anchor panels
 		And the "Account Overview" anchor panel will display a "Active Vulnerable" value of "Yes - Relationship Breakup"
 		And the "Customer Overview" anchor panel will display a "Primary Name" value of "Mr Cade Abbott"
 		And the "Contractual Due Information" anchor panel will display a "Billing Freq" value of "Monthly"
+		
