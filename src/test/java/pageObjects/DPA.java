@@ -14,8 +14,7 @@ public class DPA {
 		//initialisation
 		this.driver=driver;
 	}
-	
-	
+		
 	public void dismisDPA()  {
 		try 
 			{

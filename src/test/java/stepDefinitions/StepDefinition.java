@@ -1,7 +1,11 @@
 package stepDefinitions;
 
 import java.io.IOException;
+
+import org.junit.Assert;
+
 import io.cucumber.java.en.*;
+
 import testComponents.BaseTest;
 import pageObjects.*;
 
@@ -38,8 +42,9 @@ public class StepDefinition <Public> extends BaseTest{
 	}
 
 	@Given("the {string} anchor panel will display a {string} value of {string}")
-	public void the_anchor_panel_will_display_a_value_of(String string, String string2, String string3) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
+	public void the_anchor_panel_will_display_a_value_of(String panelName, String label, String value) {
+		String anchorPanelValue =  anchor.queryAnchorPanels(panelName, label);
+		Assert.assertEquals("Anchor panel: " + panelName + "/" + label, value, anchorPanelValue);
+		//Assert. assertTrue(anchorPanelValue.equals(value), "Anchor panel: " + panelName + " label: " + label + " equals: " + value );
 	}
 }

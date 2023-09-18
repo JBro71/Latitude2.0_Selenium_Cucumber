@@ -29,7 +29,7 @@ public class LoginPage {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 		//click the login button repeatedly until next page appears (don't ask)
 		for(int i=0;i<20; i++) {
-			Logging.logToConsole("DEBUG", "logging in. Try No:" + i+1);
+			Logging.logToConsole("DEBUG", "logging in. Try No:" + i );
 			try {
 			driver.findElement(By.xpath("//a[contains(text(),'windows login')]")).click();
 			} catch (Exception e) 
@@ -39,7 +39,7 @@ public class LoginPage {
 			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[normalize-space()='Agent Desktop']")));
 			} catch (Exception e) 
 				{ 
-				Logging.logToConsole("DEBUG", "error: " +  e);
+				//Logging.logToConsole("DEBUG", "error: " +  e);
 				Thread.sleep(500);
 				continue;
 				}

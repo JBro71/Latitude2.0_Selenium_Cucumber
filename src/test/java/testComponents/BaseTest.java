@@ -10,7 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
+//import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 //import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,8 +24,8 @@ import java.time.Duration;
 
 //import pages.AccountPickerPage;
 import pageObjects.DPA;
-//import pages.DesktopAnchorPanels;
-//import pages.DesktopArrangements;
+import pageObjects.DesktopAnchorPanels;
+//import pageObjects.DesktopArrangements;
 //import pages.LoginPage;
 import pageObjects.SearchPage;
 //import pages.SplashPage;
@@ -40,7 +40,7 @@ public class BaseTest {
 	public WebDriver driver;
 	public static WebDriver staticDriver;
 	//public DesktopArrangements arrangements;
-	//public DesktopAnchorPanels anchor;
+	public DesktopAnchorPanels anchor;
 	//public static desktopOpen;
 	//list of all account numbers mapped to file numbers
 	public static HashMap<String, String> fileNumbersMap = new HashMap<String, String>();
@@ -69,7 +69,7 @@ public class BaseTest {
 		//initialise the driver
 		switch (prop.getProperty("browser").toLowerCase()) {
 			case "edge":
-				EdgeOptions options = new EdgeOptions();
+				//EdgeOptions options = new EdgeOptions();
 				System.setProperty("webdriver.edge.driver", "C:/Users/jbroad/Drivers/msedgedriver.exe");
 				driver = new EdgeDriver();
 				break;		
@@ -84,10 +84,15 @@ public class BaseTest {
 
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
 		Logging.logToConsole("DEBUG", "Start Test");
-		//InitialisePages();
+		InitialisePages();
 		return false;
 	
 	}	
+	
+	public void InitialisePages() {
+		DesktopAnchorPanels anchor = new DesktopAnchorPanels(driver);
+		this.anchor = anchor;
+	}
 	
 	public static void Filenumbers() throws IOException {
 		String filePath = "//src//test//java//utils//";
@@ -142,8 +147,4 @@ public class BaseTest {
 		}
 	}
 	
-
-
-
-
 }
