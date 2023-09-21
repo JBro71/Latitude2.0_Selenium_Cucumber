@@ -48,7 +48,12 @@ public class BaseTest {
 	public static HashMap<String, String> testMap = new HashMap<String, String>();
 
 		
-	public boolean initilizeDriver() throws IOException {
+	
+	
+	
+	
+	
+	public void initilizeDriver() throws IOException {
 		//load the properties and output the key ones
 		FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+ "//src//test//java//utils//params.properties");
 		prop.load(fis);										
@@ -56,12 +61,14 @@ public class BaseTest {
 		Logging.logToConsole("INFO", "Browser: " + BaseTest.prop.getProperty("browser"));
 		Logging.logToConsole("INFO", "Default Implicit Wait" + BaseTest.prop.getProperty("implicitWait"));
 		
+		testMap.put("account", ""); //Initialise the account value;
+		
 		//check if we already have a driver from previous iteration
 		if (staticDriver != null) {
 			driver = staticDriver;
 			Logging.logToConsole("DEBUG", "Using Existing Driver");
 			//InitialisePages();
-			return true;
+			//return true;
 		}
 		//load a list of all the file numbers		
 		Filenumbers();
@@ -85,9 +92,13 @@ public class BaseTest {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
 		Logging.logToConsole("DEBUG", "Start Test");
 		InitialisePages();
-		return false;
-	
+		//return false;
 	}	
+	
+	
+	
+	
+	
 	
 	public void InitialisePages() {
 		DesktopAnchorPanels anchor = new DesktopAnchorPanels(driver);

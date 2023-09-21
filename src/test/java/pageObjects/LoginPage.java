@@ -18,9 +18,15 @@ import utils.Logging;
 
 
 public class LoginPage {
-		
 	
-	public void login (WebDriver driver) throws InterruptedException {
+	WebDriver driver;
+	
+	public LoginPage(WebDriver driver) { //initialise Webdriver in this class from the calling class
+		//initialisation
+		this.driver=driver;
+	}
+	
+	public void login () throws InterruptedException {
 	
 		Logging.logToConsole("DEBUG", "log in to Latitude");
 		driver.get(BaseTest.prop.getProperty("LatitudeUrl"));

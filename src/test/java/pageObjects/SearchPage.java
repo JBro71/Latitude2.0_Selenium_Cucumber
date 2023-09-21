@@ -89,6 +89,7 @@ public class SearchPage {
 						return;}
 				if (z==4) {
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
+					Logging.logToConsole("DEBUG", "account opened");
 					return;
 				}
 				}

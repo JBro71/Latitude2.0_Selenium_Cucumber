@@ -14,7 +14,8 @@ Feature: Latitude 2.0 Vulnerabilites
 
     Examples: 
       |acc_no       |status      | careType                |hardshipType             |holdDefault|holdActual|
-     	#|BG88ZFUY1114 |Collections |Physical Difficulty      |IMPACT - Pay             |30         |Default   |
+      |PT68899261611 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
+     	#|BG88ZFUY1114 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
 			#|FR9426427158 |Prearrears  |Severe or Long Term      |IMPACT - Pay             |30      |Default |
 			#|KW15349141071|Recoveries  |Hearing or Visual        |IMPACT - Communicate     |30      |Default |
 			#|NL40CMIL7271 |Collections |Mental Health            |IMPACT - Communicate     |30      |Default |
@@ -55,7 +56,7 @@ Feature: Latitude 2.0 Vulnerabilites
 			#|LB34495170531|Recoveries  |IMPACT - Communicate     |Unemployed - No Bens     |30      |Default |
 			#|MT72EGEJ3321 |Collections |IMPACT - Communicate     |Unemployed - Benefit     |30      |Default |
 			#|GT0638261153 |Prearrears  |IMPACT - Manage          |Redundancy               |30      |Default |
-			|MR2417986695 |Prearrears  |Suicide                  |IMPACT - Manage          |30      |Default |
+			#|MR2417986695 |Prearrears  |Suicide                  |IMPACT - Manage          |30      |Default |
 
       
 

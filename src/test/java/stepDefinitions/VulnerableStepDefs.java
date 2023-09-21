@@ -3,15 +3,26 @@ package stepDefinitions;
 
 import org.junit.Assert;
 import io.cucumber.java.en.*;
-import testComponents.BaseTest;
-import pageObjects.*;
+import pageObjects.DesktopVulnerabilites;
+import utils.Context;
 
-public class VulnerableStepDefs <Public> extends BaseTest {
+
+
+public class VulnerableStepDefs {//<Public> extends BaseTest {
+	
+	Context context;
 	DesktopVulnerabilites vulnerabilites;
+	
+	public VulnerableStepDefs(Context context)
+	{
+		this.context = context;
+		vulnerabilites = context.getDesktopVulnerabilites();
+	}
+	
+	
 
 	@When("^I add a new C&H record with care type of \"([^\"]*)\" and hardship of \"([^\"]*)\"$")
 	public void i_add_a_new_c_h_record_with_care_type_of_physical_difficulty_and_hardship_of_impact_pay(String careType, String hardshipType) throws InterruptedException {
-		vulnerabilites = new DesktopVulnerabilites(driver);
 		vulnerabilites.OpenCareAndHardshipPanel();
 		vulnerabilites.NewCareAndHardship(careType, hardshipType);
 	}
