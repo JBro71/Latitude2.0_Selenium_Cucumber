@@ -28,14 +28,14 @@ public class LoginPage {
 	
 	public void login () throws InterruptedException {
 	
-		Logging.logToConsole("DEBUG", "log in to Latitude");
+		Logging.logToConsole("DEBUG", "LoginPage/login: log in to Latitude");
 		driver.get(BaseTest.prop.getProperty("LatitudeUrl"));
 		driver.manage().window().maximize();
 
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 		//click the login button repeatedly until next page appears (don't ask)
 		for(int i=0;i<20; i++) {
-			Logging.logToConsole("DEBUG", "logging in. Try No:" + i );
+			Logging.logToConsole("DEBUG", "LoginPage/login: logging in. Try No:" + i );
 			try {
 			driver.findElement(By.xpath("//a[contains(text(),'windows login')]")).click();
 			} catch (Exception e) 
@@ -52,6 +52,6 @@ public class LoginPage {
 			break;
 		}
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
-		Logging.logToConsole("DEBUG", "Login Complete");
+		Logging.logToConsole("DEBUG", "LoginPage/login: Login Complete");
 	}
 }

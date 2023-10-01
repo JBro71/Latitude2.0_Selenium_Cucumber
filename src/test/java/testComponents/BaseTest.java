@@ -39,6 +39,7 @@ public class BaseTest {
 	public static Properties prop = new Properties ();
 	public WebDriver driver;
 	public static WebDriver staticDriver;
+	public static boolean firstTest = true;
 	//public DesktopArrangements arrangements;
 	public DesktopAnchorPanels anchor;
 	//public static desktopOpen;
@@ -47,32 +48,16 @@ public class BaseTest {
 	//public values used in test
 	public static HashMap<String, String> testMap = new HashMap<String, String>();
 
-		
-	
-	
-	
-	
+
 	
 	public void initilizeDriver() throws IOException {
 		//load the properties and output the key ones
-		FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+ "//src//test//java//utils//params.properties");
-		prop.load(fis);										
-		Logging.logToConsole("INFO","LogLevel: " + BaseTest.prop.getProperty("logLevel"));
-		Logging.logToConsole("INFO", "Browser: " + BaseTest.prop.getProperty("browser"));
-		Logging.logToConsole("INFO", "Default Implicit Wait" + BaseTest.prop.getProperty("implicitWait"));
 		
-		testMap.put("account", ""); //Initialise the account value;
+		if (staticDriver == null) { 		// if the browser is not already open
+		InitiliseProperties(); 			//load the properties file
+		testMap.put("account", ""); 		//Initialise the account value;
+		Filenumbers(); 					//load a list of all the file numbers	
 		
-		//check if we already have a driver from previous iteration
-		if (staticDriver != null) {
-			driver = staticDriver;
-			Logging.logToConsole("DEBUG", "Using Existing Driver");
-			//InitialisePages();
-			//return true;
-		}
-		//load a list of all the file numbers		
-		Filenumbers();
-
 		//initialise the driver
 		switch (prop.getProperty("browser").toLowerCase()) {
 			case "edge":
@@ -87,24 +72,28 @@ public class BaseTest {
 				System.setProperty("webdriver.chrome.driver", "C:/Users/jbroad/Drivers/chromedriver.exe");
 				driver = new ChromeDriver();
 		}
+				
 		staticDriver = driver;
-
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
-		Logging.logToConsole("DEBUG", "Start Test");
-		InitialisePages();
-		//return false;
+		return;
+		}
+		
+		Logging.logToConsole("DEBUG", "BaseTest/initilizeDriver: Using Existing Driver");
+		firstTest = false;
+		driver = staticDriver;
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
 	}	
 	
 	
-	
-	
-	
-	
-	public void InitialisePages() {
-		DesktopAnchorPanels anchor = new DesktopAnchorPanels(driver);
-		this.anchor = anchor;
+	public void InitiliseProperties() throws IOException {
+		FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+ "//src//test//java//utils//params.properties");
+		prop.load(fis);										
+		Logging.logToConsole("INFO","LogLevel: " + BaseTest.prop.getProperty("logLevel"));
+		Logging.logToConsole("INFO", "Browser: " + BaseTest.prop.getProperty("browser"));
+		Logging.logToConsole("INFO", "Default Implicit Wait" + BaseTest.prop.getProperty("implicitWait"));
 	}
 	
+
 	public static void Filenumbers() throws IOException {
 		String filePath = "//src//test//java//utils//";
 		String fileFolder = "";
@@ -119,13 +108,14 @@ public class BaseTest {
 		
 			}
 	
+	/*
 	public void OpenNewAccount(String accountNumber) throws InterruptedException {
 		//close existing account if one open
 		try 
 		{
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
 		driver.findElement(By.xpath("//a[normalize-space()='Close Account']")).click();
-		Logging.logToConsole("INFO", "Account Closed");
+		Logging.logToConsole("INFO", "OpenNewAccount: Account Closed");
 		}
 		catch(Exception e){}
 		
@@ -136,17 +126,18 @@ public class BaseTest {
 		searchPage.openAccount(accountNumber);
 		
 		//**********************dismiss DPA screen******************
-		DPA dpa = new DPA(driver);
+		PageUtils pageUtils = new PageUtils(driver);
+		DPA dpa = new DPA(driver, pageUtils);
 		dpa.dismisDPA();
 		
 		//wait until the page is fully loaded by checking if this element is populated before doing anything
 		for(int i=1;i<20 ;i++) { 
 			Thread.sleep(500);
-			Logging.logToConsole("DEBUG", "waiting for page to load");
+			Logging.logToConsole("DEBUG", "baseTest/OpenNewAccount: waiting for page to load");
 			try {
 				if (driver.findElement(By.xpath("//input[@name='amount']")).getAttribute("value") != "") 
 				{
-					Logging.logToConsole("INFO", "waited " + i*500 + " miliseconds for arrangement panel");
+					Logging.logToConsole("INFO", "basetest/OpenNewAccount: waited " + i*500 + " miliseconds for arrangement panel");
 					Thread.sleep(500);
 					break;
 				}
@@ -157,5 +148,5 @@ public class BaseTest {
 				}
 		}
 	}
-	
+	*/
 }

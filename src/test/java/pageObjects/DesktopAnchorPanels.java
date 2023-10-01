@@ -12,21 +12,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 //import org.testng.Assert;
 
-import testComponents.BaseTest;
+import testComponents.*;
 import utils.Logging;
 //import utilities.Parameters;
 
 public class DesktopAnchorPanels {
 
 	WebDriver driver;
+	PageUtils pageUtils;
 	public static HashMap<String, String> accountAnchorMap = new HashMap<String, String>();
 	public static HashMap<String, String> customerAnchorMap = new HashMap<String, String>();
 	public static HashMap<String, String> clientAnchorMap = new HashMap<String, String>();
 	
 	
-	public DesktopAnchorPanels(WebDriver driver) { // initialise Webdriver in this class from the calling class
+	public DesktopAnchorPanels(WebDriver driver, PageUtils pageutils) { // initialise Webdriver in this class from the calling class
 		// initialisation
 		this.driver = driver;
+		this.pageUtils = pageutils;
 	}
 	
 	// *********************Get Anchor Panel Info***********************
@@ -49,10 +51,7 @@ public class DesktopAnchorPanels {
 		// get panel labels
 		List<WebElement> tempWebElement = driver.findElements(By.xpath("(//div[@class='well customAnchorPanelCard'])["+ panelIndex +"]//div//dl")); 
 		
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0)); // set implicit wait to 0 since some elements
-																			// may be missing ( but are error trapped so
-																			// dont need to wait)
-		
+		pageUtils.ImplictWait(0);	
 		// elements are numbered so loop through all the numbers 1 to n and for each
 		// store the value in hashmap
 		for (int i = 1; i <= tempWebElement.size(); i++) {
@@ -70,15 +69,13 @@ public class DesktopAnchorPanels {
 			Logging.logToConsole("DEBUG","Key: " + key.split(":")[0] +  "  Value: " + val);
 			//String keyName = key.split(":")[0].toLowerCase();
 			if (key.split(":")[0].equalsIgnoreCase(field)) {
-				driver.manage().timeouts()
-				.implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
+			pageUtils.DefaultImplictWait();
 				return val;
 			}
 		}
 
 		// reset the implicit wait to standard value
-		driver.manage().timeouts()
-				.implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
+		pageUtils.DefaultImplictWait();
 
 	return  "not found";
 

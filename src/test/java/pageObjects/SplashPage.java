@@ -23,11 +23,11 @@ public class SplashPage {
 
 		if (action == "goto desktop") {
 		driver.findElement(By.xpath("//a[normalize-space()='Agent Desktop']")).click();
-		Logging.logToConsole("DEBUG", "Agent Desktop Opened");
+		Logging.logToConsole("DEBUG", "SplashPAge/Splash: Agent Desktop Opened");
 		}
 		else {
 		driver.findElement(By.xpath("//a[contains(text(),'Account Request')]")).click();
-		Logging.logToConsole("DEBUG", "Account Request Form Opened");
+		Logging.logToConsole("DEBUG", "SplashPAge/Splash: Account Request Form Opened");
 		}
 		
 		//******************Switch to new window****************
@@ -37,7 +37,7 @@ public class SplashPage {
 		String Id = it.next();
 		Id = it.next();
 		driver.switchTo().window(Id);
-		Logging.logToConsole("DEBUG", "Switch to Child Window Complete");
+		Logging.logToConsole("DEBUG", "SplashPAge/Splash: Switch to Child Window Complete");
 	}
 	
 }

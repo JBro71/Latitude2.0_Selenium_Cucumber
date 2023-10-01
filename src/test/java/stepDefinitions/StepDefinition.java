@@ -3,23 +3,21 @@ package stepDefinitions;
 import java.io.IOException;
 
 import org.junit.Assert;
-
 import io.cucumber.java.en.*;
-
-import testComponents.BaseTest;
+import testComponents.*;
 import utils.Context;
 import pageObjects.*;
-
 
 
 public class StepDefinition <Public> extends BaseTest{
 	
 	Context context;
-
 	LoginPage loginPage;
 	SplashPage splashPage;
 	SearchPage searchPage;
 	DesktopAnchorPanels desktopAnchorPanels;
+	PageUtils pageUtils;
+	OpenAccount openAccount;
 	
 	public StepDefinition(Context context)
 	{
@@ -27,33 +25,31 @@ public class StepDefinition <Public> extends BaseTest{
 		searchPage = context.getSearchPage();
 		loginPage = context.getLoginPage();
 		splashPage = context.getSplashPage();
-		desktopAnchorPanels= context.getDesktopAnchorPanels();
+		desktopAnchorPanels = context.getDesktopAnchorPanels();
+		pageUtils = context.getPageUtils();
+		openAccount = context.getOpenAccount();
 	}
 	
 	
 	@Given("I am logged into the Latitude Desktop")
 	public void i_am_logged_into_the_latitude_desktop() throws IOException, InterruptedException {
-		//********Launch Browser*************
-		//boolean existingSession = initilizeDriver();
-		
-		//if (!existingSession) { //no existing session
-		//testMap.put("account", ""); //Initialise the account value;
-		//***********Log in*****************
-
+		//if this is the first test launch browser otherwise re-use existing instance
+		if (firstTest) {
 		loginPage.login();
-
-		//****************** Splash screen*******************
 		splashPage.splash("goto desktop");
-		//}
+		}
 	}
 	
 	
 	@Given("^I have account \"([^\"]*)\" open in Latitude$")
 	public void i_have_account_open_in_latitude(String accountNumber) throws InterruptedException {
-		if (!testMap.get("account").equals(accountNumber)) { //account not open then open
-		context.OpenNewAccount(accountNumber);
+		
+		if (!testMap.get("account").equals(accountNumber)) { //no account open or a different account open to that needed
+		//pageUtils.CloseAccount(); // close an existing account if one open
+		openAccount.OpenNewAccount(accountNumber);
 		testMap.put("account",accountNumber);
-		}	
+		}
+		pageUtils.ReturnHome(); // scroll back to the top
 	}
 
 	@Given("the {string} anchor panel will display a {string} value of {string}")
