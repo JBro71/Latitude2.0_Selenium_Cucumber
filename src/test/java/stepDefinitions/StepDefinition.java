@@ -1,6 +1,8 @@
 package stepDefinitions;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 import org.junit.Assert;
 import io.cucumber.java.en.*;
@@ -18,6 +20,8 @@ public class StepDefinition <Public> extends BaseTest{
 	DesktopAnchorPanels desktopAnchorPanels;
 	PageUtils pageUtils;
 	OpenAccount openAccount;
+	DesktopArrangements arrangements;
+	DesktopVulnerabilites vulnerabilities;
 	
 	public StepDefinition(Context context)
 	{
@@ -28,6 +32,8 @@ public class StepDefinition <Public> extends BaseTest{
 		desktopAnchorPanels = context.getDesktopAnchorPanels();
 		pageUtils = context.getPageUtils();
 		openAccount = context.getOpenAccount();
+		arrangements = context.getDesktopArrangements();
+		vulnerabilities = context.getDesktopVulnerabilites();
 	}
 	
 	
@@ -58,5 +64,51 @@ public class StepDefinition <Public> extends BaseTest{
 		Assert.assertEquals("Anchor panel: " + panelName + "/" + label, value, anchorPanelValue);
 		//Assert. assertTrue(anchorPanelValue.equals(value), "Anchor panel: " + panelName + " label: " + label + " equals: " + value );
 	}
+	
+
+	@Then("if I add a payment card with the following details")
+	public void if_i_add_a_payment_card_with_the_following_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
+		HashMap<String,String> paymentCardMap = new HashMap<String, String>();
+		List<List<String>> dataList = dataTable.asLists(); //get data table
+		 for (String keyValuePair : dataList.get(0)) { 
+			   //Logging.logToConsole("Debug","payment card: "+ keyValuePair);
+			    String[] dataPairArray = keyValuePair.split(":");
+			    String key = dataPairArray[0];
+			    String  value = dataPairArray[1].replaceAll("^\\s+", "");
+			    if (key.equals("expiry")) {
+			    	String[] expiryMonthYear = value.split("/");
+			    	paymentCardMap.put("card expiry month", expiryMonthYear[0]);
+			    	paymentCardMap.put("card expiry year", expiryMonthYear[1]);
+			    	}
+				    else {
+				    	paymentCardMap.put(key,value);
+				    }	
+			    }
+	    	arrangements.AddPaymentCard(paymentCardMap);
+		}
+
+	
+	@Then("I can add a card arrangement using the following details")
+	public void i_can_add_a_card_arrangement_using_the_following_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException, IOException {
+		HashMap<String,String> dataMap = new HashMap<String, String>();
+		List<List<String>> dataList = dataTable.asLists(); //get data table
+		 for (String keyValuePair : dataList.get(0)) { 
+			   //Logging.logToConsole("Debug","payment card: "+ keyValuePair);
+			    String[] dataPairArray = keyValuePair.split(":");
+			    String key = dataPairArray[0];
+			    String  value = dataPairArray[1]. replaceAll("^\\s+", "");
+			    if (key.equals("expiry")) {
+			    	String[] expiryMonthYear = value.split("/");
+			    	dataMap.put("card expiry month", expiryMonthYear[0]);
+			    	dataMap.put("card expiry year", expiryMonthYear[1]);
+			    	}
+				    else {
+				    	dataMap.put(key,value);
+				    }	
+			    }
+	    	arrangements.AddArrangment(dataMap);
+	    			}
+
+	
 	
 }

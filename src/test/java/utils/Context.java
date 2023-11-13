@@ -15,6 +15,9 @@ public class Context extends BaseTest {
 	private DesktopAnchorPanels desktopAnchorPanels;
 	private DPA dpa;
 	private OpenAccount openAccount;
+	private DesktopArrangements desktopArrangements;
+	private DesktopDMC desktopDMC; 
+	private DesktopInsolvency desktopInsolvency;
 
 	
 	public Context() throws IOException
@@ -111,4 +114,37 @@ public class Context extends BaseTest {
 		}
 		return desktopAnchorPanels;
 	} 	
+	
+	public DesktopArrangements getDesktopArrangements()
+	{
+		if(desktopArrangements==null)
+		{
+			
+			desktopArrangements = new DesktopArrangements(driver, pageUtils);
+		}
+		return desktopArrangements;
+	} 
+	
+	
+	
+	public DesktopDMC getDesktopDMC()
+	{
+		if(desktopDMC==null)
+		{
+			desktopDMC = new DesktopDMC(driver, pageUtils);
+		}
+		return desktopDMC;
+	} 
+	
+	//private DesktopInsolvency desktopInsolvency;
+	
+	public DesktopInsolvency getDesktopInsolvency()
+	{
+		if(desktopInsolvency==null)
+		{
+			desktopInsolvency = new DesktopInsolvency(driver, pageUtils);
+		}
+		return desktopInsolvency;
+	} 
+	
 }
