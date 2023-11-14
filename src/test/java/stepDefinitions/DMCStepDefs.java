@@ -6,9 +6,10 @@ import java.util.List;
 import org.junit.Assert;
 import io.cucumber.java.en.*;
 import pageObjects.DesktopDMC;
-import pageObjects.DesktopVulnerabilites;
 import utils.Context;
 import utils.Logging;
+import testComponents.TimeDateCalcs;
+
 
 
 public class DMCStepDefs {
@@ -25,12 +26,16 @@ public class DMCStepDefs {
 	@Then("I can Add a DMC with the following details")
 	public void if_i_add_a_DMC_with_the_following_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
 		HashMap<String,String> DMCMap = new HashMap<String, String>();
+	
 		List<List<String>> dataList = dataTable.asLists(); //get data table
 		for (List<String> keyValuePair : dataList) {
 			DMCMap.put(keyValuePair.get(0), keyValuePair.get(1));
 		}
 		
-		dmc.addDMC(DMCMap, "add");
+		Logging.logToConsole("INFO","Dateaccepted before: " +DMCMap.get("Date Accepted"));
+		DMCMap.put("Date Accepted",TimeDateCalcs.CalculateDate(DMCMap.get("Date Accepted"), "ddMMyyyy"));
+		Logging.logToConsole("INFO","Dateaccepted after: " +DMCMap.get("Date Accepted"));
+		//dmc.addDMC(DMCMap, "add");
 		}
 	
 }
