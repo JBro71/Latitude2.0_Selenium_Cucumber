@@ -1,13 +1,19 @@
-Feature: Checking The Anchor panels
-  
+@tag
+Feature: DMC
+  Feature file for adding, amending or deleting DMC
+
   Background:
   Given I am logged into the Latitude Desktop
 
-
-  @tag1
-  Scenario:  Checking the Account Status panel
-    Given I have account "LB3383867165" open in Latitude
-		And the "Account Overview" anchor panel will display a "Active Vulnerable" value of "No"
-		And the "Customer Overview" anchor panel will display a "Primary Name" value of "Mr Cade Abbott MFA"
-		And the "Contractual Due Information" anchor panel will display a "Billing Freq" value of "Monthly"
-		
+	@tag1
+  Scenario:  Checking a DMC
+   Given  I have account "PT68899261611" open in Latitude
+   Then I can "Check" a DMC with the following details
+  # |Customer				|Mrs Serena Mcfarland	|
+   #|company					|121 Debt Solutions		|
+   |contact					|John Smith						|
+   |client id				|123456								|
+   |creditor id			|1234567							|
+  # |Date Accepted		|$-36							  	|
+	 |Amount Accepted	|100									|
+   |Comment					|DMC Comment			  	|

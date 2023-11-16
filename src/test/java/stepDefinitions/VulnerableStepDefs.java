@@ -30,7 +30,7 @@ public class VulnerableStepDefs {//<Public> extends BaseTest {
 	@When("^the default hold days of \"([^\"]*)\" are set to \"([^\"]*)\"$")
 	public void the_default_hold_days_of_are_set_to_default(String defaultHoldDays, String SetHoldDays) throws InterruptedException {
 		String presetCareAndHardshipHoldDays = vulnerabilites.CareHoldDays(SetHoldDays);
-		Assert.assertEquals("Hold Days", presetCareAndHardshipHoldDays, defaultHoldDays); 
+		Assert.assertEquals("Hold Days", presetCareAndHardshipHoldDays, defaultHoldDays);  
 	
 	}
 
