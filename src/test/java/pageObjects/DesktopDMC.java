@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 //import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,11 +18,13 @@ public class DesktopDMC {
 	HashMap<String,String> resultsMap = new HashMap<String, String>();
 	WebDriver driver;
 	PageUtils pageUtils;
+	JavascriptExecutor js;
 		
 		public DesktopDMC(WebDriver driver, PageUtils pageUtils) { //initialise Webdriver in this class from the calling class
 			//initialisation
 			this.driver = driver;
 			this.pageUtils = pageUtils;
+			js = (JavascriptExecutor)driver;
 		}
 	
 	
@@ -67,8 +70,18 @@ public class DesktopDMC {
 			Logging.logToConsole("DEBUG", "DesktopDMC/AddDMC: DMC Key: " +i+ " Value: "+ value);	
 			switch (i) {
 			case "company":
-				driver.findElement(By.xpath("//input[@type='search']")).sendKeys(value);
-				driver.findElement(By.xpath("//li[@id='vs1__option-0']")).click();
+				
+				if (action.equalsIgnoreCase("check")) {
+					inputWebElement =  driver.findElement(By.xpath("//span[@class='vs__selected']"));
+					//Object attrs = js.executeScript("var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;",inputWebElement);
+					//Logging.logToConsole("DEBUG","DesktopDMC/CheckDMC: " + "Attributes" +" "+ attrs);	
+					Logging.logToConsole("DEBUG","DesktopDMC/CheckDMC: " + i +" "+ inputWebElement.getText());	
+					resultsMap.put(i,inputWebElement.getText());  
+				}else {
+					driver.findElement(By.xpath("//input[@type='search']")).sendKeys(value);
+					driver.findElement(By.xpath("//li[@id='vs1__option-0']")).click();
+				}
+				
 				break;
 			case "contact":
 				inputWebElement=driver.findElement(By.xpath("//input[@id='contact']"));
@@ -83,6 +96,7 @@ public class DesktopDMC {
 				implementAction(action,inputWebElement,value,i);
 				break;
 			case "date accepted":
+				Logging.logToConsole("DEBUG","DesktopDMC/AddDMC: " + "Date accepted" +" "+ value);	
 				inputWebElement=driver.findElement(By.xpath("//input[@id='date-accepted']"));
 				implementAction(action,inputWebElement,value,i); 
 				break;	
@@ -91,11 +105,15 @@ public class DesktopDMC {
 				implementAction(action,inputWebElement,value,i); 
 				break;
 			case "comment":
-				driver.findElement(By.xpath("//textarea[@id='comment']")).sendKeys(" New Comment: " + value);
+				inputWebElement=driver.findElement(By.xpath("//textarea[@id='comment']"));
+				implementAction(action,inputWebElement,value,i); 
 				break;	
 			case "customer":
-				customerDropdown.selectByIndex(Integer.parseInt(value) - 1);
-				if(action == "add") { dmcDelete();}
+				if (action.equalsIgnoreCase("check")) {
+					customerDropdown.selectByIndex(Integer.parseInt(value) - 1);
+					if(action == "add") { dmcDelete();}
+				}
+
 				break;	
 			}
 			}
@@ -156,10 +174,17 @@ public class DesktopDMC {
 			}catch (Exception e){resultsMap.put(attribute,"No Value"); }
 		}
 		else {
-			inputWebElement.clear();
+			if(attribute.equalsIgnoreCase("comment")) {
+				value = "/n" + value;
+			}else {
+					inputWebElement.clear(); //don't clear the comments add to them
+					} 
+			}
+	
 			inputWebElement.sendKeys(value); 
 		}
-	}
 	
 	
+	
+
 }

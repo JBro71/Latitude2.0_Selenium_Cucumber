@@ -55,4 +55,9 @@ public class PageUtils extends BaseTest {
 			Thread.sleep(300);
 			js.executeScript("window.scrollBy(0," + move + ")");						
 	}
+	
+	
+	// use JS to get all the atributes of a web element
+	//Object attrs = js.executeScript("var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;",inputWebElement);
+	//Logging.logToConsole("DEBUG","DesktopDMC/CheckDMC: " + "Attributes" +" "+ attrs);	
 }

@@ -31,8 +31,8 @@ public class DMCStepDefs {
 			DMCMap.put(keyValuePair.get(0).toLowerCase(), keyValuePair.get(1));
 		}
 		//if the date accepted is a variable then process it and convert into a date
-		if(DMCMap.get("Date Accepted") != null) {
-		DMCMap.put("Date Accepted",TimeDateCalcs.CalculateDate(DMCMap.get("Date Accepted"), "ddMMyyyy"));
+		if(DMCMap.get("date accepted") != null) {
+		DMCMap.put("date accepted",TimeDateCalcs.CalculateDate(DMCMap.get("date accepted"), "ddMMyyyy"));
 		}
 		HashMap<String,String> resultsMap = dmc.dmc(DMCMap, action);
 		
