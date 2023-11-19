@@ -22,6 +22,7 @@ public class DMCStepDefs {
 		dmc = context.getDesktopDMC();
 	}
 	
+	
 	@Then("^I can \"([^\"]*)\" a DMC with the following details$")
 	public void if_i_add_a_DMC_with_the_following_details(String action, io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
 		HashMap<String,String> DMCMap = new HashMap<String, String>();
@@ -32,14 +33,18 @@ public class DMCStepDefs {
 		}
 		//if the date accepted is a variable then process it and convert into a date
 		if(DMCMap.get("date accepted") != null) {
-		DMCMap.put("date accepted",TimeDateCalcs.CalculateDate(DMCMap.get("date accepted"), "ddMMyyyy"));
-		}
-		HashMap<String,String> resultsMap = dmc.dmc(DMCMap, action);
+			String dateFormat = "ddMMyyyy";
+			if (action.equalsIgnoreCase("check")) {
+				dateFormat = "yyyy-MM-dd";
+			}
+			DMCMap.put("date accepted",TimeDateCalcs.CalculateDate(DMCMap.get("date accepted"), dateFormat));
+			}
 		
+		HashMap<String,String> resultsMap = dmc.dmc(DMCMap, action);
+		// check if returned values match expected values
 		if(action.equalsIgnoreCase("check")) {
-			DMCMap.forEach((key, value) -> System.out.println(key + ":" + value));
-			resultsMap.forEach((key, value) -> System.out.println(key + ":" + value));
-			
+			//DMCMap.forEach((key, value) -> System.out.println(key + ":" + value));
+			//resultsMap.forEach((key, value) -> System.out.println(key + ":" + value));
 			for (String key : DMCMap.keySet()) {
 				Assert.assertEquals("DMC values: " + key, DMCMap.get(key), resultsMap.get(key));
 		    }

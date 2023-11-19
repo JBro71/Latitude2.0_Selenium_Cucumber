@@ -45,11 +45,13 @@ public class DesktopDMC {
 		Select customerDropdown = new Select(driver.findElement(By.xpath("//select[@id='customer']")));
 		List<WebElement> customerCount = customerDropdown.getOptions(); //get size of drop down = number of customers
 		
+		/*
 		for(int i=1; i <= customerCount.size(); i++) { // iterate through customers
 			customerDropdown.selectByIndex(i - 1);	//select customer
 			if (button.isEnabled() == true) {Logging.logToConsole("INFO","DesktopDMC/AddDMC: Existing DMC for customer: " + i );}
 			else{Logging.logToConsole("INFO","DesktopDMC/AddDMC: NO Existing DMC for customer: " + i );}
 		}
+		*/
 	
 		
 		// order in which the data should be entered
@@ -67,7 +69,7 @@ public class DesktopDMC {
 			String value = lowercaseParamsMap.get(i);
 			if (value != null )
 			{ 
-			Logging.logToConsole("DEBUG", "DesktopDMC/AddDMC: DMC Key: " +i+ " Value: "+ value);	
+			Logging.logToConsole("DEBUG", "DesktopDMC/DMC: DMC Key: " +i+ " Value: "+ value);	
 			switch (i) {
 			case "company":
 				
@@ -111,6 +113,7 @@ public class DesktopDMC {
 			case "customer":
 				if (action.equalsIgnoreCase("check")) {
 					customerDropdown.selectByIndex(Integer.parseInt(value) - 1);
+					resultsMap.put(i,value);  
 					if(action == "add") { dmcDelete();}
 				}
 
@@ -169,22 +172,19 @@ public class DesktopDMC {
 		if (action.equalsIgnoreCase("check")) {
 			//get the value and store in the results map
 			try {
-			Logging.logToConsole("DEBUG","DesktopDMC/CheckDMC: " + attribute + inputWebElement.getAttribute("value"));	
+			//Logging.logToConsole("DEBUG","DesktopDMC/CheckDMC: " + attribute +" "+ inputWebElement.getAttribute("value"));	
 			resultsMap.put(attribute,inputWebElement.getAttribute("value"));  
 			}catch (Exception e){resultsMap.put(attribute,"No Value"); }
 		}
 		else {
 			if(attribute.equalsIgnoreCase("comment")) {
 				value = "/n" + value;
-			}else {
-					inputWebElement.clear(); //don't clear the comments add to them
-					} 
-			}
-	
+				}else {
+						inputWebElement.clear(); //don't clear the comments add to them
+						} 
+			
 			inputWebElement.sendKeys(value); 
+			}
 		}
-	
-	
-	
 
 }

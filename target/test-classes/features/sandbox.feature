@@ -14,6 +14,6 @@ Feature: DMC
    |contact					|John Smith						|
    |client id				|123456								|
    |creditor id			|1234567							|
-   |Date Accepted		|$-36							  	|
+   |Date Accepted		|$-37						 		 	|
 	 |Amount Accepted	|100.00								|
    |Comment					|DMC Comment			  	|
