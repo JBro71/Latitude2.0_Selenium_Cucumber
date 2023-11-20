@@ -23,17 +23,19 @@ Feature: Disputes
 
 
 	@tag1
-  Scenario:  Adding A Dispute
+  Scenario: checking  A Dispute
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "Check" a Dispute with the following details
-    |Dispute ID										|46								  			|   
+   	|Dispute Key									|category								|
+   	# Dispute Key values:  first, "last", <a number>, "dispute id", "category"
+    |Dispute ID										|47 							  			|   
     |Dispute Details							|Dispute comment	  			|
    	|Date Received								|$-37											|
    	|Date Closed									|													|
    	|Dispute Type									|Full Balance Dispute			|
     |Dispute Relates To						|Client										|
     |Dispute Against							|Client 									|
-    |Category											|Civil Dispute						|
+    |Category											|Client Dispute						|
     |Referred By	 								|Client										|
     |Recourse Date								|													|
    	|justified										|Yes											|

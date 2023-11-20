@@ -23,7 +23,7 @@ public class DisputesStepDefs {
 	@Then("^I can \"([^\"]*)\" a Dispute with the following details$")
 	public void if_i_add_a_Dispte_with_the_following_details(String action, io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
 		HashMap<String,String> dataMap = new HashMap<String, String>();
-	
+		action = action.toLowerCase();
 		List<List<String>> dataList = dataTable.asLists(); //get data table
 		for (List<String> keyValuePair : dataList) {
 			dataMap.put(keyValuePair.get(0).toLowerCase(), keyValuePair.get(1));

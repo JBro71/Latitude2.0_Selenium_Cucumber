@@ -38,12 +38,7 @@ public class DesktopDisputes {
 		//Click the disputes button
 		driver.findElement(By.xpath("//div[contains(text(),'Disputes')]")).click();
 		
-		//driver.switchTo().frame(driver.findElement(By.id("DebtManagement21")));
-		Thread.sleep(1000);
-		if(action.equalsIgnoreCase("add"))	{	
-			//Thread.sleep(1000);
-			driver.findElement(By.xpath("//button[@class='btn ng-binding'][normalize-space()='Add']")).click();	
-		}
+		
 		// order in which the data should be entered
 		String[] entryOrder = {"dispute id", "document", "dispute type","date received","date closed","dispute against", "dispute relates to", "category", 
 				"referred by", "justified","dispute details","outcome", "proof required", "proof requested","insufficient proof received", "proof received" };	
@@ -55,6 +50,72 @@ public class DesktopDisputes {
 		});
 		Boolean check = false;
 		if (action.equalsIgnoreCase("check")) {check = true;};
+		
+		//driver.switchTo().frame(driver.findElement(By.id("DebtManagement21")));
+				Thread.sleep(1000);
+
+				if(action.equalsIgnoreCase("add"))	{	
+					//Thread.sleep(1000);
+					driver.findElement(By.xpath("//button[@class='btn ng-binding'][normalize-space()='Add']")).click();	
+				}
+				else {
+					//WebElements disputes = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[1]"));
+					List<WebElement> disputeIDs = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[1]"));
+					List<WebElement> closed = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[1]"));
+					List<WebElement> categories = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[5]"));
+					String disputeKey = lowercaseParamsMap.get("dispute key").toLowerCase();
+					int disputeKeyNumber = 0;
+					if(disputeKey != null) {// there is a dispute key value
+						try {
+							// if the dispute key value is a number then shift to a new integer variable
+						 disputeKeyNumber = Integer.parseInt(disputeKey);
+						 disputeKey = "number";
+						}catch(Exception e) {}
+						
+						switch (disputeKey) {
+						
+						case "first":	
+							//get the first item in the list and click it
+							disputeIDs.get(0).click();
+							break;
+						case "last":	
+							//get the last item in the list and click it
+							disputeIDs.get(disputeIDs.size()-1).click();
+							break;							
+						case "number":	
+							//get numbered item in the list starting from the top
+							disputeIDs.get(disputeKeyNumber -1).click();
+							break;
+						case "dispute id":	
+							//get the item in the list of Dispute ID's with a dispute ID that matches the one input 
+							String disputeID = lowercaseParamsMap.get("dispute id");
+							for (int i = 0;i<disputeIDs.size();i++) {
+								//String tempid = disputeIDs.get(i).getText();
+								if (disputeID.equals(disputeIDs.get(i).getText())) {
+									disputeIDs.get(i).click();
+									}
+								}
+							break;	
+						case "category":	
+							//get the item in the list of Disputes with a category matching the one input
+							String category = lowercaseParamsMap.get("category");
+							for (int i = 0;i<categories.size();i++) {
+								//String tempid = disputeIDs.get(i).getText();
+								if (category.equals(categories.get(i).getText())) {
+									categories.get(i).click();
+									}
+								}
+							break;	
+											}
+							}
+					
+					}
+				
+				if(action.equalsIgnoreCase("edit") || action.equalsIgnoreCase("update") ){
+					action = "edit";
+					driver.findElement(By.xpath("//button[@class='btn ng-binding'][normalize-space()='Edit']")).click();		
+					}
+		
 		
 		//iterate through the keys that have a value and execute them in correct entry order
 		WebElement inputWebElement; // temp element to hold values in case statement
@@ -73,7 +134,7 @@ public class DesktopDisputes {
 				resultsMap.put(i,dropdown.getFirstSelectedOption().getText());
 				}
 				else {
-				dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm.addRecord.category']")));
+				dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm."+action+"Record.category']")));
 				dropdown.selectByVisibleText(value);
 				}
 				break;
@@ -83,7 +144,7 @@ public class DesktopDisputes {
 					resultsMap.put(i,inputWebElement.getAttribute("value"));  
 						}
 						else {
-						inputWebElement = driver.findElement(By.xpath("//input[@ng-model='vm.addRecord.dateReceived']"));
+						inputWebElement = driver.findElement(By.xpath("//input[@ng-model='vm."+action+"Record.dateReceived']"));
 						inputWebElement.clear();
 						inputWebElement.sendKeys(value);
 						}
@@ -101,17 +162,21 @@ public class DesktopDisputes {
 					resultsMap.put(i,dropdown.getFirstSelectedOption().getText());
 						}
 						else {
-							dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm.addRecord.against']")));
+							dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm."+action+"Record.against']")));
 							dropdown.selectByVisibleText(value);
 							}
 				break;	
+			case "dispute key":	
+				//dummy value just needs returning to avoid assertion failure
+				resultsMap.put(i,value);
+				break;
 			case "dispute relates to":
 				if (check){
 					dropdown = new Select(driver.findElement(By.xpath("//select[@name='disputeAgainst']")));	
 					resultsMap.put(i,dropdown.getFirstSelectedOption().getText());
 						}
 						else {
-							dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm.addRecord.against']")));
+							dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm."+action+"Record.against']")));
 							dropdown.selectByVisibleText(value);
 							}
 				break;	
@@ -121,7 +186,7 @@ public class DesktopDisputes {
 					resultsMap.put(i,inputWebElement.getAttribute("value"));  
 						}
 						else {
-							driver.findElement(By.xpath("//textarea[@ng-disabled='!vm.getPermissions().editDisputeDetails']")).sendKeys(value);
+							driver.findElement(By.xpath("//textarea[@ng-model='vm."+action+"Record.details']")).sendKeys(value);
 									}
 				break;
 			case "dispute id":	
@@ -145,7 +210,7 @@ public class DesktopDisputes {
 					if(inputWebElement.isSelected()) {resultsMap.put(i,"true");} 
 					}
 					else {
-						inputWebElement = driver.findElement(By.xpath("//input[@ng-model='vm.addRecord.insufficientProofReceived']"));
+						inputWebElement = driver.findElement(By.xpath("//input[@ng-model='vm."+action+"Record.insufficientProofReceived']"));
 						isSelected = inputWebElement.isSelected();
 						if((value.equalsIgnoreCase("true") && isSelected == false) || (value.equalsIgnoreCase("false")&& isSelected == true)) {
 						inputWebElement.click();
@@ -158,7 +223,7 @@ public class DesktopDisputes {
 					resultsMap.put(i,dropdown.getFirstSelectedOption().getText());
 						}
 						else {
-							dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm.addRecord.justified']")));
+							dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm."+action+"Record.justified']")));
 							dropdown.selectByVisibleText(value);
 									}
 				break;	
@@ -168,7 +233,7 @@ public class DesktopDisputes {
 					resultsMap.put(i,dropdown.getFirstSelectedOption().getText());
 						}
 						else {
-							dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm.addRecord.outcome']")));
+							dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm."+action+"Record.outcome']")));
 							dropdown.selectByVisibleText(value);
 									}
 				break;	
@@ -179,7 +244,7 @@ public class DesktopDisputes {
 					if(inputWebElement.isSelected()) {resultsMap.put(i,"true");} 
 					}
 					else {
-						inputWebElement = driver.findElement(By.xpath("//input[@ng-model='vm.addRecord.proofReceived']"));
+						inputWebElement = driver.findElement(By.xpath("//input[@ng-model='vm."+action+"Record.proofReceived']"));
 						isSelected = inputWebElement.isSelected();
 						if((value.equalsIgnoreCase("true") && isSelected == false) || (value.equalsIgnoreCase("false")&& isSelected == true)) {
 						inputWebElement.click();
@@ -193,7 +258,7 @@ public class DesktopDisputes {
 					if(inputWebElement.isSelected()) {resultsMap.put(i,"true");} 
 					}
 					else {							
-						inputWebElement = driver.findElement(By.xpath("//input[@ng-model='vm.addRecord.proofRequested']"));
+						inputWebElement = driver.findElement(By.xpath("//input[@ng-model='vm."+action+"Record.proofRequested']"));
 						isSelected = inputWebElement.isSelected();
 						if((value.equalsIgnoreCase("true") && isSelected == false) || (value.equalsIgnoreCase("false")&& isSelected == true)) {
 						inputWebElement.click();
@@ -225,7 +290,7 @@ public class DesktopDisputes {
 					resultsMap.put(i,dropdown.getFirstSelectedOption().getText());
 						}
 						else {
-						dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm.addRecord.referredBy']")));
+						dropdown = new Select(driver.findElement(By.xpath("//select[@ng-model='vm."+action+"Record.referredBy']")));
 						dropdown.selectByVisibleText(value);
 								}
 				break;
@@ -241,11 +306,11 @@ public class DesktopDisputes {
 			Logging.logToConsole("INFO","DesktopDispute/dispute: New dispute submitted");}
 				else { Logging.logToConsole("WARNING","DesktopDMC/AddDispute: unable to add Dispute: " + action + " button disabled");}
 			break;
-		case "update":
-			button = driver.findElement(By.xpath("//button[@id='submitButton']"));
+		case "edit":
+			button = driver.findElement(By.xpath("//button[@type='button'][normalize-space()='Save']"));
 			if (button.isEnabled() == true) {button.click();
-			Logging.logToConsole("INFO","DesktopDispute/Dispute: Dispute updated");}
-				else { Logging.logToConsole("WARNING","DesktopDispute/Dispute: unable to update Dispute: " + action + " button disabled");}
+			Logging.logToConsole("INFO","DesktopDispute/dispute: updated dispute submitted");}
+				else { Logging.logToConsole("WARNING","DesktopDMC/Dispute: unable to update Dispute: " + action + " button disabled");}
 			break;
 		case "delete":
 			disputeDelete();
