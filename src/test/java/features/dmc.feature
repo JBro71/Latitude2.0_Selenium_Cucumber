@@ -32,7 +32,7 @@ Feature: DMC
 	# |Amount Accepted	|150									|
   # |Comment					|updated DMC Comment 	|
    
-   
+   @dmc @check @checkDmc
    Scenario:  Checking a DMC
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "Check" a DMC with the following details

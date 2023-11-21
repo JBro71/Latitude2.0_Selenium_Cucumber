@@ -19,6 +19,7 @@ public class Context extends BaseTest {
 	private DesktopDMC desktopDMC; 
 	private DesktopInsolvency desktopInsolvency;
 	private DesktopDisputes desktopDisputes; 
+	private DesktopComplaints desktopComplaints; 
 
 	
 	public Context() throws IOException
@@ -155,5 +156,15 @@ public class Context extends BaseTest {
 		}
 		return desktopDisputes;
 	} 
+	
+	public DesktopComplaints getDesktopComplaints()
+	{
+		if(desktopComplaints==null)
+		{
+			desktopComplaints = new DesktopComplaints(driver, pageUtils);
+		}
+		return desktopComplaints;
+	} 
+	
 	
 }

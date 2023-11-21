@@ -1,18 +1,22 @@
 @tag
-Feature: DMC
-  Feature file for adding, amending or deleting DMC
+Feature: Sandbox
+  Feature file for adding, amending or deleting 
 
   Background:
   Given I am logged into the Latitude Desktop
 
-	 Scenario: updating  A Dispute
+	 @complaint @addComplaint
+  Scenario:  Adding A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
-   Then I can "edit" a Dispute with the following details
-   	|Dispute Key									|category								|
-   	# Dispute Key values:  first, "last", <a number>, "dispute id", "category"
-    |Dispute ID										|47 							  			|   
-    |Category											|Client Dispute						|
-    |Referred By	 								|Client										|
-    |Recourse Date								|													|
-   	|justified										|No												|
-    |Outcome											|Dispute Raised in Error 	|
+   Then I can "Add" a complaint with the following details
+    |Document					|None 										|
+   	|Owner						|daird										|
+   	|Status						|New - Complaint					|
+    |Category					|Service Related					|
+    |Referred By	 		|Client										|
+    |justified				|Yes											|
+    |Outcome					|Dispute Raised in Error 	|
+    |Proof Requested							|true 										|    
+    |Insufficient Proof Received	|true 										|     
+    |Proof Received								|true 										|  
+

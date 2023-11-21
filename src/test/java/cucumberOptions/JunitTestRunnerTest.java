@@ -12,10 +12,11 @@ import io.cucumber.junit.Cucumber;
 	    glue={"stepDefinitions"},
 	    stepNotifications = true, 
 	    monochrome=true,
+	   	tags = "@disputeReopen",
 	    plugin= {"pretty","html:target/cucumberReports"}) //,"json:target/cucumber.json","junit:target/cukes.xml"})
 
 
 
-public class newTestRunner {
+public class JunitTestRunnerTest {
 
 }

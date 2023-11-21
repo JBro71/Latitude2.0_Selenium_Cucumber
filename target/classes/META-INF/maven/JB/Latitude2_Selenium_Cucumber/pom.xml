@@ -39,6 +39,40 @@
     <version>7.13.0</version>
     <scope>compile</scope>
 </dependency>
+
+<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit-platform-engine -->
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-junit-platform-engine</artifactId>
+    <version>7.14.0</version>
+</dependency>
+
+ <!-- JUnit Platform -->
+<!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-suite-api -->
+<dependency>
+    <groupId>org.junit.platform</groupId>
+    <artifactId>junit-platform-suite-api</artifactId>
+    <version>1.10.1</version>
+</dependency>
+
+   <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.7.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.7.1</version>
+    </dependency>
+
+
+
+
+
+
 <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 <dependency>
     <groupId>org.apache.commons</groupId>
@@ -61,20 +95,7 @@
 </dependency>  
 	  
 	  
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.7.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>5.7.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
+   </dependencies>
   <build>
     <plugins>
       <plugin>
