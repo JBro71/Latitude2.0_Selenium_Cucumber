@@ -5,10 +5,11 @@ Feature: Complaints
   Background:
   Given I am logged into the Latitude Desktop
 
+
 	@complaint @addComplaint
   Scenario:  Adding A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
-   Then I can "Add" a Complaint with the following details
+   Then I can "Add" a complaint with the following details
     |Dispute Details	|Dispute comment	  			|
    	|Date Received		|$-37								|
    	|Dispute Type			|Full Balance Dispute			|
