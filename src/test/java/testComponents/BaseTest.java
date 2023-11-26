@@ -1,6 +1,7 @@
 package testComponents;
 
 import java.util.HashMap;
+import java.util.Map;
 //import java.util.Map;
 import java.util.Properties;
 
@@ -46,8 +47,8 @@ public class BaseTest {
 	//list of all account numbers mapped to file numbers
 	public static HashMap<String, String> fileNumbersMap = new HashMap<String, String>();
 	//public values used in test
-	public static HashMap<String, String> testMap = new HashMap<String, String>();
-
+	public HashMap<String, String> testMap = new HashMap<String, String>();
+	public static HashMap<String, String> staticTestMap = new HashMap<String, String>();
 
 	
 	public void initilizeDriver() throws IOException {
@@ -55,7 +56,13 @@ public class BaseTest {
 		
 		if (staticDriver == null) { 		// if the browser is not already open
 		InitiliseProperties(); 			//load the properties file
-		testMap.put("account", ""); 		//Initialise the account value;
+		staticTestMap.put("account", ""); 		//Initialise the account value;
+		staticTestMap.put("customer1", null);
+		staticTestMap.put("customer2", null);
+	    //copy the values from the Static Map
+		for (Map.Entry<String, String> entry : staticTestMap.entrySet()) {
+			testMap.put(entry.getKey(), entry.getValue());
+	        }
 		Filenumbers(); 					//load a list of all the file numbers	
 		
 		//initialise the driver
@@ -75,6 +82,7 @@ public class BaseTest {
 				
 		staticDriver = driver;
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
+
 		return;
 		}
 		
@@ -82,6 +90,10 @@ public class BaseTest {
 		firstTest = false;
 		driver = staticDriver;
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
+	    //copy the values from the Static Map
+		for (Map.Entry<String, String> entry : staticTestMap.entrySet()) {
+			testMap.put(entry.getKey(), entry.getValue());
+	        }
 	}	
 	
 	

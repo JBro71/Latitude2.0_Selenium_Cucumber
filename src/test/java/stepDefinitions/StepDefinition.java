@@ -8,6 +8,7 @@ import org.junit.Assert;
 import io.cucumber.java.en.*;
 import testComponents.*;
 import utils.Context;
+import utils.Logging;
 import pageObjects.*;
 
 
@@ -50,10 +51,12 @@ public class StepDefinition <Public> extends BaseTest{
 	@Given("^I have account \"([^\"]*)\" open in Latitude$")
 	public void i_have_account_open_in_latitude(String accountNumber) throws InterruptedException {
 		
-		if (!testMap.get("account").equals(accountNumber)) { //no account open or a different account open to that needed
+		if (!pageUtils.testMap.get("account").equals(accountNumber)) { //no account open or a different account open to that needed
 		//pageUtils.CloseAccount(); // close an existing account if one open
 		openAccount.OpenNewAccount(accountNumber);
-		testMap.put("account",accountNumber);
+		pageUtils.updateTestMap("account",accountNumber);
+		//reset the customer details
+
 		}
 		pageUtils.ReturnHome(); // scroll back to the top
 	}
@@ -64,6 +67,20 @@ public class StepDefinition <Public> extends BaseTest{
 		Assert.assertEquals("Anchor panel: " + panelName + "/" + label, value, anchorPanelValue);
 		//Assert. assertTrue(anchorPanelValue.equals(value), "Anchor panel: " + panelName + " label: " + label + " equals: " + value );
 	}
+	
+	@Then("the anchor panels will display the following values")
+	public void the_anchor_panels_will_display_the_following_values(io.cucumber.datatable.DataTable dataTable) {
+		List<List<String>> dataList = dataTable.asLists(); //get data table
+		for (List<String> row : dataList) {
+			String anchorPanelValue =  desktopAnchorPanels.queryAnchorPanels(row.get(0), row.get(1));
+			Assert.assertEquals("Anchor panel: " + row.get(0) + "/" + row.get(1), row.get(2), anchorPanelValue);
+			Logging.logToConsole("INFO","DesktopComplaints/complaints:t");
+		}	
+		
+	
+	}
+	
+	
 	
 
 	@Then("if I add a payment card with the following details")

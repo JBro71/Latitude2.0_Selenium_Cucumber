@@ -10,14 +10,14 @@ Feature: Complaints
   Scenario:  Adding A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "Add" a complaint with the following details
-    |Dispute Details	|Dispute comment	  			|
-   	|Date Received		|$-37								|
-   	|Dispute Type			|Full Balance Dispute			|
-    |Dispute Against	|Client										|
-    |Category					|Civil Dispute						|
-    |Referred By	 		|Client										|
-    |justified				|Yes											|
-    |Outcome					|Dispute Raised in Error 	|
+    |Dispute Details							|Dispute comment	  			|
+   	|Date Received								|$-37								|
+   	|Dispute Type									|Full Balance Dispute			|
+    |Dispute Against							|Client										|
+    |Category											|Civil Dispute						|
+    |Referred By	 								|Client										|
+    |justified										|Yes											|
+    |Outcome											|Dispute Raised in Error 	|
     |Proof Requested							|true 										|    
     |Insufficient Proof Received	|true 										|     
     |Proof Received								|true 										|  

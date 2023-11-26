@@ -1,6 +1,7 @@
 package testComponents;
 
 import java.time.Duration;
+import java.util.HashMap;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -11,15 +12,22 @@ import utils.Logging;
 public class PageUtils extends BaseTest {
 	
 	WebDriver driver;
+	public HashMap<String, String> testMap;
 	JavascriptExecutor js;
 	
-	public PageUtils(WebDriver driver) { // initialise Webdriver in this class from the calling class
+	public PageUtils(WebDriver driver, HashMap<String, String> testMap) { // initialise Webdriver in this class from the calling class
 		// initialisation
 		this.driver = driver;
+		this.testMap = testMap;
 		js = (JavascriptExecutor)driver;
 		
 	}
 
+	public void updateTestMap(String key, String value) {
+		testMap.put(key,value);
+		staticTestMap.put(key,value);
+	}
+	
 	public void DefaultImplictWait() {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
 	}

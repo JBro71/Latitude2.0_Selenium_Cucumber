@@ -21,6 +21,7 @@ public class Context extends BaseTest {
 	private DesktopDisputes desktopDisputes; 
 	private DesktopComplaints desktopComplaints; 
 	private DesktopCommunications desktopCommunications;
+	private DesktopCustomers desktopCustomers;
 	
 	public Context() throws IOException
 	{
@@ -39,7 +40,7 @@ public class Context extends BaseTest {
 	{
 		if(pageUtils==null)
 		{
-			pageUtils = new PageUtils(driver);
+			pageUtils = new PageUtils(driver, testMap);
 		}
 		return pageUtils;
 	} 
@@ -175,4 +176,12 @@ public class Context extends BaseTest {
 		return desktopCommunications;
 	} 
 	
+	public DesktopCustomers getDesktopCustomers()
+	{
+		if(desktopCustomers==null)
+		{
+			desktopCustomers = new DesktopCustomers(driver, pageUtils);
+		}
+		return desktopCustomers;
+	} 
 }

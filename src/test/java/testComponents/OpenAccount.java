@@ -62,6 +62,8 @@ public class OpenAccount {
 				Thread.sleep(500);
 				}
 		}
+		pageUtils.testMap.put("customer1", null);
+		pageUtils.testMap.put("customer2", null);
 	}
 	
 	
