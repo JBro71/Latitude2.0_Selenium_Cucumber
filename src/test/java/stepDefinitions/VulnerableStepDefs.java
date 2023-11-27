@@ -22,13 +22,13 @@ public class VulnerableStepDefs {//<Public> extends BaseTest {
 	
 
 	@When("^I add a new C&H record with care type of \"([^\"]*)\" and hardship of \"([^\"]*)\"$")
-	public void i_add_a_new_c_h_record_with_care_type_of_physical_difficulty_and_hardship_of_impact_pay(String careType, String hardshipType) throws InterruptedException {
+	public void i_add_a_new_c_h_record_with_care_type_of_physical_difficulty_and_hardship_of_impact_pay(String careType, String hardshipType) throws Exception {
 		vulnerabilites.OpenCareAndHardshipPanel();
 		vulnerabilites.NewCareAndHardship(careType, hardshipType);
 	}
 
 	@When("^the default hold days of \"([^\"]*)\" are set to \"([^\"]*)\"$")
-	public void the_default_hold_days_of_are_set_to_default(String defaultHoldDays, String SetHoldDays) throws InterruptedException {
+	public void the_default_hold_days_of_are_set_to_default(String defaultHoldDays, String SetHoldDays) throws Exception {
 		String presetCareAndHardshipHoldDays = vulnerabilites.CareHoldDays(SetHoldDays);
 		Assert.assertEquals("Hold Days", presetCareAndHardshipHoldDays, defaultHoldDays);  
 	

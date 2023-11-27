@@ -49,7 +49,7 @@ public class StepDefinition <Public> extends BaseTest{
 	
 	
 	@Given("^I have account \"([^\"]*)\" open in Latitude$")
-	public void i_have_account_open_in_latitude(String accountNumber) throws InterruptedException {
+	public void i_have_account_open_in_latitude(String accountNumber) throws Exception  {
 		
 		if (!pageUtils.testMap.get("account").equals(accountNumber)) { //no account open or a different account open to that needed
 		//pageUtils.CloseAccount(); // close an existing account if one open

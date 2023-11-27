@@ -59,7 +59,7 @@ public class SearchPage {
 		
 		}	
 		
-		public void openAccount(String accountNumber) throws InterruptedException {
+		public void openAccount(String accountNumber) throws Exception {
 			Logging.logToConsole("DEBUG", "SearchPage/openAccount: opening account: " + accountNumber);
 			driver.findElement(By.xpath("//input[@type='text']")).sendKeys(accountNumber);
 			//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
@@ -77,16 +77,19 @@ public class SearchPage {
 				Logging.logToConsole("DEBUG", "SearchPage/openAccount: placeholder: " + driver.findElement(By.xpath("//input[@type='text']")).getAttribute("placeholder")
 						+ "Text: " + driver.findElement(By.xpath("//input[@type='text']")).getText());
 				try {
-					if (driver.findElement(By.xpath("//input[@type='text']")).getAttribute("placeholder").equalsIgnoreCase("No matches")){
-						Logging.logToConsole("DEBUG", "SearchPage/openAccount: account open failed, no match retrying");
-						break;
-					}else if (!driver.findElement(By.xpath("//input[@type='text']")).getText().equals("")) {
-						Logging.logToConsole("DEBUG", "SearchPage/openAccount: account open failed, error retrying");
-						break;
-					}
+					if (driver.findElement(By.xpath("//input[@type='text']")).getAttribute("placeholder").equalsIgnoreCase("No matches"))
+						{
+							Logging.logToConsole("DEBUG", "SearchPage/openAccount: account open failed, no match retrying");
+							break;
+						}else if (!driver.findElement(By.xpath("//input[@type='text']")).getText().equals("")) 
+								{
+								Logging.logToConsole("DEBUG", "SearchPage/openAccount: account open failed, error retrying");
+								break;
+								}
 					}catch (Exception e) {
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
 						return;}
+				
 				if (z==4) {
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
 					Logging.logToConsole("DEBUG", "SearchPage/apenAccount: account opened");
@@ -95,6 +98,8 @@ public class SearchPage {
 				}
 		}
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
+		Logging.logToConsole("DEBUG", "SearchPage/apenAccount: account not found");
+		throw new Exception("Unable to open account: " + accountNumber + " giving up");
 		}
 		
 }

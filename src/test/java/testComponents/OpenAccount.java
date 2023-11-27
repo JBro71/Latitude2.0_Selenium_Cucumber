@@ -26,16 +26,17 @@ public class OpenAccount {
 	
 	
 	
-	public void OpenNewAccount(String accountNumber) throws InterruptedException {
+	public void OpenNewAccount(String accountNumber) throws Exception {
 		//close existing account if one open
 		try 
 		{
 		pageUtils.ImplictWait(0);
 		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
+		pageUtils.ReturnHome();
 		driver.findElement(By.xpath("//a[normalize-space()='Close Account']")).click();
 		Logging.logToConsole("INFO", "OpenAccount/OpenNewAccount: Account Closed");
 		}
-		catch(Exception e){}
+		catch(Exception e){	Logging.logToConsole("INFO", "OpenAccount/OpenNewAccount: unable to close account: ");}
 		pageUtils.DefaultImplictWait();
 		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
 		

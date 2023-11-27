@@ -2,6 +2,7 @@ package pageObjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import testComponents.PageUtils;
 
@@ -25,14 +26,18 @@ PageUtils pageUtils;
 
 	}
 	
-	public void NewCareAndHardship(String careType, String harshipType) throws InterruptedException {
+	public void NewCareAndHardship(String careType, String harshipType) throws Exception {
 		
 		Logging.logToConsole("INFO","DesktopVulnerabilites/NewCareAndHardshipPanel: Start");
 		pageUtils.Scroll(300);  //open the arrangement panel and scroll to it
 		// dialogue does not always initialise the first time so the loop is to work around that
 		for(int i=1;i<3 ;i++) {
+		 WebElement buttonAdd = driver.findElement(By.xpath("//button[normalize-space()='Add']"));
+			if(!buttonAdd.isEnabled()) {
+				throw new Exception("DesktopVulnerabilites/NewCareAndHardship/"+pageUtils.testMap.get("account")+":  ERROR <add> button disabled");
+			}
 		try {
-		driver.findElement(By.xpath("//button[normalize-space()='Add']")).click();//open arrangement panel
+		buttonAdd.click();//open arrangement panel
 		driver.findElement(By.xpath("//input[@ng-model='vm.newCare.consent']")).click();//check consent check box
 		Thread.sleep(300);
 		Select careTypeDropdown =  new Select(driver.findElement(By.xpath("//select[@name='careType']")));
@@ -51,15 +56,20 @@ PageUtils pageUtils;
 		
 	}
 	
-	public String CareHoldDays(String SetHoldDays) throws InterruptedException {		
+	public String CareHoldDays(String SetHoldDays) throws Exception {		
 		Logging.logToConsole("INFO","DesktopVulnerabilites/CareHoldDays: Start");
-		String actualHoldDays = driver.findElement(By.xpath("//input[@name='holdDays']")).getAttribute("value");//hold days
-		//det the actual hold days to the required value
-		if (!SetHoldDays.equalsIgnoreCase("default")) {
-			driver.findElement(By.xpath("//input[@name='holdDays']")).clear();
-			driver.findElement(By.xpath("//input[@name='holdDays']")).sendKeys(SetHoldDays);
+		try {
+			String actualHoldDays = driver.findElement(By.xpath("//input[@name='holdDays']")).getAttribute("value");//hold days
+			//det the actual hold days to the required value
+			if (!SetHoldDays.equalsIgnoreCase("default")) {
+				driver.findElement(By.xpath("//input[@name='holdDays']")).clear();
+				driver.findElement(By.xpath("//input[@name='holdDays']")).sendKeys(SetHoldDays);
+			}
+			return actualHoldDays;
 		}
-		return actualHoldDays;
+		catch (Exception e){
+			throw new Exception("DesktopVulnerabilites/CareHoldDays/"+pageUtils.testMap.get("account")+": hold days ERROR (possible invalid care type");
+		}
 	}
 	
 	public boolean SubmitCareAndHardshipRecord() throws InterruptedException {		
