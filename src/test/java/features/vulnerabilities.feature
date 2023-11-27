@@ -14,8 +14,8 @@ Feature: Latitude 2.0 Vulnerabilites
 
     Examples: 
       |acc_no       |status      | careType                |hardshipType             |holdDefault|holdActual|
-			#|PT68899261611 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
-      #|ME45929534221 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
+			|PT68899261611 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
+      |ME45929534221 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
      	#|BG88ZFUY1114 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
 			#|FR9426427158 |Prearrears  |Long Term    					  |IMPACT - Pay             |30      |Default |
 			#|KW15349141071|Recoveries  |Hearing					        |IMPACT - Communicate     |30      |Default |

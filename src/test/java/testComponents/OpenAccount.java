@@ -28,6 +28,8 @@ public class OpenAccount {
 	
 	public void OpenNewAccount(String accountNumber) throws Exception {
 		//close existing account if one open
+		pageUtils.CloseAccount();
+		/*
 		try 
 		{
 		pageUtils.ImplictWait(0);
@@ -39,7 +41,7 @@ public class OpenAccount {
 		catch(Exception e){	Logging.logToConsole("INFO", "OpenAccount/OpenNewAccount: unable to close account: ");}
 		pageUtils.DefaultImplictWait();
 		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
-		
+		*/
 		//**********************find and open new account******************
 		searchPage.openAccount(accountNumber);
 		
@@ -48,7 +50,7 @@ public class OpenAccount {
 		
 		//wait until the page is fully loaded by checking if this element is populated before doing anything
 		for(int i=1;i<20 ;i++) { 
-			Thread.sleep(500);
+			Thread.sleep(300);
 			Logging.logToConsole("DEBUG", "OpenAccount/OpenNewAccount:: waiting for page to load");
 			try {
 				if (driver.findElement(By.xpath("//input[@name='amount']")).getAttribute("value") != "") 
@@ -60,11 +62,12 @@ public class OpenAccount {
 			}
 			catch(Exception e)
 				{
-				Thread.sleep(500);
+				Thread.sleep(300);
 				}
 		}
 		pageUtils.testMap.put("customer1", null);
 		pageUtils.testMap.put("customer2", null);
+		pageUtils.CloseAnchorPanel();
 	}
 	
 	

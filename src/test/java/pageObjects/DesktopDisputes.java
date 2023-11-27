@@ -33,8 +33,8 @@ public class DesktopDisputes {
 		Logging.logToConsole("INFO","DesktopDisputes/disputes: "+action+" Dispute");
 
 		//scroll the screen to the section with the DMC
-		pageUtils.Scroll(300);
-		
+		//pageUtils.Scroll(300);
+		pageUtils.ReturnHome();
 		//Click the disputes button
 		driver.findElement(By.xpath("//div[contains(text(),'Disputes')]")).click();
 		
