@@ -16,17 +16,16 @@ Feature: Latitude 2.0 Vulnerabilites
       |acc_no       |status      | careType                |hardshipType             |holdDefault|holdActual|
 			|PT68899261611 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
       |ME45929534221 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
-     	#|BG88ZFUY1114 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
+     #|BG88ZFUY1114 |Collections |Physical Difficulty      |IMPACT - Pay             |30      |Default |
 			#|FR9426427158 |Prearrears  |Long Term    					  |IMPACT - Pay             |30      |Default |
 			#|KW15349141071|Recoveries  |Hearing					        |IMPACT - Communicate     |30      |Default |
 			#|NL40CMIL7271 |Collections |Mental Health            |IMPACT - Communicate     |30      |Default |
-			##|GB52ATOZ8516 |Prearrears  |Drug Addiction           |IMPACT - Manage          |30      |Default |
+			#|GB52ATOZ8516 |Prearrears  |Drug Addiction           |IMPACT - Manage          |30      |Default |
 			#|LB31360825321|Recoveries  |Low Mental Capacity      |IMPACT - Manage          |30      |Default |
 			#|AT3951285285 |Collections |Disability               |IMPACT - Pay             |30      |Default |
-			##|FR1006425328 |Prearrears  |Retirement               |IMPACT - Pay             |30      |Default |
+			#|FR1006425328 |Prearrears  |Retirement               |IMPACT - Pay             |30      |Default |
 			#|CY92635864411|Recoveries  |Bereavement              |IMPACT - Communicate     |30      |Default |
 			#|GL8844234719 |Collections |Relationship Breakup     |IMPACT - Communicate     |30      |Default |
-			
 			#|CR3663874638 |Prearrears  |Domestic abuse           |IMPACT - Manage          |30      |Default |
 			#|BA49076361561|Recoveries  |CaringResponsibility     |IMPACT - Manage          |30      |Default |
 			#|RO66SSSO6629 |Collections |Other                    |IMPACT - Pay             |30      |Default |
@@ -38,7 +37,7 @@ Feature: Latitude 2.0 Vulnerabilites
 			#|RO48YKTF5550 |Collections |Poor EnglishLanguage     |IMPACT - Pay             |30      |Default |
 			#|HU7918280414 |Prearrears  |Poor Digital Skills      |IMPACT - Pay             |30      |Default |
 			#|BE91610454341|Recoveries  |LearningDifficulties     |IMPACT - Communicate     |30      |Default |
-			#|MR2417986695 |Prearrears  |Suicide                  |IMPACT - Manage          |30      |Default |
+			#|MR2417986695 |Prearrears  |Suicide                  |IMPACT - Manage          |90      |Default |
 			#|LB8122937163 |Collections |NoConsent                |IMPACT - Communicate     |30      |Default |
 			#|SI87726036251|Recoveries  |TerminalIllness          |IMPACT - Manage          |30      |Default |
 			#|KZ7759206332 |Collections |AgeRelated               |IMPACT - Pay             |30      |Default |
@@ -66,6 +65,6 @@ Feature: Latitude 2.0 Vulnerabilites
 			#|RS08737388333 |Collections |IMPACT - Communicate     |Unemployed - Benefit     |30      |Default |
 			#|GT0638261153 |Prearrears  |IMPACT - Manage          |Redundancy               |30      |Default |
 			#|GB52ATOZ85163 |Prearrears  |IMPACT - Manage          |Statutory Moratorium     |180   |Default |
-			#|MT72EGEJ33213 |Collections  |IMPACT - Manage          |Victim of Fraudx         |30      |Default |
+			#|MT72EGEJ33213 |Collections  |IMPACT - Manage          |Victim of Fraud        |30      |Default |
 
       

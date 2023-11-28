@@ -4,6 +4,7 @@ package stepDefinitions;
 import org.junit.Assert;
 import io.cucumber.java.en.*;
 import pageObjects.DesktopVulnerabilites;
+import testComponents.PageUtils;
 import utils.Context;
 
 
@@ -12,11 +13,13 @@ public class VulnerableStepDefs {//<Public> extends BaseTest {
 	
 	Context context;
 	DesktopVulnerabilites vulnerabilites;
+	PageUtils pageUtils;
 	
 	public VulnerableStepDefs(Context context)
 	{
 		this.context = context;
 		vulnerabilites = context.getDesktopVulnerabilites();
+		pageUtils = context.getPageUtils();
 	}
 	
 	
@@ -30,7 +33,7 @@ public class VulnerableStepDefs {//<Public> extends BaseTest {
 	@When("^the default hold days of \"([^\"]*)\" are set to \"([^\"]*)\"$")
 	public void the_default_hold_days_of_are_set_to_default(String defaultHoldDays, String SetHoldDays) throws Exception {
 		String presetCareAndHardshipHoldDays = vulnerabilites.CareHoldDays(SetHoldDays);
-		Assert.assertEquals("Hold Days", presetCareAndHardshipHoldDays, defaultHoldDays);  
+		Assert.assertEquals("Hold Days"+ pageUtils.testMap.get("account"), defaultHoldDays, presetCareAndHardshipHoldDays);  
 	
 	}
 

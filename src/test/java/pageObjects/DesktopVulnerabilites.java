@@ -76,6 +76,26 @@ PageUtils pageUtils;
 	
 	public boolean SubmitCareAndHardshipRecord() throws InterruptedException {		
 		Logging.logToConsole("INFO","DesktopVulnerabilites/SubmitCareAndHardshipRecord:Start");
+		WebElement addbutton = driver.findElement(By.xpath("//div[@class='modal-footer lat-form-idle']//button[contains(text(),'Add')]"));
+		boolean editEnabled = driver.findElement(By.xpath("//button[contains(text(),'Edit')]")).isEnabled();
+		for(int i=0; i<10; i++) {
+			try {
+				addbutton.click();	
+				}catch(Exception e) {
+					Logging.logToConsole("INFO",
+						"DesktopVulnerabilites/NewCareAndHardship/"+pageUtils.testMap.get("account")+": add new Errored on attempt "+ (i+1) );
+					}
+			try {
+				if (editEnabled ) {return true;}
+				}catch(Exception e) {
+					Logging.logToConsole("INFO",
+					"DesktopVulnerabilites/NewCareAndHardship/"+pageUtils.testMap.get("account")+": submit new Errored on attempt "+ (i+1) );
+				}
+			Thread.sleep(100);
+		}
+		return false;
+		
+		/*
 		try {
 		if (driver.findElement(By.xpath("//button[contains(text(),'Add')]")).isEnabled()) { //add button
 			driver.findElement(By.xpath("//button[contains(text(),'Add')]")).click();
@@ -95,6 +115,7 @@ PageUtils pageUtils;
 			Logging.logToConsole("ERROR","Error: " + e);
 			return false;
 	}
+		*/
 	}
 	
 

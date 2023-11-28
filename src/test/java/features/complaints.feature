@@ -6,12 +6,12 @@ Feature: Complaints
   Given I am logged into the Latitude Desktop
 
 
-	@complaint @addComplaint
+	@complaint @addComplaint @stage1
   Scenario:  Adding A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "Add" a complaint with the following details
     |Dispute Details							|Dispute comment	  			|
-   	|Date Received								|$-37								|
+   	|Date Received								|$-37											|
    	|Dispute Type									|Full Balance Dispute			|
     |Dispute Against							|Client										|
     |Category											|Civil Dispute						|
@@ -24,7 +24,7 @@ Feature: Complaints
 
 
 	@dispute @DisputeCheck @check
-  Scenario: checking  A Dispute
+  Scenario: checking  A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "Check" a Dispute with the following details
    	|Dispute Key									|category								|

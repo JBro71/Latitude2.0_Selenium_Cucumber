@@ -22,6 +22,7 @@ public class Context extends BaseTest {
 	private DesktopComplaints desktopComplaints; 
 	private DesktopCommunications desktopCommunications;
 	private DesktopCustomers desktopCustomers;
+	private DesktopEmail desktopEmail;
 	
 	public Context() throws IOException
 	{
@@ -183,5 +184,14 @@ public class Context extends BaseTest {
 			desktopCustomers = new DesktopCustomers(driver, pageUtils);
 		}
 		return desktopCustomers;
+	} 
+	
+	public DesktopEmail getDesktopEmail()
+	{
+		if(desktopEmail==null)
+		{
+			desktopEmail = new DesktopEmail(driver, pageUtils);
+		}
+		return desktopEmail;
 	} 
 }

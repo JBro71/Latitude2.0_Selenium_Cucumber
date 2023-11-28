@@ -11,14 +11,14 @@ Feature: Email
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can add and email address for "Mr Harlan Gilbert" 
    	|Email Address				|debtor1@email.com		|
-  	|Type									|home									|
+  	|Type									|Home									|
  		|Status								|Good									|
 		|Is Primary						|true									|
 		|Is Correspondence		|true									|
 		|Consent to Email			|true									|
 		|Obtained From				|Mr Harlan Gilbert		|
 		|Method								|written							|
-		|Comments							|this is a comment		|						   
+		|Comment 							|this is a comment		|						   
 
     
     
