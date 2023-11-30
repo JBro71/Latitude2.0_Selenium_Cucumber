@@ -1,8 +1,6 @@
 package pageObjects;
 
 import java.util.HashMap;
-import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 //import org.openqa.selenium.JavascriptExecutor;
@@ -29,7 +27,7 @@ public class DesktopEmail {
 		}
 	
 	
-	public void email(HashMap<String,String> paramsMap) throws InterruptedException  {
+	public void email(HashMap<String,String> paramsMap) throws Exception  {
 		String account = pageUtils.testMap.get("account");
 		Boolean check = false;
 		Logging.logToConsole("INFO","DesktopEmail/email/"+account+": start");
@@ -66,8 +64,8 @@ public class DesktopEmail {
 			}
 				
 		// order in which the data should be entered
-		String[] entryOrder = {"email address", "type", "status","customer on account","is primary","consent to email", "obtained from", "method", 
-				"comment"};	
+		String[] entryOrder = {"email address", "type", "status","customer on account","is primary","is correspondence","consent to email", "obtained from", "method", 
+				"comments"};	
 
 		
 			//driver.switchTo().frame(driver.findElement(By.id("DebtManagement21")));
@@ -129,6 +127,13 @@ public class DesktopEmail {
 					driver.findElement(By.xpath("//input[@ng-model='vm.emailRecord.primary']")).click();
 				}
 				break;
+			case "is correspondence":	
+				if (check){				
+				}
+				else {
+					driver.findElement(By.xpath("//input[@ng-model='vm.emailRecord.correspondence']")).click();
+				}
+				break;				
 			case "consent to email":
 				if (check){				
 				}
@@ -158,7 +163,7 @@ public class DesktopEmail {
 
 						}
 						else {
-							driver.findElement(By.xpath("//textarea[@id='comment']")).click();
+							driver.findElement(By.xpath("//textarea[@id='comment']")).sendKeys(value);
 							}
 				break;
 			case "insufficient proof received":
@@ -256,11 +261,17 @@ public class DesktopEmail {
 			}
 		}
 		
-		
-		
-		//driver.switchTo().defaultContent(); //switch out of iframe
-		pageUtils.ReturnHome();
-		
-		//return resultsMap;
+		WebElement buttonSave = driver.findElement(By.xpath("//button[@type='button'][normalize-space()='Save']"));
+		if(buttonSave.isEnabled() == true) {
+			buttonSave.click();
+			pageUtils.ReturnHome();
+			return;
+			}
+			else {
+			//Click Cancel	
+			driver.findElement(By.xpath("//button[@class='btn ng-binding ng-scope']")).click();
+			pageUtils.ReturnHome();
+			throw new Exception("DesktopEmail/email/"+account+" :  cannot save update. button disabled");
+			}	
 	}	
 }

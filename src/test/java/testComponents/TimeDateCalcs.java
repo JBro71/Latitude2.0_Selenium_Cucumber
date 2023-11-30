@@ -3,7 +3,7 @@ package testComponents;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class TimeDateCalcs {
+public class TimeDateCalcs extends BaseTest{
 
 	
 	
@@ -35,4 +35,33 @@ public static String CalculateDate(String date, String datePattern) {
 
 	}
 
+
+
+public static String ReturnDate(String date, String datePattern) throws Exception {
+	// variable pattern expected is $+999
+	
+	//If a variable then add or subtract the given number of days from/to todays date
+	 LocalDate today = LocalDate.now();
+	 LocalDate targetDate;
+	 DateTimeFormatter pattern;
+	 try {
+		 int dayDelta = Integer.parseInt(date.substring(1,date.length()));
+		 
+		if (date.substring(0,1).equals("+")){
+			targetDate = today.plusDays(dayDelta);
+			}
+			else {
+				targetDate = today.minusDays(dayDelta);
+				}
+		
+		pattern = DateTimeFormatter.ofPattern(datePattern);
+	 	}catch (Exception e) {
+			throw new Exception("TimeDateCalcs/ReturnDate/"+staticTestMap.get("account")+" : cannot convert date variable to date");
+		}
+	
+	return targetDate.format(pattern);  
+
+	}
+
 }
+

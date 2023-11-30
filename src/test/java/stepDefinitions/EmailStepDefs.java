@@ -28,7 +28,7 @@ public class EmailStepDefs {
 	
 
 	@Then("^I can add and email address for \"([^\"]*)\"$")
-	public void i_can_add_and_email_address_for(String customer, io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
+	public void i_can_add_and_email_address_for(String customer, io.cucumber.datatable.DataTable dataTable) throws Exception {
 		HashMap<String,String> dataMap = new HashMap<String, String>();
 		List<List<String>> dataList = dataTable.asLists(); //get data table
 		for (List<String> keyValuePair : dataList) {

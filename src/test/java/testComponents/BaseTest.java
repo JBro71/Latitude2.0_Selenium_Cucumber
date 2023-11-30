@@ -45,7 +45,7 @@ public class BaseTest {
 	public DesktopAnchorPanels anchor;
 	//public static desktopOpen;
 	//list of all account numbers mapped to file numbers
-	public static HashMap<String, String> fileNumbersMap = new HashMap<String, String>();
+	public static HashMap<String,String[]> fileNumbersMap = new HashMap<String, String[]>();
 	//public values used in test
 	public HashMap<String, String> testMap = new HashMap<String, String>();
 	public static HashMap<String, String> staticTestMap = new HashMap<String, String>();
@@ -57,8 +57,10 @@ public class BaseTest {
 		if (staticDriver == null) { 		// if the browser is not already open
 		InitiliseProperties(); 			//load the properties file
 		staticTestMap.put("account", ""); 		//Initialise the account value;
-		staticTestMap.put("customer1", null);
-		staticTestMap.put("customer2", null);
+		staticTestMap.put("customer1", "dummy1");
+		staticTestMap.put("customer2", "dummy2");
+		staticTestMap.put("CustomerId1", null);
+		staticTestMap.put("customerId2", null);
 	    //copy the values from the Static Map
 		for (Map.Entry<String, String> entry : staticTestMap.entrySet()) {
 			testMap.put(entry.getKey(), entry.getValue());
@@ -112,9 +114,11 @@ public class BaseTest {
 		String fileName ="filenumbers.txt";
 		String rawFileNumbers = FileUtils.readFileToString(new File(System.getProperty("user.dir") + filePath + fileFolder + fileName ), StandardCharsets.UTF_8);	
 		String[] fileNumbersArray = rawFileNumbers.split(System.lineSeparator());
+		String[] tempArray2 = {"","",""};
 		for (String value : fileNumbersArray) {
 			String[] tempArray = value.split(",");
-			fileNumbersMap.put(tempArray[0], tempArray[1]);
+			for (int i=0;i<3;i++) {tempArray2[i] = tempArray[i+1];}
+			fileNumbersMap.put(tempArray[0], tempArray2);
 		}
 		//Logging.logToConsole("INFO",fileNumbersMap.toString());
 		

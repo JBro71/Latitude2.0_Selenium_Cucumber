@@ -10,15 +10,16 @@ Feature: Email
   Scenario:  Adding an Email Address
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can add and email address for "Mr Harlan Gilbert" 
-   	|Email Address				|debtor1@email.com		|
-  	|Type									|Home									|
- 		|Status								|Good									|
-		|Is Primary						|true									|
-		|Is Correspondence		|true									|
-		|Consent to Email			|true									|
-		|Obtained From				|Mr Harlan Gilbert		|
-		|Method								|written							|
-		|Comment 							|this is a comment		|						   
+   #|FIELD NAME						|VALUE								|M|NOTES																							|
+   	|Email Address				|debtor1@email.com		|X|																										|				
+  	|Type									|Home									|X|case sensitive																			|						
+ 		|Status								|Good									|X|case sensitive																			|
+		|Is Primary						|true									|	|true/false																					|
+		|Is Correspondence		|true									|	|true/false																					|
+		|Consent to Email			|true									|	|true/false																					|
+		|Obtained From				|Mr Harlan Gilbert		|	|actual name (case sensitive) OR customer1/customer2|
+		|Method								|written							|	|written/verbal																			|
+		|Comments							|this is a comment		|	|																										|					   
 
     
     

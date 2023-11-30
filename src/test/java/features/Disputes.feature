@@ -9,8 +9,8 @@ Feature: Disputes
   Scenario:  Adding A Dispute
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "Add" a Dispute with the following details
-    |Dispute Details	|Dispute comment	  			|
-   	|Date Received		|$-37								|
+    |Dispute Details	|Dispute comment	  			|							
+   	|Date Received		|$-37											|
    	|Dispute Type			|Full Balance Dispute			|
     |Dispute Against	|Client										|
     |Category					|Civil Dispute						|
