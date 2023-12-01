@@ -23,6 +23,7 @@ public class Context extends BaseTest {
 	private DesktopCommunications desktopCommunications;
 	private DesktopCustomers desktopCustomers;
 	private DesktopEmail desktopEmail;
+	private StepDefCommonFunctions stepDefCommonFunctions;
 	
 	public Context() throws IOException
 	{
@@ -70,6 +71,15 @@ public class Context extends BaseTest {
 		return dpa;
 	} 
 	
+	public StepDefCommonFunctions getDtepDefCommonFunctions()
+	{
+		if(stepDefCommonFunctions==null)
+		{
+			getDesktopCustomers();
+			stepDefCommonFunctions = new StepDefCommonFunctions(driver, pageUtils, desktopCustomers );
+		}
+		return stepDefCommonFunctions;
+	} 
 	
 	
 	public DesktopVulnerabilites getDesktopVulnerabilites()
@@ -194,4 +204,7 @@ public class Context extends BaseTest {
 		}
 		return desktopEmail;
 	} 
+	
+	
+	
 }

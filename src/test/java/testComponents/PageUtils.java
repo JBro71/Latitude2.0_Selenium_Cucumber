@@ -8,27 +8,23 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import pageObjects.DesktopCustomers;
-import utils.Context;
 import utils.Logging;
 
 public class PageUtils extends BaseTest {
-	Context  context;
 	WebDriver driver;
 	public HashMap<String, String> testMap;
-	DesktopCustomers desktopCustomers;
 	JavascriptExecutor js;
 	
 	
-	public PageUtils(Context context, WebDriver driver, HashMap<String, String> testMap ) { // initialise Webdriver in this class from the calling class
+	public PageUtils( WebDriver driver, HashMap<String, String> testMap ) { // initialise Webdriver in this class from the calling class
 		// initialisation
-		this.context = context;
 		this.driver = driver;
 		this.testMap = testMap;
 		js = (JavascriptExecutor)driver;
-		desktopCustomers = context.getDesktopCustomers();
-	}
 
+	}
+	
+/*
 	public HashMap<String, String> processVariables(HashMap<String, String> dataMap) throws Exception {
 		
 		for (String key : dataMap.keySet()) {
@@ -85,6 +81,12 @@ public class PageUtils extends BaseTest {
 		return dataMap;
 	}
 	
+	
+	*/
+	
+	
+	
+	/*
 	public HashMap<String, String> calculateVariableDates(HashMap<String, String> dataMap) throws Exception {
 		//check the map for any variable dates and update the values to date strings in the specified format
 		try {
@@ -128,6 +130,8 @@ public class PageUtils extends BaseTest {
 		}
 		return dataMap;
 	}
+	
+	*/
 	
 	
 	public void updateTestMap(String key, String value) {

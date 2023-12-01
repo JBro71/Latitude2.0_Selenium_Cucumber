@@ -59,8 +59,8 @@ public class BaseTest {
 		staticTestMap.put("account", ""); 		//Initialise the account value;
 		staticTestMap.put("customer1", "dummy1");
 		staticTestMap.put("customer2", "dummy2");
-		staticTestMap.put("CustomerId1", null);
-		staticTestMap.put("customerId2", null);
+		staticTestMap.put("customerId1", "dummyID1");
+		staticTestMap.put("customerId2","dummyID1");
 	    //copy the values from the Static Map
 		for (Map.Entry<String, String> entry : staticTestMap.entrySet()) {
 			testMap.put(entry.getKey(), entry.getValue());

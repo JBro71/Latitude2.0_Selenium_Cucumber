@@ -9,45 +9,38 @@ import pageObjects.DesktopCustomers;
 import utils.Context;
 import utils.Logging;
 import testComponents.PageUtils;
+import testComponents.StepDefCommonFunctions;
 import testComponents.TimeDateCalcs;
 
 public class BatchAPIStepDefs {
 	Context context;
-	DesktopCommunications desktopCommunications;
 	PageUtils pageUtils;
+	StepDefCommonFunctions StepDefCF;
 	DesktopCustomers desktopCustomers;
+
 
 	
 	public BatchAPIStepDefs(Context context)
 	{
 		this.context = context;
-		desktopCommunications = context.getDesktopCommunications();
+		//desktopCommunications = context.getDesktopCommunications();
 		desktopCustomers = context.getDesktopCustomers();
 		pageUtils = context.getPageUtils();
+		StepDefCF = context.getDtepDefCommonFunctions();
 	}
 	
 	@Then("I can check if a batchAPI entry has been created that matches these details")
 	public void i_can_check_if_a_batch_api_entry_has_been_created_that_matches_these_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
 		//convert dataTable to Hashmap and 
-		HashMap<String,String> dataMap = pageUtils.convertDataTableToMap(dataTable);
-		//convert any date variables to actual dates;
-		dataMap = pageUtils.calculateVariableDates(dataMap);
-		//convert any customer variables to customer names
-		dataMap = pageUtils.getVariableCustomers(dataMap);
+		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		dataMap = StepDefCF.processVariables(dataMap);
 		/*
-		try {
-			for (String key : dataMap.keySet()) {
-				//iterate over map and split by "," looking for "customer" variables
-				String[] valueSplit = dataMap.get(key).split(",");
-				if(valueSplit[0].equalsIgnoreCase("$customer")) {
-					desktopCustomers.getCustomers();
-					dataMap.put(key, pageUtils.testMap.get("customer" + Integer.parseInt(valueSplit[1])));
-					}	
-		    	}
-		}catch (Exception e) {
-			//throw new Exception("PageUtils/calculateVariableDates/"+testMap.get("account")+" : date variable invalid");
-		}
+		//convert any date variables to actual dates;
+		dataMap = StepDefCF.calculateVariableDates(dataMap);
+		//convert any customer variables to customer names
+		dataMap = StepDefCF.getVariableCustomers(dataMap);
 		*/
+
 		
 		String dummy = "";
 	}
