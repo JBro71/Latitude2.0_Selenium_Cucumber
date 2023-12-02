@@ -2,7 +2,12 @@ package stepDefinitions;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.junit.Assert;
+
+import com.google.gson.Gson;
+
 import io.cucumber.java.en.*;
 import pageObjects.DesktopCommunications;
 import pageObjects.DesktopCustomers;
@@ -11,22 +16,25 @@ import utils.Logging;
 import testComponents.PageUtils;
 import testComponents.StepDefCommonFunctions;
 import testComponents.TimeDateCalcs;
+import pageObjects.DesktopBatchApi;
 
 public class BatchAPIStepDefs {
 	Context context;
 	PageUtils pageUtils;
 	StepDefCommonFunctions StepDefCF;
 	DesktopCustomers desktopCustomers;
+	DesktopBatchApi desktopBatchApi;
+	HashMap<String,String> payloadMap;
 
 
 	
 	public BatchAPIStepDefs(Context context)
 	{
 		this.context = context;
-		//desktopCommunications = context.getDesktopCommunications();
+		desktopBatchApi = context.getDesktopBatchApi();
 		desktopCustomers = context.getDesktopCustomers();
 		pageUtils = context.getPageUtils();
-		StepDefCF = context.getDtepDefCommonFunctions();
+		StepDefCF = context.getStepDefCommonFunctions();
 	}
 	
 	@Then("I can check if a batchAPI entry has been created that matches these details")
@@ -34,25 +42,31 @@ public class BatchAPIStepDefs {
 		//convert dataTable to Hashmap and 
 		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
 		dataMap = StepDefCF.processVariables(dataMap);
-		/*
-		//convert any date variables to actual dates;
-		dataMap = StepDefCF.calculateVariableDates(dataMap);
-		//convert any customer variables to customer names
-		dataMap = StepDefCF.getVariableCustomers(dataMap);
-		*/
-
-		
-		String dummy = "";
+		String batchApiPayload = desktopBatchApi.getBatchApi(dataMap);
+		//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ batchApiPayload);
+		Assert.assertNotEquals("getBatchAPI: no payload returned for account:" + pageUtils.testMap.get("account") , batchApiPayload, "");
+		Gson gson = new Gson();
+		payloadMap = gson.fromJson(batchApiPayload, HashMap.class);
+		Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ payloadMap);
 	}
 
 	
 	
-	
-	
-	
 	@Then("I can check if the batchAPI entry contains the following JSON values")
-	public void i_can_check_if_the_batch_api_entry_contains_the_following_json_values(io.cucumber.datatable.DataTable dataTable) {
-
+	public void i_can_check_if_the_batch_api_entry_contains_the_following_json_values(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and 
+		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		//convert any variables to actual values
+		dataMap = StepDefCF.processVariables(dataMap);
+		//conver all the keys in the map are lower case	
+		HashMap<String,String> lowercasePayloadMap = new HashMap<String, String>();
+		payloadMap.forEach((key, value) -> {lowercasePayloadMap.put(key.toLowerCase(), value);});
+		dataMap.forEach((key, value) -> {
+			String payloadValue = lowercasePayloadMap.get(key.toLowerCase());
+			Assert.assertEquals("checkBatchAPI/" + pageUtils.testMap.get("account")+" field: " + key, value, payloadValue);
+		});
+		
+		
 	}
 	
 	

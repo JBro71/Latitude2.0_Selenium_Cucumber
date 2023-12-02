@@ -1,6 +1,8 @@
 package pageObjects;
 
 import java.util.HashMap;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 //import org.openqa.selenium.JavascriptExecutor;
@@ -46,9 +48,34 @@ public class DesktopEmail {
 			}
 
 		//open the email panel
-		pageUtils.Scroll(300);
+		pageUtils.Scroll(200);
 		driver.findElement(By.xpath("//button[normalize-space()='Available Panels']")).click();
-		driver.findElement(By.xpath("//a[normalize-space()='Email']")).click();
+		//Thread.sleep(100);
+		//pageUtils.ScrollBy(800);
+		//Thread.sleep(500);
+
+		 List<WebElement> menu = driver.findElements(By.xpath("//div[@class='dropdown-menu show']/div/a"));
+		 for (WebElement menuItem : menu) {
+			 try {
+			String menuItemText = menuItem.getText();
+			    if (menuItemText.equalsIgnoreCase("email")) {
+			    	menuItem.click();
+			    }
+			 }catch(Exception e) {
+				 throw new Exception("DesktopEmail/email/"+account+" :  unable to open Email Panel");
+			 }
+			 }
+		//driver.findElement(By.xpath("//a[normalize-space()='Email']")).click();
+		/*
+		for(int i=0;i<10;i++) {
+			try {
+			driver.findElement(By.xpath("//a[normalize-space()='Email']")).click();
+			}catch(Exception e) {
+				//pageUtils.ScrollBy(1000);
+				Thread.sleep(100);
+			}
+		}
+*/
 
 		
 		switch (action.toLowerCase()) {
@@ -125,13 +152,15 @@ public class DesktopEmail {
 				}
 				else {
 					driver.findElement(By.xpath("//input[@ng-model='vm.emailRecord.primary']")).click();
+					pageUtils.HandlePopup("OK");
 				}
 				break;
-			case "is correspondence":	
+			case "is correspondence":	;
 				if (check){				
 				}
 				else {
 					driver.findElement(By.xpath("//input[@ng-model='vm.emailRecord.correspondence']")).click();
+					pageUtils.HandlePopup("OK");
 				}
 				break;				
 			case "consent to email":

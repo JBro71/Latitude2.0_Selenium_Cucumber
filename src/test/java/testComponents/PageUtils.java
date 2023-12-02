@@ -24,115 +24,16 @@ public class PageUtils extends BaseTest {
 
 	}
 	
-/*
-	public HashMap<String, String> processVariables(HashMap<String, String> dataMap) throws Exception {
-		
-		for (String key : dataMap.keySet()) {
-			//iterate over map and split by "," looking for "customer" variables
-			String[] valueSplit = dataMap.get(key).split(",");
-			
-			switch (valueSplit[0]) {
-			case "$customerName":
-				try {
-					desktopCustomers.getCustomers();
-					dataMap.put(key, testMap.get("customer" + valueSplit[1]));
-					}catch (Exception e) {
-						throw new Exception("PageUtils/processVariables/"+testMap.get("account")+" : unable to get customer name field:" + key);
-						}
-				break;
-			case "$date":
-				try {
-					dataMap.put(key,TimeDateCalcs.ReturnDate(valueSplit[1], valueSplit[2]));
-					}catch (Exception e) {
-						throw new Exception("PageUtils/processVariables/"+testMap.get("account")+" : date variable invalid");
-						}
-				break;	
-			case "$customerId":
-				try {
-					dataMap.put(key, getCustomerId(valueSplit[1]));
-					}catch (Exception e) {
-						throw new Exception("PageUtils/processVariables/"+testMap.get("account")+" : unable to get customer Id field:" + key);
-						}
-				break;	
-			}
-		}
-		
-		
-		return dataMap;
-	}
-	
-	
-	
-	
-	public HashMap<String, String> getVariableCustomers(HashMap<String, String> dataMap) throws Exception {
-		//check the map for any variable dates and update the values to date strings in the specified format
+	public void HandlePopup(String buttonText) {
 		try {
-			for (String key : dataMap.keySet()) {
-				//iterate over map and split by "," looking for "customer" variables
-				String[] valueSplit = dataMap.get(key).split(",");
-				if(valueSplit[0].equalsIgnoreCase("$customerName")) {
-					desktopCustomers.getCustomers();
-					dataMap.put(key, testMap.get("customer" + Integer.parseInt(valueSplit[1])));
-					}	
-		    	}
-		}catch (Exception e) {
-			//throw new Exception("PageUtils/calculateVariableDates/"+testMap.get("account")+" : date variable invalid");
+			ImplictWait(0);
+			driver.switchTo().activeElement();
+			driver.findElement(By.xpath("//button[contains(text(),'"+buttonText+"')]")).click();
+			//driver.findElement(By.xpath("//button[normalize-space()='OK']")).click();
+			}catch(Exception e) {
 		}
-		return dataMap;
+		DefaultImplictWait();
 	}
-	
-	
-	*/
-	
-	
-	
-	/*
-	public HashMap<String, String> calculateVariableDates(HashMap<String, String> dataMap) throws Exception {
-		//check the map for any variable dates and update the values to date strings in the specified format
-		try {
-			for (String key : dataMap.keySet()) {
-				//iterate over map and split by , looking for date variables
-				String[] valueSplit = dataMap.get(key).split(",");
-				if(valueSplit[0].equalsIgnoreCase("$date")) {
-					dataMap.put(key,TimeDateCalcs.ReturnDate(valueSplit[1], valueSplit[2]));
-					}	
-		    	}
-		}catch (Exception e) {
-			throw new Exception("PageUtils/calculateVariableDates/"+testMap.get("account")+" : date variable invalid");
-		}
-		return dataMap;
-	}
-	
-	
-	public String getCustomerId(String customerIdString ) throws Exception {
-		//get the debtorID for debtor1 or 2
-		if (testMap.get("customerId1") == null) {
-		testMap.put("customerId1", fileNumbersMap.get(testMap.get("account"))[1]);
-		testMap.put("customerId1", fileNumbersMap.get(testMap.get("account"))[2]);
-		}
-		String customerId = testMap.get("customerId"+customerIdString);
-		if(customerId.equals("NULL")){
-			throw new Exception("pageUtils/getCustomerId/"+testMap.get("account")+" :  cannot get customerID customer "+customerIdString+" does not exist");
-		}
-		return customerId;
-	}
-
-	
-	public HashMap<String,String> convertDataTableToMap(io.cucumber.datatable.DataTable dataTable ) throws Exception {
-		HashMap<String,String> dataMap = new HashMap<String,String>();
-		try {	
-		List<List<String>> dataList = dataTable.asLists(); //get data table
-		for (List<String> keyValuePair : dataList) {
-			dataMap.put(keyValuePair.get(0).toLowerCase(), keyValuePair.get(1));
-			}	
-		}catch (Exception e) {
-			throw new Exception("pageUtils/convertDataTableToMap/"+testMap.get("account")+" :  cannot convert dataTable to Map");
-		}
-		return dataMap;
-	}
-	
-	*/
-	
 	
 	public void updateTestMap(String key, String value) {
 		testMap.put(key,value);
@@ -188,6 +89,37 @@ public class PageUtils extends BaseTest {
 			js.executeScript("window.scrollBy(0,-1000)");
 			Thread.sleep(300);
 			js.executeScript("window.scrollBy(0," + move + ")");						
+	}
+	
+	public void ScrollBy(int move) throws InterruptedException { 
+		//scroll the screen to the section with the Arrangement panel
+			js.executeScript("window.scrollBy(0," + move + ")");	
+			
+	}
+	
+	
+	
+	
+	
+	public void openLowerPanel(String panelName) throws Exception { 
+		//open the named lower panel
+		Scroll(200);
+		driver.findElement(By.xpath("//button[normalize-space()='Available Panels']")).click();
+		List<WebElement> menu = driver.findElements(By.xpath("//div[@class='dropdown-menu show']/div/a"));
+		for (WebElement menuItem : menu) {
+		try {
+			String menuItemText = menuItem.getText();
+			if (menuItemText.equalsIgnoreCase(panelName)) {
+				menuItem.click();
+				return;
+				}
+				}catch(Exception e) {
+						 throw new Exception(
+								 "PageUtils/openLowerPanel"+ testMap.get("account")+" :  unable to open "+panelName+" lower panel");
+					 }
+			}
+		 throw new Exception(
+				 "PageUtils/openLowerPanel"+ testMap.get("account")+" :  cannot find "+panelName+" lower panel");
 	}
 	
 	

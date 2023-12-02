@@ -57,10 +57,10 @@ public class BaseTest {
 		if (staticDriver == null) { 		// if the browser is not already open
 		InitiliseProperties(); 			//load the properties file
 		staticTestMap.put("account", ""); 		//Initialise the account value;
-		staticTestMap.put("customer1", "dummy1");
-		staticTestMap.put("customer2", "dummy2");
-		staticTestMap.put("customerId1", "dummyID1");
-		staticTestMap.put("customerId2","dummyID1");
+		staticTestMap.put("customer1", null);
+		staticTestMap.put("customer2", null);
+		staticTestMap.put("customerId1", null);
+		staticTestMap.put("customerId2",null);
 	    //copy the values from the Static Map
 		for (Map.Entry<String, String> entry : staticTestMap.entrySet()) {
 			testMap.put(entry.getKey(), entry.getValue());
@@ -114,12 +114,15 @@ public class BaseTest {
 		String fileName ="filenumbers.txt";
 		String rawFileNumbers = FileUtils.readFileToString(new File(System.getProperty("user.dir") + filePath + fileFolder + fileName ), StandardCharsets.UTF_8);	
 		String[] fileNumbersArray = rawFileNumbers.split(System.lineSeparator());
-		String[] tempArray2 = {"","",""};
 		for (String value : fileNumbersArray) {
 			String[] tempArray = value.split(",");
+			String[] tempArray2 = {"","",""};
 			for (int i=0;i<3;i++) {tempArray2[i] = tempArray[i+1];}
+			String tempKey = tempArray[0];
+			String[] tempValue = tempArray2;		
 			fileNumbersMap.put(tempArray[0], tempArray2);
 		}
+		Logging.logToConsole("INFO", "debug");
 		//Logging.logToConsole("INFO",fileNumbersMap.toString());
 		
 			}

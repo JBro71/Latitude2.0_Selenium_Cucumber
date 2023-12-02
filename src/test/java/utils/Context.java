@@ -24,6 +24,8 @@ public class Context extends BaseTest {
 	private DesktopCustomers desktopCustomers;
 	private DesktopEmail desktopEmail;
 	private StepDefCommonFunctions stepDefCommonFunctions;
+	private DesktopBatchApi desktopBatchApi;
+	
 	
 	public Context() throws IOException
 	{
@@ -71,7 +73,7 @@ public class Context extends BaseTest {
 		return dpa;
 	} 
 	
-	public StepDefCommonFunctions getDtepDefCommonFunctions()
+	public StepDefCommonFunctions getStepDefCommonFunctions()
 	{
 		if(stepDefCommonFunctions==null)
 		{
@@ -205,6 +207,13 @@ public class Context extends BaseTest {
 		return desktopEmail;
 	} 
 	
-	
+	public DesktopBatchApi getDesktopBatchApi()
+	{
+		if(desktopBatchApi==null)
+		{
+			desktopBatchApi = new DesktopBatchApi(driver, pageUtils);
+		}
+		return desktopBatchApi;
+	} 
 	
 }

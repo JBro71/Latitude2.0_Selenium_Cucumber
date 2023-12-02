@@ -108,8 +108,11 @@ public class StepDefCommonFunctions extends BaseTest {
 		//get the debtorID for debtor1 or 2
 		if (pageUtils.testMap.get("customerId1") == null) {
 			pageUtils.testMap.put("customerId1", fileNumbersMap.get(accountNumber)[1]);
-			pageUtils.testMap.put("customerId1", fileNumbersMap.get(accountNumber)[2]);
+			pageUtils.testMap.put("customerId2", fileNumbersMap.get(accountNumber)[2]);
 		}
+		
+		String[] temp = fileNumbersMap.get("A2EE80657316496ABC");
+		String temp2 = fileNumbersMap.get("A2EE80657316496ABC")[2];
 		String customerId = pageUtils.testMap.get("customerId"+customerIdString);
 		if(customerId.equals("NULL")){
 			throw new Exception("pageUtils/getCustomerId/"+accountNumber+" :  cannot get customerID customer "+customerIdString+" does not exist");
