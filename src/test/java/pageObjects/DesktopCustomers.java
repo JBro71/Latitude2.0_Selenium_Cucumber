@@ -36,7 +36,7 @@ public class DesktopCustomers {
 		
 		//scroll the screen to the section with the Customer panel;
 		pageUtils.ReturnHome();
-		pageUtils.DefaultImplictWait();
+		pageUtils.defaultImplictWait();
 		//Click the customer down arrow
 		WebElement buttonCustomer = driver.findElement(By.xpath("//tasks-customer-menu[@class='ng-scope ng-isolate-scope']/div/ng-switch/span"));
 		// if menu is closed then open it
@@ -247,7 +247,7 @@ public class DesktopCustomers {
 	public boolean selectCustomer(String inputCustomer) throws InterruptedException {
 			// open the customer tab, click on the correct customer and wait for it to open 
 			pageUtils.ReturnHome();
-			pageUtils.DefaultImplictWait();
+			pageUtils.defaultImplictWait();
 			//Click the customer down arrow
 			WebElement buttonCustomer = driver.findElement(By.xpath("//tasks-customer-menu[@class='ng-scope ng-isolate-scope']/div/ng-switch/span"));
 			// if menu is closed then open it

@@ -56,33 +56,14 @@ public class StepDefinition <Public> extends BaseTest{
 		openAccount.OpenNewAccount(accountNumber);
 		pageUtils.updateTestMap("account",accountNumber);
 		//reset the customer details
-
+		}
+		else {
+			pageUtils.closeAnchorPanel();
 		}
 		pageUtils.ReturnHome(); // scroll back to the top
 	}
 
-	@Given("the {string} anchor panel will display a {string} value of {string}")
-	public void the_anchor_panel_will_display_a_value_of(String panelName, String label, String value) {
-		String anchorPanelValue =  desktopAnchorPanels.queryAnchorPanels(panelName, label);
-		Assert.assertEquals("Anchor panel: " + panelName + "/" + label, value, anchorPanelValue);
-		//Assert. assertTrue(anchorPanelValue.equals(value), "Anchor panel: " + panelName + " label: " + label + " equals: " + value );
-	}
 	
-	@Then("the anchor panels will display the following values")
-	public void the_anchor_panels_will_display_the_following_values(io.cucumber.datatable.DataTable dataTable) {
-		List<List<String>> dataList = dataTable.asLists(); //get data table
-		for (List<String> row : dataList) {
-			String anchorPanelValue =  desktopAnchorPanels.queryAnchorPanels(row.get(0), row.get(1));
-			Assert.assertEquals("Anchor panel: " + row.get(0) + "/" + row.get(1), row.get(2), anchorPanelValue);
-			Logging.logToConsole("INFO","DesktopComplaints/complaints:t");
-		}	
-		
-	
-	}
-	
-	
-	
-
 	@Then("if I add a payment card with the following details")
 	public void if_i_add_a_payment_card_with_the_following_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
 		HashMap<String,String> paymentCardMap = new HashMap<String, String>();
@@ -103,7 +84,6 @@ public class StepDefinition <Public> extends BaseTest{
 			    }
 	    	arrangements.AddPaymentCard(paymentCardMap);
 		}
-
 	
 	@Then("I can add a card arrangement using the following details")
 	public void i_can_add_a_card_arrangement_using_the_following_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException, IOException {

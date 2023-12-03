@@ -1,20 +1,15 @@
 package pageObjects;
 
 
-import java.time.Duration;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-//import org.testng.Assert;
-
 import testComponents.*;
 import utils.Logging;
-//import utilities.Parameters;
 
 public class DesktopAnchorPanels {
 
@@ -32,7 +27,8 @@ public class DesktopAnchorPanels {
 	}
 	
 	// *********************Get Anchor Panel Info***********************
-	public String queryAnchorPanels(String panelName, String field) {
+	public String queryAnchorPanels(String panelName, String field) throws InterruptedException {
+
 		Map<String, String> panelOrder = Map.ofEntries(Map.entry("Account Overview", "1"), Map.entry("Customer Overview", "2"),
 				Map.entry("Client Overview", "3"),Map.entry("Party Information", "3"),Map.entry("Account Position Overview", "4"),
 				Map.entry("Active Hold Details", "4"),Map.entry("Delinquency Account Information", "5"),
@@ -46,12 +42,12 @@ public class DesktopAnchorPanels {
 			return panelName + "Not Found";
 		}
 	
-				Logging.logToConsole("DEBUG", "***********Anchor Panel: " + panelName + "***********");
+		Logging.logToConsole("DEBUG", "***********Anchor Panel: " + panelName + "***********");
 						
 		// get panel labels
 		List<WebElement> tempWebElement = driver.findElements(By.xpath("(//div[@class='well customAnchorPanelCard'])["+ panelIndex +"]//div//dl")); 
 		
-		pageUtils.ImplictWait(0);	
+		//pageUtils.ImplictWait(0);	
 		// elements are numbered so loop through all the numbers 1 to n and for each
 		// store the value in hashmap
 		for (int i = 1; i <= tempWebElement.size(); i++) {
@@ -69,15 +65,16 @@ public class DesktopAnchorPanels {
 			Logging.logToConsole("DEBUG","Key: " + key.split(":")[0] +  "  Value: " + val);
 			//String keyName = key.split(":")[0].toLowerCase();
 			if (key.split(":")[0].equalsIgnoreCase(field)) {
-			pageUtils.DefaultImplictWait();
+			pageUtils.defaultImplictWait();
+
 				return val;
 			}
 		}
 
 		// reset the implicit wait to standard value
-		pageUtils.DefaultImplictWait();
+		pageUtils.defaultImplictWait();
 
-	return  "not found";
+		return  "not found";
 
 	}
 		

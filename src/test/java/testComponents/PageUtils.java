@@ -26,13 +26,13 @@ public class PageUtils extends BaseTest {
 	
 	public void HandlePopup(String buttonText) {
 		try {
-			ImplictWait(0);
+			implictWait(0);
 			driver.switchTo().activeElement();
 			driver.findElement(By.xpath("//button[contains(text(),'"+buttonText+"')]")).click();
 			//driver.findElement(By.xpath("//button[normalize-space()='OK']")).click();
 			}catch(Exception e) {
 		}
-		DefaultImplictWait();
+		defaultImplictWait();
 	}
 	
 	public void updateTestMap(String key, String value) {
@@ -40,26 +40,56 @@ public class PageUtils extends BaseTest {
 		staticTestMap.put(key,value);
 	}
 	
-	public void DefaultImplictWait() {
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
+	public void defaultImplictWait() {
+		String wait = prop.getProperty("implicitWait");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(wait)));
+		testMap.put("lastImplicitWait",wait);
 	}
 	
-	public void ImplictWait(int wait) {
+	public void implictWait(int wait) {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(wait));
+		testMap.put("lastImplicitWait",Integer.toString(wait));
+	}
+	
+	public void tempImplictWait(int wait) {
+		//change the implicit wait without updating the last value
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(wait));
 	}
+	
+	public void lastImplictWait(int wait) {
+		//change the implicit wait without updating the last value
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(testMap.get("lastImplicitWait"))));
+	}
 
-	public void OpenAnchorPanel() {
-	 WebElement toggle = driver.findElement(By.xpath("//span[@ng-click='vm.toggleAnchor()']"));
-	 if(toggle.getAttribute("class").equalsIgnoreCase("icon-chevron-up")) {
-		 toggle.click();
+	public void openAnchorPanel() throws InterruptedException {
+	ReturnHome();
+	 WebElement toggle = driver.findElement(By.xpath("//span[@ng-click='vm.toggleAnchor()']/i"));
+	 if(toggle.getAttribute("class").equalsIgnoreCase("icon-chevron-down")) {
+		 driver.findElement(By.xpath("//span[@ng-click='vm.toggleAnchor()']")).click();
 	 }
+	 //delay until the panel is definitely open
+	 for(int i=0; i<5; i++) {
+		 try {
+			 driver.findElement(By.xpath("//dt[normalize-space()='Account Overview']")).getText();
+			 return;
+		 	}catch (Exception e) {Thread.sleep(100);}
+	 	}
+	 
 	}
 	
-	public void CloseAnchorPanel() {
-		 WebElement toggle = driver.findElement(By.xpath("//span[@ng-click='vm.toggleAnchor()']"));
-		 if(!toggle.getAttribute("class").equalsIgnoreCase("icon-chevron-up")) {
-			 toggle.click();
-		 }
+	public void closeAnchorPanel() throws InterruptedException {
+		ReturnHome();
+		 WebElement toggle = driver.findElement(By.xpath("//span[@ng-click='vm.toggleAnchor()']/i"));
+		 if(toggle.getAttribute("class").equalsIgnoreCase("icon-chevron-up")) {
+			 driver.findElement(By.xpath("//span[@ng-click='vm.toggleAnchor()']")).click();
+		 	}
+		 //delay until panel is no longer accessible
+		 for(int i=0; i<5; i++) {
+			 try {
+				 driver.findElement(By.xpath("//dt[normalize-space()='Account Overview']")).getText();
+				Thread.sleep(100);
+			 	}catch (Exception e) {return;}
+		 	}
 		}
 	
 	
@@ -67,7 +97,7 @@ public class PageUtils extends BaseTest {
 		//close existing account if one open
 	try 
 	{
-		ImplictWait(0);		
+		implictWait(0);		
 		ReturnHome();
 		driver.findElement(By.xpath("//a[normalize-space()='Close Account']")).click();
 		Logging.logToConsole("INFO", "Account Closed");
@@ -76,7 +106,7 @@ public class PageUtils extends BaseTest {
 	catch(Exception e){
 		Logging.logToConsole("DEBUG", "No Existing open account to close");
 		}
-	DefaultImplictWait();
+	defaultImplictWait();
 	}
 	
 	

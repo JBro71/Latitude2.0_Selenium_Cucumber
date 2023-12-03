@@ -61,6 +61,7 @@ public class BaseTest {
 		staticTestMap.put("customer2", null);
 		staticTestMap.put("customerId1", null);
 		staticTestMap.put("customerId2",null);
+		staticTestMap.put("lastImplicitWait", "0");
 	    //copy the values from the Static Map
 		for (Map.Entry<String, String> entry : staticTestMap.entrySet()) {
 			testMap.put(entry.getKey(), entry.getValue());

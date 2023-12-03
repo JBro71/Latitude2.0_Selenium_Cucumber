@@ -47,7 +47,7 @@ public class OpenAccount {
 		
 		//**********************dismiss DPA screen******************
 		dpa.dismisDPA();
-		
+		pageUtils.closeAnchorPanel();
 		//wait until the page is fully loaded by checking if this element is populated before doing anything
 		for(int i=1;i<20 ;i++) { 
 			Thread.sleep(300);
@@ -67,7 +67,7 @@ public class OpenAccount {
 		}
 		pageUtils.testMap.put("customer1", null);
 		pageUtils.testMap.put("customer2", null);
-		pageUtils.CloseAnchorPanel();
+		//pageUtils.CloseAnchorPanel();
 	}
 	
 	

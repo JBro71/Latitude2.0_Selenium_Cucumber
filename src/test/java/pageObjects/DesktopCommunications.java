@@ -36,7 +36,7 @@ public class DesktopCommunications {
 
 		//scroll the screen to the section with the comms history
 		pageUtils.Scroll(400);
-		pageUtils.DefaultImplictWait();
+		pageUtils.defaultImplictWait();
 		
 		
 		//check the comms down arrow button. if closed then click to open it

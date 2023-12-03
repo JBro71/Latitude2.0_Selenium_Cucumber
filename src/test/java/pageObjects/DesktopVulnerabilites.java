@@ -22,7 +22,7 @@ PageUtils pageUtils;
 	public void OpenCareAndHardshipPanel() throws InterruptedException {
 		Logging.logToConsole("INFO","DesktopVulnerabilites/OpenCareAndHardshipPanel: Start");
 		//pageUtils.Scroll(300);
-		pageUtils.CloseAnchorPanel();
+		pageUtils.closeAnchorPanel();
 		driver.findElement(By.xpath("//div[contains(text(),'Care-Financial Hardship')]")).click();//open arrangement panel
 
 	}
@@ -31,7 +31,7 @@ PageUtils pageUtils;
 		
 		Logging.logToConsole("INFO","DesktopVulnerabilites/NewCareAndHardshipPanel: Start");
 		//pageUtils.Scroll(300);  //open the vulnerabilites panel and scroll to it
-		pageUtils.CloseAnchorPanel();
+		pageUtils.closeAnchorPanel();
 		// dialogue does not always initialise the first time so the loop is to work around that
 		for(int i=1;i<3 ;i++) {
 		 WebElement buttonAdd = driver.findElement(By.xpath("//button[normalize-space()='Add']"));
