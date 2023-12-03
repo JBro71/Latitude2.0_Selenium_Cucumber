@@ -152,7 +152,7 @@ public class DesktopEmail {
 				}
 				else {
 					driver.findElement(By.xpath("//input[@ng-model='vm.emailRecord.primary']")).click();
-					pageUtils.HandlePopup("OK");
+					pageUtils.handlePopup("OK");
 				}
 				break;
 			case "is correspondence":	;
@@ -160,7 +160,7 @@ public class DesktopEmail {
 				}
 				else {
 					driver.findElement(By.xpath("//input[@ng-model='vm.emailRecord.correspondence']")).click();
-					pageUtils.HandlePopup("OK");
+					pageUtils.handlePopup("OK");
 				}
 				break;				
 			case "consent to email":

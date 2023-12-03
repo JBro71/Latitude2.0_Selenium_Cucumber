@@ -24,15 +24,15 @@ public class PageUtils extends BaseTest {
 
 	}
 	
-	public void HandlePopup(String buttonText) {
+	public void handlePopup(String buttonText) {
 		try {
-			implictWait(0);
+			tempImplictWait(0);
 			driver.switchTo().activeElement();
 			driver.findElement(By.xpath("//button[contains(text(),'"+buttonText+"')]")).click();
 			//driver.findElement(By.xpath("//button[normalize-space()='OK']")).click();
 			}catch(Exception e) {
 		}
-		defaultImplictWait();
+		lastImplictWait();
 	}
 	
 	public void updateTestMap(String key, String value) {
@@ -56,7 +56,7 @@ public class PageUtils extends BaseTest {
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(wait));
 	}
 	
-	public void lastImplictWait(int wait) {
+	public void lastImplictWait() {
 		//change the implicit wait without updating the last value
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(testMap.get("lastImplicitWait"))));
 	}
@@ -126,10 +126,6 @@ public class PageUtils extends BaseTest {
 			js.executeScript("window.scrollBy(0," + move + ")");	
 			
 	}
-	
-	
-	
-	
 	
 	public void openLowerPanel(String panelName) throws Exception { 
 		//open the named lower panel

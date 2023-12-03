@@ -23,7 +23,7 @@ Feature: Complaints
     |Proof Received								|true 										|  
 
 
-	@dispute @DisputeCheck @check
+	@dispute @checkComplaint @check
   Scenario: checking  A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "Check" a Dispute with the following details
@@ -46,8 +46,8 @@ Feature: Complaints
     |Insufficient Proof Received	|true 										|     
     |Proof Received								|true										|  
     
-    @dispute @disputeEdit
-     Scenario: updating  A Dispute
+    @dispute @complaintEdit
+     Scenario: updating  A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "edit" a Dispute with the following details
    	|Dispute Key									|category								|
@@ -59,15 +59,15 @@ Feature: Complaints
    	|justified										|No												|
     |Outcome											|Dispute Raised in Error 	|
     
-		@dispute @disputeClose
-     Scenario: close A Dispute
+		@dispute @complaintClose
+     Scenario: close A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "close" a Dispute with the following details
    	|Dispute Key									|last								|
    	# Dispute Key values:  first, "last", <a number>, "dispute id", "category"
    	
-   	@dispute @disputeReopen
-     Scenario: reopen A Dispute
+   	@dispute @complaintReopen
+     Scenario: reopen A Complaint
    Given  I have account "A3EE80657316494ABC" open in Latitude
    Then I can "reopen" a Dispute with the following details
    	|Dispute Key									|last								|

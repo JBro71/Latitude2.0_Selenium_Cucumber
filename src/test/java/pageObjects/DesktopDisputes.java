@@ -29,41 +29,55 @@ public class DesktopDisputes {
 		}
 	
 	
-	public HashMap<String, String> disputes(HashMap<String,String> paramsMap, String action) throws InterruptedException  {
-		Logging.logToConsole("INFO","DesktopDisputes/disputes: "+action+" Dispute");
-
-		//scroll the screen to the section with the DMC
-		//pageUtils.Scroll(300);
+	public HashMap<String, String> disputes(HashMap<String,String> paramsMap, String action) throws Exception  {
+		String account = pageUtils.testMap.get("account");
+		String logEntryPrefix= "Account: "+account+"DesktopDisputes/disputes/"+action+": "; 
+		Logging.logToConsole("INFO",logEntryPrefix+" Start");
+		pageUtils.closeAnchorPanel();
 		pageUtils.ReturnHome();
 		//Click the disputes button
 		driver.findElement(By.xpath("//div[contains(text(),'Disputes')]")).click();
 		
-		
 		// order in which the data should be entered
 		String[] entryOrder = {"dispute id", "document", "dispute type","date received","date closed","dispute against", "dispute relates to", "category", 
 				"referred by", "justified","dispute details","outcome", "proof required", "proof requested","insufficient proof received", "proof received" };	
-		
-		//ensure all the keys in the map are lower case	
-		HashMap<String,String> lowercaseParamsMap = new HashMap<String, String>();
-		paramsMap.forEach((key, value) -> {
-			lowercaseParamsMap.put(key.toLowerCase(), value);
-		});
+
 		Boolean check = false;
 		if (action.equalsIgnoreCase("check")) {check = true;};
 		
-		//driver.switchTo().frame(driver.findElement(By.id("DebtManagement21")));
-				Thread.sleep(1000);
+				//Thread.sleep(1000);
 
 				if(action.equalsIgnoreCase("add"))	{	
-					//Thread.sleep(1000);
-					driver.findElement(By.xpath("//button[@class='btn ng-binding'][normalize-space()='Add']")).click();	
+					//sometimes the dispute opens too quickly before the application is ready
+					int sleepTime = 0;
+					pageUtils.tempImplictWait(200);
+					for(int i=1;i<4 ;i++) {
+						 WebElement buttonAdd = driver.findElement(By.xpath("//button[@class='btn ng-binding'][normalize-space()='Add']"));
+						if(!buttonAdd.isEnabled()) {
+							throw new Exception(logEntryPrefix+"  ERROR <add> button disabled");
+						}
+						try {
+							buttonAdd.click();//open add dispute panel
+							pageUtils.tempImplictWait(sleepTime);
+							//Thread.sleep(sleepTime);
+							Select dropdown = new Select(driver.findElement(By.xpath("//select[@name='disputeType']")));
+							dropdown.selectByVisibleText("Unknown");
+							break;
+							}
+							catch (Exception e){
+								Logging.logToConsole("ERROR",logEntryPrefix+"  ERROR add dialogue open error attempt:" +i);
+								driver.findElement(By.xpath("//button[@class='btn ng-binding ng-scope']")).click();//cancel 
+								sleepTime = sleepTime + 200;
+								}
+							}
+					pageUtils.lastImplictWait();
 				}
 				else {
 					//WebElements disputes = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[1]"));
 					List<WebElement> disputeIDs = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[1]"));
-					List<WebElement> closed = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[1]"));
+					//List<WebElement> closed = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[1]"));
 					List<WebElement> categories = driver.findElements(By.xpath("//table[@lat-table='vm.disputesGrid']/tbody/tr/td[5]"));
-					String disputeKey = lowercaseParamsMap.get("dispute key").toLowerCase();
+					String disputeKey = paramsMap.get("dispute key").toLowerCase();
 					int disputeKeyNumber = 0;
 					if(disputeKey != null) {// there is a dispute key value
 						try {
@@ -88,9 +102,8 @@ public class DesktopDisputes {
 							break;
 						case "dispute id":	
 							//get the item in the list of Dispute ID's with a dispute ID that matches the one input 
-							String disputeID = lowercaseParamsMap.get("dispute id");
+							String disputeID = paramsMap.get("dispute id");
 							for (int i = 0;i<disputeIDs.size();i++) {
-								//String tempid = disputeIDs.get(i).getText();
 								if (disputeID.equals(disputeIDs.get(i).getText())) {
 									disputeIDs.get(i).click();
 									}
@@ -98,17 +111,15 @@ public class DesktopDisputes {
 							break;	
 						case "category":	
 							//get the item in the list of Disputes with a category matching the one input
-							String category = lowercaseParamsMap.get("category");
+							String category = paramsMap.get("category");
 							for (int i = 0;i<categories.size();i++) {
-								//String tempid = disputeIDs.get(i).getText();
 								if (category.equals(categories.get(i).getText())) {
 									categories.get(i).click();
 									}
 								}
 							break;	
-											}
 							}
-					
+						}
 					}
 				
 				if(action.equalsIgnoreCase("edit") || action.equalsIgnoreCase("update") ){
@@ -122,10 +133,10 @@ public class DesktopDisputes {
 		Select dropdown;
 		Boolean isSelected;
 		for (String i : entryOrder) {
-			String value = lowercaseParamsMap.get(i);
+			String value = paramsMap.get(i);
 			if (value != null )
 			{ 
-			Logging.logToConsole("DEBUG", "DesktopDMC/DMC: DMC Key: " +i+ " Value: "+ value);	
+			Logging.logToConsole("DEBUG", logEntryPrefix+" Key: " +i+ " Value: "+ value);	
 			switch (i) {
 			
 			case "category":
@@ -299,18 +310,19 @@ public class DesktopDisputes {
 		}
 		
 		WebElement button;
+		try {
 		switch (action.toLowerCase()) {
 		case "add":
 			button = driver.findElement(By.xpath("//button[@type='button'][normalize-space()='Save']"));
 			if (button.isEnabled() == true) {button.click();
-			Logging.logToConsole("INFO","DesktopDispute/dispute: New dispute submitted");}
-				else { Logging.logToConsole("WARNING","DesktopDMC/AddDispute: unable to add Dispute: " + action + " button disabled");}
+			Logging.logToConsole("INFO",logEntryPrefix+" New dispute submitted");}
+				else { Logging.logToConsole("WARNING",logEntryPrefix+" unable to add Dispute: " + action + " button disabled");}
 			break;
 		case "edit":
 			button = driver.findElement(By.xpath("//button[@type='button'][normalize-space()='Save']"));
 			if (button.isEnabled() == true) {button.click();
-			Logging.logToConsole("INFO","DesktopDispute/dispute: updated dispute submitted");}
-				else { Logging.logToConsole("WARNING","DesktopDMC/Dispute: unable to update Dispute: " + action + " button disabled");}
+			Logging.logToConsole("INFO",logEntryPrefix+" updated dispute submitted");}
+				else { Logging.logToConsole("WARNING",logEntryPrefix+" unable to update Dispute: " + action + " button disabled");}
 			break;
 		case "close":
 			driver.findElement(By.xpath("//button[normalize-space()='Close Dispute']")).click();
@@ -320,7 +332,10 @@ public class DesktopDisputes {
 			driver.findElement(By.xpath("//button[normalize-space()='ReOpen']")).click();
 			break;	
 			}
-		
+		}catch(Exception e) {
+			throw new Exception(
+					 "DesktopDisputes/disputes"+ account+":  cannot " +action+ " dispute");
+		}
 		//driver.switchTo().defaultContent(); //switch out of iframe
 		pageUtils.ReturnHome();
 		
@@ -335,10 +350,8 @@ public class DesktopDisputes {
 			button.click();	
 			Thread.sleep(2000);
 			driver.switchTo().activeElement();
-			//driver.switchTo().defaultContent(); //switch out of iframe
-			//driver.switchTo().frame(driver.findElement(By.id("deleteModal___BV_modal_content_")));
 			driver.findElement(By.xpath("//button[contains(text(),'Yes')]")).click();
-			Logging.logToConsole("INFO","DesktopDMC/AddDMC: Existing DMC deleted");
+			Logging.logToConsole("INFO","DesktopDispute/dispute: Existing DMC deleted");
 			Thread.sleep(2000);
 			//driver.switchTo().frame(driver.findElement(By.id("DebtManagement29")));
 			}

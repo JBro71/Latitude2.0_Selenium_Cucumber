@@ -24,10 +24,11 @@ public class BatchAPIStepDefs {
 	public BatchAPIStepDefs(Context context)
 	{
 		this.context = context;
-		desktopBatchApi = context.getDesktopBatchApi();
-		desktopCustomers = context.getDesktopCustomers();
 		pageUtils = context.getPageUtils();
 		StepDefCF = context.getStepDefCommonFunctions();
+		desktopBatchApi = context.getDesktopBatchApi();
+		desktopCustomers = context.getDesktopCustomers();
+
 	}
 	
 	@Then("I can check if a batchAPI entry has been created that matches these details")

@@ -29,45 +29,38 @@ public class OpenAccount {
 	public void OpenNewAccount(String accountNumber) throws Exception {
 		//close existing account if one open
 		pageUtils.CloseAccount();
-		/*
-		try 
-		{
-		pageUtils.ImplictWait(0);
-		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
-		pageUtils.ReturnHome();
-		driver.findElement(By.xpath("//a[normalize-space()='Close Account']")).click();
-		Logging.logToConsole("INFO", "OpenAccount/OpenNewAccount: Account Closed");
-		}
-		catch(Exception e){	Logging.logToConsole("INFO", "OpenAccount/OpenNewAccount: unable to close account: ");}
-		pageUtils.DefaultImplictWait();
-		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
-		*/
+		
 		//**********************find and open new account******************
 		searchPage.openAccount(accountNumber);
 		
 		//**********************dismiss DPA screen******************
 		dpa.dismisDPA();
 		pageUtils.closeAnchorPanel();
+		int sleepTime = 100;		
+		int totalSleepTime = 0;
+		pageUtils.implictWait(0);
 		//wait until the page is fully loaded by checking if this element is populated before doing anything
 		for(int i=1;i<20 ;i++) { 
-			Thread.sleep(300);
-			Logging.logToConsole("DEBUG", "OpenAccount/OpenNewAccount:: waiting for page to load");
+			Thread.sleep(sleepTime);
+			totalSleepTime = totalSleepTime + sleepTime;
+			Logging.logToConsole("DEBUG", "OpenAccount/OpenNewAccount: waiting for page to load");
 			try {
+				driver.findElement(By.xpath("//div[@ng-click='vm.displayAutoScript && vm.refreshFn()'][normalize-space()='Arrangements']")).click();
 				if (driver.findElement(By.xpath("//input[@name='amount']")).getAttribute("value") != "") 
 				{
-					Logging.logToConsole("INFO", "OpenAccount/OpenNewAccount:: waited " + i*500 + " miliseconds for arrangement panel");
-					Thread.sleep(500);
+					Logging.logToConsole("INFO", "OpenAccount/OpenNewAccount: waited " + totalSleepTime + " miliseconds for arrangement panel to fully load");
+					//Thread.sleep(200);
 					break;
 				}
 			}
 			catch(Exception e)
 				{
-				Thread.sleep(300);
+				Thread.sleep(200);
 				}
 		}
+		pageUtils.defaultImplictWait();
 		pageUtils.testMap.put("customer1", null);
 		pageUtils.testMap.put("customer2", null);
-		//pageUtils.CloseAnchorPanel();
 	}
 	
 	

@@ -35,6 +35,10 @@ public class StepDefCommonFunctions extends BaseTest {
 	public HashMap<String, String> processVariables(HashMap<String, String> dataMap) throws Exception {
 		
 		for (String key : dataMap.keySet()) {
+			// check the value is not empty
+			if (dataMap.get(key)== null){
+				continue;
+			}
 			//iterate over map and split by "," looking for "customer" variables
 			String[] valueSplit = dataMap.get(key).split(",");
 			

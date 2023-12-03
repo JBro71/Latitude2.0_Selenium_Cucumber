@@ -6,7 +6,8 @@ import org.junit.Assert;
 import io.cucumber.java.en.*;
 import pageObjects.DesktopDMC;
 import utils.Context;
-import utils.Logging;
+import testComponents.PageUtils;
+import testComponents.StepDefCommonFunctions;
 import testComponents.TimeDateCalcs;
 
 
@@ -15,41 +16,44 @@ public class DMCStepDefs {
 	
 	Context context;
 	DesktopDMC dmc;
+	PageUtils pageUtils;
+	StepDefCommonFunctions StepDefCF;
 	
 	public DMCStepDefs(Context context)
 	{
 		this.context = context;
 		dmc = context.getDesktopDMC();
+		pageUtils = context.getPageUtils();
+		StepDefCF = context.getStepDefCommonFunctions();
 	}
 	
 	
 	@Then("^I can \"([^\"]*)\" a DMC with the following details$")
-	public void if_i_add_a_DMC_with_the_following_details(String action, io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
-		HashMap<String,String> DMCMap = new HashMap<String, String>();
-	
-		List<List<String>> dataList = dataTable.asLists(); //get data table
-		for (List<String> keyValuePair : dataList) {
-			DMCMap.put(keyValuePair.get(0).toLowerCase(), keyValuePair.get(1));
-		}
-		//if the date accepted is a variable then process it and convert into a date
-		if(DMCMap.get("date accepted") != null) {
-			String dateFormat = "ddMMyyyy";
-			if (action.equalsIgnoreCase("check")) {
-				dateFormat = "yyyy-MM-dd";
-			}
-			DMCMap.put("date accepted",TimeDateCalcs.CalculateDate(DMCMap.get("date accepted"), dateFormat));
-			}
+	public void if_i_add_a_DMC_with_the_following_details(String action, io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and convert variables to real values
+		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		dataMap = StepDefCF.processVariables(dataMap);
+		action = action.toLowerCase();
 		
-		HashMap<String,String> resultsMap = dmc.dmc(DMCMap, action);
+		HashMap<String,String> resultsMap = dmc.dmc(dataMap, action);
 		// check if returned values match expected values
 		if(action.equalsIgnoreCase("check")) {
-			//DMCMap.forEach((key, value) -> System.out.println(key + ":" + value));
-			//resultsMap.forEach((key, value) -> System.out.println(key + ":" + value));
-			for (String key : DMCMap.keySet()) {
-				Assert.assertEquals("DMC values: " + key, DMCMap.get(key), resultsMap.get(key));
+			for (String key : dataMap.keySet()) {
+				Assert.assertEquals("DMC values: " + key, dataMap.get(key), resultsMap.get(key));
 		    }
-			
 		}
+	}
+	
+	
+	@Then("^I can \"([^\"]*)\" a Debt Management Company with the following details$")
+	public void if_i_add_a_Debt_Management_Company_with_the_following_details(String action, io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and convert variables to real values
+		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		dataMap = StepDefCF.processVariables(dataMap);
+		action = action.toLowerCase();
+		
+		dmc.dmcCompany(dataMap, action);
+
 	}
 }
 
