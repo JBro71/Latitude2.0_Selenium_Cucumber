@@ -51,7 +51,6 @@ public class DMCStepDefs {
 		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
 		dataMap = StepDefCF.processVariables(dataMap);
 		action = action.toLowerCase();
-		
 		dmc.dmcCompany(dataMap, action);
 
 	}

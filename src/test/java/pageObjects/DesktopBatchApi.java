@@ -44,7 +44,7 @@ public class DesktopBatchApi {
 		tableMap.put("event", 2);
 		tableMap.put("value", 5);
 		tableMap.put("payload", 7);
-		
+		tableMap.put("debtor id", 9);
 
 		// Page button web elements next previous etc
 		//WebElement buttonFirst =  driver.findElement(By.xpath("//span[@title='Go to the first page']"));
