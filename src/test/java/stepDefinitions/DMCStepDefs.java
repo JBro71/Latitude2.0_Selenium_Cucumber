@@ -15,16 +15,16 @@ import testComponents.TimeDateCalcs;
 public class DMCStepDefs {
 	
 	Context context;
-	DesktopDMC dmc;
 	PageUtils pageUtils;
 	StepDefCommonFunctions StepDefCF;
+	DesktopDMC dmc;
 	
 	public DMCStepDefs(Context context)
 	{
 		this.context = context;
-		dmc = context.getDesktopDMC();
 		pageUtils = context.getPageUtils();
 		StepDefCF = context.getStepDefCommonFunctions();
+		dmc = context.getDesktopDMC();
 	}
 	
 	

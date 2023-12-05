@@ -2,13 +2,9 @@
 Feature: Latitude 2.0 Vulnerabilites
   Latitude 2.0 vulnerabilites
 
-	Background:
-  	Given I am logged into the Latitude Desktop
-
   @addVulnerable 
   Scenario: Creating Care and Hardship records
-   Given  I have account "LB78012617239" open in Latitude
-   Then I can "Add" a Care and Hardship record with the following details
+   Then I can convert field names to a string
  #|FIELD NAME								|VALUE								|M|NOTES																																						|
   |Customer									|Miss August Rowe			|X|	Case Sensitive name of customer or $customerName,1 or 2	e.g.$customerName,1			|
  	|Care Type								|Prison								|X|																																									|
@@ -20,7 +16,7 @@ Feature: Latitude 2.0 Vulnerabilites
  	|Financial Proof Requested|true									|	|																																									| 
   |Financial Proof Received	|true									|	|																																									|	 		
   |Hold Days								|10										|	|																																									|	
- 	|Status										|Proof Confirmed			|	|																																									|	
+  |Status										|Proof Confirmed			|	|																																									|	
  	|Comments									|new comment					|	|																																									|
  	|Braile										|true									|	|																																									|
  	|Large Type								|true									|	|																																									| 
@@ -30,7 +26,6 @@ Feature: Latitude 2.0 Vulnerabilites
   |Sentence Date						|01/01/2223						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
   |Release Date							|12/12/2024						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
   |Prison Informant					|No										|	|																																									|	
-
 
 
 

@@ -3,8 +3,10 @@ package stepDefinitions;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
+import testComponents.StepDefCommonFunctions;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+
 import io.cucumber.java.en.*;
 import testComponents.*;
 import utils.Context;
@@ -15,11 +17,12 @@ import pageObjects.*;
 public class StepDefinition <Public> extends BaseTest{
 	
 	Context context;
+	PageUtils pageUtils;
+	StepDefCommonFunctions StepDefCF;
 	LoginPage loginPage;
 	SplashPage splashPage;
 	SearchPage searchPage;
 	DesktopAnchorPanels desktopAnchorPanels;
-	PageUtils pageUtils;
 	OpenAccount openAccount;
 	DesktopArrangements arrangements;
 	DesktopVulnerabilites vulnerabilities;
@@ -27,14 +30,30 @@ public class StepDefinition <Public> extends BaseTest{
 	public StepDefinition(Context context)
 	{
 		this.context = context;
+		pageUtils = context.getPageUtils();
+		StepDefCF = context.getStepDefCommonFunctions();
 		searchPage = context.getSearchPage();
 		loginPage = context.getLoginPage();
 		splashPage = context.getSplashPage();
 		desktopAnchorPanels = context.getDesktopAnchorPanels();
-		pageUtils = context.getPageUtils();
 		openAccount = context.getOpenAccount();
 		arrangements = context.getDesktopArrangements();
 		vulnerabilities = context.getDesktopVulnerabilites();
+	}
+	
+	
+	@Then("I can convert field names to a string")
+	public void i_can_convert_field_names_to_a_string(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and convert variables to real values
+		List<List<String>> dataList = dataTable.asLists(); //get data table
+		String fieldString = "\"";
+		String caseString = "";
+		for (List<String> keyValuePair : dataList) {
+			fieldString = fieldString + keyValuePair.get(0).toLowerCase() +"\",\"";
+			caseString = caseString + "case \"" +keyValuePair.get(0).toLowerCase()+"\":\n\n break; \n";
+			}	
+		System.out.println(fieldString);
+		System.out.println(caseString);
 	}
 	
 	

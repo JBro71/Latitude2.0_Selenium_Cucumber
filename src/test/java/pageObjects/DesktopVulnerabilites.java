@@ -1,5 +1,7 @@
 package pageObjects;
 
+import java.util.HashMap;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +14,7 @@ public class DesktopVulnerabilites {
 	
 WebDriver driver;
 PageUtils pageUtils;
+String logEntryPrefix;
 	
 	public DesktopVulnerabilites(WebDriver driver, PageUtils pageUtils) { //initialise Webdriver in this class from the calling class
 		//initialisation
@@ -19,18 +22,252 @@ PageUtils pageUtils;
 		this.pageUtils = pageUtils;
 	}
 	
+	public HashMap<String, String> careAndHardship(HashMap<String,String> paramsMap, String action) throws Exception  {
+			String account = pageUtils.testMap.get("account");
+			logEntryPrefix= "Account: "+account+" DesktopVulnerabilites/Care&Hardship/"+action+": "; 
+			//try {
+				Logging.logToConsole("INFO",logEntryPrefix+" Start");
+				pageUtils.closeAnchorPanel();
+				pageUtils.ReturnHome();
+				pageUtils.defaultImplictWait();
+				Select dropdown;
+
+				OpenCareAndHardshipPanel();
+				WebElement inputWebElement; // temp element to hold values in case statement
+				
+				//add button may be disabled and the care and hardship panel does not always open correctly first time so the mess below id to handle that 
+				pageUtils.implictWait(0);
+				int sleep = 300;
+				String holdDaysXpath = "//input[@name='holdDays']";
+				for(int i=0;i<3 ;i++) {
+					careAndHardshipAddButton(logEntryPrefix);
+					try {
+					// panel sometimes does not initilise properly
+					Thread.sleep(sleep);
+					inputWebElement = driver.findElement(By.xpath(holdDaysXpath));
+					inputWebElement.clear();
+					inputWebElement.sendKeys("0");
+					break;
+					}
+					catch (Exception e){
+						Logging.logToConsole("ERROR",logEntryPrefix + ":  unable to open Add care record panel ERROR retry");
+						try {
+							driver.findElement(By.xpath("//button[@class='btn ng-binding ng-scope']")).click();//cancel 
+							}catch (Exception f){}
+						sleep = sleep + 200;
+						}
+					}
+				pageUtils.implictWait(1);
+				
+
+				
+				// order in which the data should be entered
+				String[] entryOrder = {"have consent","care type","financial hardship","confirmed care","care proof requested",
+						"care proof received","financial proof requested","financial proof received","hold days","status","comments",
+						"braile","large type","audio file","prison name","prison number","sentence date","release date","prison informant"};	
+				
+				//iterate through the keys that have a value and execute them in correct entry order
+
+
+				Boolean isSelected;
+				for (String i : entryOrder) {
+					String value = paramsMap.get(i);
+					if (value != null )
+					{ 
+					Logging.logToConsole("DEBUG", logEntryPrefix+" Key: " +i+ " Value: "+ value);	
+					switch (i) {
+						case "have consent":
+							if(action.equals("check")) {
+								
+							}else {
+
+								}
+						 break; 
+						case "care type":
+							if (action.equals("check")) {
+								
+							}else {
+								Select careTypeDropdown =  new Select(driver.findElement(By.xpath("//select[@name='careType']")));
+								careTypeDropdown.selectByVisibleText(value);
+								}
+						 break; 
+						case "financial hardship":
+							if (action.equals("check")) {
+								
+							}else {
+								Select careTypeDropdown =  new Select(driver.findElement(By.xpath("//select[@name='hardshipType']")));
+								careTypeDropdown.selectByVisibleText(value);
+								}
+						 break; 
+						case "confirmed care":
+							if (action.equals("check")) {
+								
+							}else {
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.consent']");
+									}
+						 break; 
+						case "care proof requested":
+							if (action.equals("check")) {
+								
+							}else {
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.careProofRequested']");
+									}
+						 break; 							
+						case "care proof received":
+							if (action.equals("check")) {
+								
+							}else {
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.careProofReceived']");
+									}
+						 break; 
+						case "financial proof requested":
+							if (action.equals("check")) {
+								
+							}else {
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.hardshipProofRequested']");
+									}
+						 break; 
+						case "financial proof received":
+							if (action.equals("check")) {
+								
+							}else {
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.hardshipProofReceived']");
+									}
+						 break; 
+						case "hold days":
+							if (action.equals("check")) {
+								
+							}else {
+								inputWebElement =driver.findElement(By.xpath(holdDaysXpath));
+								inputWebElement.clear();
+								inputWebElement.sendKeys(value);
+									}
+						 break; 
+						case "status":
+							if(action.equals("check")) {
+								
+							}else {
+								Select careTypeDropdown =  new Select(driver.findElement(By.xpath("//select[@name='Status']")));
+								careTypeDropdown.selectByVisibleText(value);
+								}
+						 break; 
+						case "comments":
+							if(action.equals("check")) {
+								
+							}else {
+								driver.findElement(By.xpath("//select[@name='Status']")).sendKeys(value);
+								}
+						 break; 
+						case "braile":
+							if (action.equals("check")) {
+								
+							}else {
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.braille']");
+									}
+						 break; 
+						case "large type":
+							if (action.equals("check")) {
+								
+							}else {
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.largePrint']");
+									}
+						 break; 
+						case "audio file":
+							if (action.equals("check")) {
+								
+							}else {
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.audioFiles']");
+									}
+						 break; 
+						case "prison name":
+							if(action.equals("check")) {
+								
+							}else {
+								driver.findElement(By.xpath("(//div[@class='control-label ng-binding'][normalize-space()='Prison Name'])[1]/following-sibling::div/input")).sendKeys(value);
+								}
+						 break; 
+						case "prison number":
+							if(action.equals("check")) {
+								
+							}else {
+								driver.findElement(By.xpath("//input[@ng-model='vm.selectedCareType.prisonNumber']")).sendKeys(value);
+								}
+						 break; 
+						case "sentence date":
+							if(action.equals("check")) {
+								
+							}else {
+								driver.findElement(By.xpath(
+										"(//div[@class='control-label ng-binding'][normalize-space()='Sentence Date'])[1]/following-sibling::div/input")).sendKeys(value);
+								}
+						 break; 
+						case "release date":
+							if(action.equals("check")) {
+								
+							}else {
+								driver.findElement(By.xpath("(//div[@class='control-label ng-binding'][normalize-space()='Release Date'])[1]/following-sibling::div/input")).sendKeys(value);
+								}
+						 break; 
+						case "prison informant":
+							if(action.equals("check")) {
+								
+							}else {
+								driver.findElement(By.xpath("(//div[@class='control-label ng-binding'][normalize-space()='Prison Informant'])[1]/following-sibling::div/input")).sendKeys(value);
+								}
+						 break; 
+
+					
+						}
+					}
+				}
+				
+				//Close the dialogue and exit the iframe
+				WebElement button = driver.findElement(By.xpath("//button[normalize-space()='OK']"));
+				if (button.isEnabled() == true) {
+					button.click();
+					Logging.logToConsole("INFO",logEntryPrefix+" DMC company "+action+"ed");
+					}
+					else {
+						driver.findElement(By.xpath("//button[normalize-space()='OK']")).click();
+						driver.switchTo().defaultContent();
+						throw new Exception(logEntryPrefix+" unable to complete" + action + " button not enabled");
+						}//to ensure that we switch out of the iframe at the end regardless
+					
+				driver.switchTo().defaultContent();
+				return paramsMap;
+			}
+		
+	
+	public void careAndHardshipAddButton(String logEntryPrefix) throws Exception {
+		for(int i=0; i<5 ;i++) {
+			try {
+				driver.findElement(By.xpath("//button[normalize-space()='Add']")).click();
+				return;
+				}catch (Exception e){
+					Logging.logToConsole("ERROR",logEntryPrefix + ":  unable to click add button retrying");
+					Thread.sleep(200);}
+			}
+		throw new Exception(logEntryPrefix + ":  ERROR <add> button disabled");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void OpenCareAndHardshipPanel() throws InterruptedException {
 		Logging.logToConsole("INFO","DesktopVulnerabilites/OpenCareAndHardshipPanel: Start");
-		//pageUtils.Scroll(300);
 		pageUtils.closeAnchorPanel();
 		driver.findElement(By.xpath("//div[contains(text(),'Care-Financial Hardship')]")).click();//open arrangement panel
 
 	}
 	
 	public void NewCareAndHardship(String careType, String harshipType) throws Exception {
-		
 		Logging.logToConsole("INFO","DesktopVulnerabilites/NewCareAndHardshipPanel: Start");
-		//pageUtils.Scroll(300);  //open the vulnerabilites panel and scroll to it
 		pageUtils.closeAnchorPanel();
 		// dialogue does not always initialise the first time so the loop is to work around that
 		for(int i=1;i<3 ;i++) {
@@ -95,27 +332,7 @@ PageUtils pageUtils;
 		}
 		return false;
 		
-		/*
-		try {
-		if (driver.findElement(By.xpath("//button[contains(text(),'Add')]")).isEnabled()) { //add button
-			driver.findElement(By.xpath("//button[contains(text(),'Add')]")).click();
-			Thread.sleep(500);
-			boolean editEnabled = driver.findElement(By.xpath("//button[contains(text(),'Edit')]")).isEnabled();
-			if (!editEnabled ) {//|| !careTypeCode.equals(careType) ) {
-				Logging.logToConsole("INFO","DesktopVulnerabilites/SubmitCareAndHardshipRecord: Failed ");
-				Logging.logToConsole("DEBUG","DesktopVulnerabilites/SubmitCareAndHardshipRecord: editEnabled: " + editEnabled );
-				return false;
-			}
-			return true;
-		}
-		return false;
-	} 
-		catch (Exception e) {
-			Logging.logToConsole("INFO","DesktopVulnerabilites/SubmitCareAndHardshipRecord: Error");
-			Logging.logToConsole("ERROR","Error: " + e);
-			return false;
-	}
-		*/
+	
 	}
 	
 

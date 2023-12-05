@@ -1,10 +1,14 @@
 package stepDefinitions;
 
 
+import java.util.HashMap;
+
 import org.junit.Assert;
 import io.cucumber.java.en.*;
 import pageObjects.DesktopVulnerabilites;
+import pageObjects.DesktopCustomers;
 import testComponents.PageUtils;
+import testComponents.StepDefCommonFunctions;
 import utils.Context;
 
 
@@ -12,16 +16,42 @@ import utils.Context;
 public class VulnerableStepDefs {//<Public> extends BaseTest {
 	
 	Context context;
-	DesktopVulnerabilites vulnerabilites;
 	PageUtils pageUtils;
+	StepDefCommonFunctions StepDefCF;
+	DesktopVulnerabilites vulnerabilites;
+	DesktopCustomers customers;
 	
 	public VulnerableStepDefs(Context context)
 	{
 		this.context = context;
-		vulnerabilites = context.getDesktopVulnerabilites();
 		pageUtils = context.getPageUtils();
+		StepDefCF = context.getStepDefCommonFunctions();
+		vulnerabilites = context.getDesktopVulnerabilites();
+		customers = context.getDesktopCustomers();
 	}
 	
+	
+	@Then("^I can \"([^\"]*)\" a Care and Hardship record with the following details$")
+	public void i_can_a_care_and_hardship_record_with_the_following_details(String action, io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and convert variables to real values
+		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+
+		dataMap = StepDefCF.processVariables(dataMap);
+		action = action.toLowerCase();
+		//if a customer is not supplied will default to whatever customer was last used
+		if(!(dataMap.get("customer") == null)) {
+		boolean foundCustomer = customers.selectCustomer(dataMap.get("customer"));	
+		Assert.assertTrue("customer cannot be found" , foundCustomer);
+		}
+		HashMap<String,String> resultsMap = vulnerabilites.careAndHardship(dataMap, action);
+		// check if returned values match expected values
+		if(action.equalsIgnoreCase("check")) {
+			for (String key : dataMap.keySet()) {
+				Assert.assertEquals("Care & Hardship values: " + key, dataMap.get(key), resultsMap.get(key));
+		    }
+		}
+		
+	}
 	
 
 	@When("^I add a new C&H record with care type of \"([^\"]*)\" and hardship of \"([^\"]*)\"$")

@@ -24,6 +24,18 @@ public class PageUtils extends BaseTest {
 
 	}
 	
+	public void updateCheckBox(String set, String xpath) {
+	//helper function to set or unset a check box
+	WebElement inputWebElement = driver.findElement(By.xpath(xpath));
+	Boolean isSelected = inputWebElement.isSelected();
+		if((set.equalsIgnoreCase("true") && isSelected == false) || (set.equalsIgnoreCase("false")&& isSelected == true)) {
+			inputWebElement.click();
+			}
+	}
+	
+	
+	
+	
 	public void handlePopup(String buttonText) {
 		try {
 			tempImplictWait(0);

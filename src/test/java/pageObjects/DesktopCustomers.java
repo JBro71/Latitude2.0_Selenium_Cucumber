@@ -32,8 +32,6 @@ public class DesktopCustomers {
 	public void getCustomers() throws InterruptedException  {
 		Logging.logToConsole("INFO","Desktopcustomers/getCustomers: start");
 		if (pageUtils.testMap.get("customer1") == null) {;
-		//HashMap<String,String> dataMap = new HashMap<String, String>();
-		
 		//scroll the screen to the section with the Customer panel;
 		pageUtils.ReturnHome();
 		pageUtils.defaultImplictWait();
@@ -243,7 +241,8 @@ public class DesktopCustomers {
 			
 			//return resultsMap;
 		}	
-		
+	
+	
 	public boolean selectCustomer(String inputCustomer) throws InterruptedException {
 			// open the customer tab, click on the correct customer and wait for it to open 
 			pageUtils.ReturnHome();
@@ -258,10 +257,11 @@ public class DesktopCustomers {
 				// click on the matching customer then wait for it to open fully
 				if(customer.getText().equalsIgnoreCase(inputCustomer)) {
 					customer.click();
-					for( int i=0; i<=20; i++) {
-						if(i>0) {Thread.sleep(200); }
-					if(compareName(customer.getText())) {return true;}
-					}
+					return true;
+					//for( int i=0; i<=20; i++) {
+						//if(i>0) {Thread.sleep(200); }
+					//if(compareName(customer.getText())) {return true;}
+					//}
 				}
 			}
 		return false;	
