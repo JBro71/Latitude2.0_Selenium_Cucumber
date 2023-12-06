@@ -68,6 +68,18 @@ String logEntryPrefix;
 				
 				//iterate through the keys that have a value and execute them in correct entry order
 
+				WebElement button; 
+				String xpathVar;
+				if(action.equals("add")){
+					button = driver.findElement(By.xpath("//button[@ng-click='vm.add()']"));
+					xpathVar = "newCare";
+				}else {
+					button = driver.findElement(By.xpath("//button[@ng-click='vm.update()']"));
+					xpathVar = "toUpdate";
+				}
+				
+				
+				
 
 				Boolean isSelected;
 				for (String i : entryOrder) {
@@ -80,13 +92,13 @@ String logEntryPrefix;
 							if(action.equals("check")) {
 								
 							}else {
-
+								pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".consent']");
 								}
 						 break; 
 						case "care type":
 							if (action.equals("check")) {
 								
-							}else {
+							}else {//ok
 								Select careTypeDropdown =  new Select(driver.findElement(By.xpath("//select[@name='careType']")));
 								careTypeDropdown.selectByVisibleText(value);
 								}
@@ -94,7 +106,7 @@ String logEntryPrefix;
 						case "financial hardship":
 							if (action.equals("check")) {
 								
-							}else {
+							}else {//ok
 								Select careTypeDropdown =  new Select(driver.findElement(By.xpath("//select[@name='hardshipType']")));
 								careTypeDropdown.selectByVisibleText(value);
 								}
@@ -103,41 +115,41 @@ String logEntryPrefix;
 							if (action.equals("check")) {
 								
 							}else {
-									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.consent']");
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".confirmed']");
 									}
 						 break; 
 						case "care proof requested":
 							if (action.equals("check")) {
 								
 							}else {
-									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.careProofRequested']");
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".careProofRequested']");
 									}
 						 break; 							
 						case "care proof received":
 							if (action.equals("check")) {
 								
 							}else {
-									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.careProofReceived']");
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".careProofReceived']");
 									}
 						 break; 
 						case "financial proof requested":
 							if (action.equals("check")) {
 								
 							}else {
-									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.hardshipProofRequested']");
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".hardshipProofRequested']");
 									}
 						 break; 
 						case "financial proof received":
 							if (action.equals("check")) {
 								
 							}else {
-									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.hardshipProofReceived']");
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".hardshipProofReceived']");
 									}
 						 break; 
 						case "hold days":
 							if (action.equals("check")) {
 								
-							}else {
+							}else {//ok
 								inputWebElement =driver.findElement(By.xpath(holdDaysXpath));
 								inputWebElement.clear();
 								inputWebElement.sendKeys(value);
@@ -146,7 +158,7 @@ String logEntryPrefix;
 						case "status":
 							if(action.equals("check")) {
 								
-							}else {
+							}else {//OK
 								Select careTypeDropdown =  new Select(driver.findElement(By.xpath("//select[@name='Status']")));
 								careTypeDropdown.selectByVisibleText(value);
 								}
@@ -155,28 +167,28 @@ String logEntryPrefix;
 							if(action.equals("check")) {
 								
 							}else {
-								driver.findElement(By.xpath("//select[@name='Status']")).sendKeys(value);
+								driver.findElement(By.xpath("//textarea[@ng-model='vm."+xpathVar+".Comment']")).sendKeys(value);
 								}
 						 break; 
 						case "braile":
 							if (action.equals("check")) {
 								
 							}else {
-									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.braille']");
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".braille']");
 									}
 						 break; 
 						case "large type":
 							if (action.equals("check")) {
 								
 							}else {
-									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.largePrint']");
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".largePrint']");
 									}
 						 break; 
 						case "audio file":
 							if (action.equals("check")) {
 								
 							}else {
-									pageUtils.updateCheckBox(value, "//input[@ng-model='vm.newCare.audioFiles']");
+									pageUtils.updateCheckBox(value, "//input[@ng-model='vm."+xpathVar+".audioFiles']");
 									}
 						 break; 
 						case "prison name":
@@ -220,23 +232,26 @@ String logEntryPrefix;
 						}
 					}
 				}
-				
-				//Close the dialogue and exit the iframe
-				WebElement button = driver.findElement(By.xpath("//button[normalize-space()='OK']"));
-				if (button.isEnabled() == true) {
-					button.click();
-					Logging.logToConsole("INFO",logEntryPrefix+" DMC company "+action+"ed");
+
+							
+				if (!action.equals("check")) {
+					if (button.isEnabled() == true) {
+						button.click();
+						Logging.logToConsole("INFO",logEntryPrefix+" care record "+action+"ed");
+						}
+						else { 
+							button = driver.findElement(By.xpath("//button[@ng-click='vm.close()']"));
+							driver.switchTo().defaultContent();
+							throw new Exception(logEntryPrefix+" unable to "+action+" care record. Button disabled");
+							}
 					}
-					else {
-						driver.findElement(By.xpath("//button[normalize-space()='OK']")).click();
-						driver.switchTo().defaultContent();
-						throw new Exception(logEntryPrefix+" unable to complete" + action + " button not enabled");
-						}//to ensure that we switch out of the iframe at the end regardless
-					
+				
 				driver.switchTo().defaultContent();
 				return paramsMap;
 			}
 		
+	
+	
 	
 	public void careAndHardshipAddButton(String logEntryPrefix) throws Exception {
 		for(int i=0; i<5 ;i++) {
