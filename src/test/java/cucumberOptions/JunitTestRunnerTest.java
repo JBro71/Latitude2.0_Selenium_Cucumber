@@ -12,7 +12,7 @@ import io.cucumber.junit.Cucumber;
 	    glue={"stepDefinitions"},
 	    stepNotifications = true, 
 	    monochrome=true,
-	   	tags = "@editNewDebtManagementCompany",
+	   	tags = "@findVulnerableRecord",
 	    plugin= {"pretty","html:target/cucumberReports"}) //,"json:target/cucumber.json","junit:target/cukes.xml"})
 
 

@@ -1,6 +1,8 @@
 package pageObjects;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,13 +24,126 @@ String logEntryPrefix;
 		this.pageUtils = pageUtils;
 	}
 	
+	
+
+	public int findcareAndHardship(HashMap<String,String> paramsMap) throws Exception  {
+		String account = pageUtils.testMap.get("account");
+		logEntryPrefix= "Account: "+account+" DesktopVulnerabilites/Care&Hardship/find: "; 
+		//try {
+			Logging.logToConsole("INFO",logEntryPrefix+" Start");
+			pageUtils.defaultImplictWait();
+			OpenCareAndHardshipPanel();
+			
+			WebElement buttonPrevious = driver.findElement(By.xpath("(//a[@class='page-link ng-binding'][normalize-space()='Previous'])[3]"));
+			WebElement buttonNext = driver.findElement(By.xpath("(//a[@class='page-link ng-binding'][normalize-space()='Next'])[3]"));
+			// make sure we are at the first page
+			while(!buttonPrevious.getAttribute("disabled").equals("disabled")) {
+				buttonPrevious.click();
+			}
+			
+
+			/*
+			//store element number of each table column in a map
+			String tablePath = "//table[@lat-table='vm.cfhGrid']/tbody/tr/td[";
+			HashMap<String,String> tableMap = new HashMap<String,String>();		
+			tableMap.put("date open", tablePath+1+"]");
+			tableMap.put("status", tablePath+2+"]");
+			tableMap.put("date closed", tablePath+3+"]");
+			tableMap.put("care type", tablePath+3+"]");
+			tableMap.put("financial hardship", tablePath+3+"]");
+			*/
+			
+			//store element number of each table column in a map
+			String tablePath = "//table[@lat-table='vm.cfhGrid']/tbody/tr/td[";
+			HashMap<String,String> tableMap = new HashMap<String,String>();		
+			tableMap.put("date open", "1");
+			tableMap.put("status", "2");
+			tableMap.put("date closed", "3");
+			HashMap<String,String> careMap = new HashMap<String,String>();	
+			careMap.put("care type", "//input[@name='careTypeCode']");
+			careMap.put("financial hardship", "//input[@name='hardshipType']");
+			
+					
+			int pageCount = 0;
+			boolean match = false; // boolean to hold the matchstatus
+			//boolean loop = true; 
+			int matchCount = 0;
+			boolean firstPass = true; // two passes around the loop variable to hold which pass we are on
+			//search for a match until one is found or all the data is checked
+			while (true) {
+				Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": Page: " + pageCount+1);
+				// get the number of rows 	
+				int size = driver.findElements(By.xpath(tablePath+"1]")).size();
+				//look through each row in the table on the current page until a match is found or we run out of rows
+				for(int row = 1; row <= size; row++)	{
+					Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": Row: "+ row+1);	
+					//loop through each entry in the input parameters map and see if it matches the current table row being checked
+					match = true;
+					for (String key : tableMap.keySet()) { //check the table fields for a match
+						WebElement tableField = driver.findElement(By.xpath("("+tablePath+ tableMap.get(key) +"])["+row+"]"));
+						//String value = driver.findElement(By.xpath(tableMap.get(key))).getText();
+						if(paramsMap.get(key).equals(tableField.getText())) {continue;}// if a match then skip to the next loop/value to check
+						match = false;
+						break;
+						}
+					
+					if(match) {
+						for (String key : careMap.keySet()) { // check the non table fields for a match
+							String value = driver.findElement(By.xpath(careMap.get(key))).getText();
+							if(paramsMap.get(key).equals(value)) {continue;}// if a match then skip to the next loop/value to check
+							match = false;
+							break;
+							}
+						}
+					
+					if(match) {
+						if (!firstPass) { //click the match and exit function
+							driver.findElement(By.xpath("("+tablePath+ "1])["+row+"]")).click();
+							return matchCount;
+							}
+						matchCount++;
+						Logging.logToConsole("DEBUG",
+								"DesktopBatchApi/getBatchApi/"+account+": Match Found: "+ " Row: "+(row));
+						}
+					} //row loop	
+
+			if (!buttonNext.getAttribute("disabled").equals("disabled"))
+				{
+				buttonNext.click();
+				pageCount = pageCount+1;
+				}
+				else if (firstPass ) 
+					{//start the second pass reset the pages
+					firstPass = false;
+					while(!buttonPrevious.getAttribute("disabled").equals("disabled")) 
+						{
+						buttonPrevious.click();
+						}
+					pageCount = 0;
+					}
+					else {//next button is disabled and we are at the end of the second pass through. time to quit
+						return matchCount;
+					}
+			
+				} //while loop		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public HashMap<String, String> careAndHardship(HashMap<String,String> paramsMap, String action) throws Exception  {
 			String account = pageUtils.testMap.get("account");
 			logEntryPrefix= "Account: "+account+" DesktopVulnerabilites/Care&Hardship/"+action+": "; 
 			//try {
 				Logging.logToConsole("INFO",logEntryPrefix+" Start");
-				pageUtils.closeAnchorPanel();
-				pageUtils.ReturnHome();
 				pageUtils.defaultImplictWait();
 				Select dropdown;
 
@@ -277,6 +392,7 @@ String logEntryPrefix;
 	public void OpenCareAndHardshipPanel() throws InterruptedException {
 		Logging.logToConsole("INFO","DesktopVulnerabilites/OpenCareAndHardshipPanel: Start");
 		pageUtils.closeAnchorPanel();
+		pageUtils.ReturnHome();
 		driver.findElement(By.xpath("//div[contains(text(),'Care-Financial Hardship')]")).click();//open arrangement panel
 
 	}

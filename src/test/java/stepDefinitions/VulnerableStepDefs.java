@@ -31,6 +31,26 @@ public class VulnerableStepDefs {//<Public> extends BaseTest {
 	}
 	
 	
+	@Then("^I can search for a care record with the following details to check that it \"([^\"]*)\" exist$")
+	public void i_can_search_for_a_care_record_with_the_following_details_to_check_that_it_exist(String action, io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and convert variables to real values
+		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		dataMap = StepDefCF.processVariables(dataMap);
+		action = action.toLowerCase();
+		//if a customer is not supplied will default to whatever customer was last used
+		if(!(dataMap.get("customer") == null)) {
+			boolean foundCustomer = customers.selectCustomer(dataMap.get("customer"));	
+			Assert.assertTrue("customer cannot be found" , foundCustomer);
+			}
+		
+		
+		String careCount = vulnerabilites.findcareAndHardship(dataMap);
+		
+	}
+	
+	
+	
+	
 	@Then("^I can \"([^\"]*)\" a Care and Hardship record with the following details$")
 	public void i_can_a_care_and_hardship_record_with_the_following_details(String action, io.cucumber.datatable.DataTable dataTable) throws Exception {
 		//convert dataTable to Hashmap and convert variables to real values
