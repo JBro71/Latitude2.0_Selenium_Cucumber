@@ -39,15 +39,38 @@ Feature: Latitude 2.0 Vulnerabilites
  	|Count										|1										| |	Expected number of matching records																																								|
   |Customer									|Miss August Rowe			| |	Case Sensitive name of customer or $customerName,1 or 2	e.g.$customerName,1			|
  	|Care Type								|Prison								| |																																									|
- 	|Financial Hardship				|Debt Moratorium			| |																																									|
 	|Date Open								|06/12/2023						|	|	date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 		|
- 	|Status										|       							| |																																									|
- 	|Date Closed							|06/12/2023						|	|	date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 		|
-
-
-
-
-
+ 	|Status										|proof confirmed			| |																																									|
+	|Date Closed							|											|	|	date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 		|
+ 	|Care Type								|Prison								|X|																																									|
+	|Financial Hardship				|Debt Moratorium			|X|																																									|
+ Then I can check the selected Care and Hardship record contains the following details
+ #|FIELD NAME								|VALUE								|M|NOTES																																						|
+ 	|Care Type								|Prison								|X|																																									|
+	|Financial Hardship				|Debt Moratorium			|X|																																									|
+ 	|Have Consent							|true									|	|																																									|
+ 	|Confirmed Care						|true									|	|																																									| 
+ 	|times in care						|6										|	|																																									|
+ 	|Care Proof Required			|true									|	|																																									| 			
+ 	|Care Proof Requested			|true									|	|																																									| 	
+ 	|Care Proof Received			|true									|	|																																									| 
+ 	|Financial Proof Required	|true									|	|																																									| 
+ 	|Financial Proof Requested|true									|	|																																									| 
+  |Financial Proof Received	|true									|	|																																									|	 		
+  |Hold Days								|372									|	|																																									|
+  |hold days approved				|true									|	|																																									|
+  |Expiration Date					|12/12/2024						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|		
+ 	|Status										|proof confirmed			|	|																																									|
+ 	|Closed Date							|											|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|			
+ 	|Comments									|new comment					|	|																																									|
+ 	|Braile										|false								|	|																																									|
+ 	|Large Type								|false								|	|																																									| 
+  |Audio File								|false								|	|																																									|	
+  |Prison Name							|Slade								|	|																																									|	 
+  |Prison Number						|123456								|	|																																									|	
+  |Sentence Date						|01/01/2223						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
+  |Release Date							|12/12/2024						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
+  |Prison Informant					|No										|	|																																									|	
 
 
 

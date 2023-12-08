@@ -37,6 +37,7 @@ public class StepDefCommonFunctions extends BaseTest {
 		for (String key : dataMap.keySet()) {
 			// check the value is not empty
 			if (dataMap.get(key)== null){
+				dataMap.put(key,"");
 				continue;
 			}
 			//iterate over map and split by "," looking for "customer" variables

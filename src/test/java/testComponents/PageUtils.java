@@ -33,6 +33,11 @@ public class PageUtils extends BaseTest {
 			}
 	}
 	
+	public String checkCheckBox(String xpath) {		
+		boolean temp = driver.findElement(By.xpath(xpath)).isSelected();
+	if(driver.findElement(By.xpath(xpath)).isSelected()) {return "true";}
+	return "false";
+	}
 	
 	
 	

@@ -2,7 +2,6 @@ package stepDefinitions;
 
 
 import java.util.HashMap;
-
 import org.junit.Assert;
 import io.cucumber.java.en.*;
 import pageObjects.DesktopVulnerabilites;
@@ -30,6 +29,22 @@ public class VulnerableStepDefs {//<Public> extends BaseTest {
 		customers = context.getDesktopCustomers();
 	}
 	
+	@Then("I can check the selected Care and Hardship record contains the following details")
+	public void i_can_check_the_selected_care_and_hardship_record_contains_the_following_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and convert variables to real values
+		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		dataMap = StepDefCF.processVariables(dataMap);
+		HashMap<String,String> resultsMap = vulnerabilites.careAndHardship(dataMap, "check");
+		// check if returned values match expected values
+
+			for (String key : dataMap.keySet()) {
+				
+
+				Assert.assertEquals("Care & Hardship values: " + key, dataMap.get(key), resultsMap.get(key));
+		    }
+	}
+	
+	
 	
 	@Then("^I can search for a care record with the following details to check that it \"([^\"]*)\" exist$")
 	public void i_can_search_for_a_care_record_with_the_following_details_to_check_that_it_exist(String action, io.cucumber.datatable.DataTable dataTable) throws Exception {
@@ -42,13 +57,13 @@ public class VulnerableStepDefs {//<Public> extends BaseTest {
 			boolean foundCustomer = customers.selectCustomer(dataMap.get("customer"));	
 			Assert.assertTrue("customer cannot be found" , foundCustomer);
 			}
-		
-		
-		String careCount = vulnerabilites.findcareAndHardship(dataMap);
-		
+		int careCount = vulnerabilites.findcareAndHardship(dataMap);
+		int expectedCount = careCount;
+		try {
+		expectedCount = Integer.parseInt(dataMap.get("count"));
+		}catch (Exception e) {}
+		Assert.assertEquals("Number of Matching Care and Hardship Records: ", expectedCount, careCount);
 	}
-	
-	
 	
 	
 	@Then("^I can \"([^\"]*)\" a Care and Hardship record with the following details$")
@@ -63,14 +78,7 @@ public class VulnerableStepDefs {//<Public> extends BaseTest {
 		boolean foundCustomer = customers.selectCustomer(dataMap.get("customer"));	
 		Assert.assertTrue("customer cannot be found" , foundCustomer);
 		}
-		HashMap<String,String> resultsMap = vulnerabilites.careAndHardship(dataMap, action);
-		// check if returned values match expected values
-		if(action.equalsIgnoreCase("check")) {
-			for (String key : dataMap.keySet()) {
-				Assert.assertEquals("Care & Hardship values: " + key, dataMap.get(key), resultsMap.get(key));
-		    }
-		}
-		
+		vulnerabilites.careAndHardship(dataMap, action);
 	}
 	
 
