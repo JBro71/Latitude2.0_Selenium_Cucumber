@@ -252,8 +252,8 @@ public class PageUtils extends BaseTest {
 						}
 					matchCount++;	
 					resultsMap.put("numberOfMatches", matchCount);					
-					resultsMap.put("matchPage"+page, page);
-					resultsMap.put("matchRow"+row, row);
+					resultsMap.put("matchPage"+matchCount, page);
+					resultsMap.put("matchRow"+matchCount, row);
 					Logging.logToConsole("DEBUG",logEntryPrefix+": Match Found: "+"page" + page + " Row: "+ row);
 					}
 				} //row loop	

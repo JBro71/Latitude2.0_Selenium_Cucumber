@@ -6,9 +6,9 @@ Feature: Email
   Given I am logged into the Latitude Desktop
 
 
-	@email @amendACustomer
+	@addEmail
   Scenario:  Adding an Email Address
-   Given  I have account "LB78012617239" open in Latitude																													|					   
+  Given  I have account "LB78012617239" open in Latitude				   
 	Then I can add an email address for "$customerName,1" 
    #|FIELD NAME						|VALUE													|M|NOTES																												|
    	|Email Address				|debtor1email1@email.com				|X|																															|				
@@ -19,6 +19,33 @@ Feature: Email
 		|Consent to Email			|true														|	|true/false																										|
 		|Obtained From				|$customerName,2								| |name of customer or $customerName,1 or 2	e.g.$customerName,1	|
 		|Method								|written												|	|written/verbal																								|
-		|Comments							|this is a comment							|	|																															|					   
-    
-    
+		|Comments							|this is a comment							|	|																															|					   	
+		
+		
+		@findEmailAddress
+ 	 Scenario: Creating Care and Hardship records
+   Given  I have account "LB78012617239" open in Latitude
+   Then I can search for an email address with following details
+	 #|FIELD NAME						|VALUE													|M|NOTES																												|
+		|Count								|1															|X|																															|		 
+	 	|Email Address				|debtor1email4@email.com				|X|																															|				
+		|Contact							|Mrs Ciaran Colon								|X|name of customer or $customerName,1 or 2	e.g.$customerName,1	|		
+		|Primary							|false													|X|																															|	
+		|Type									|Home														|X|																															|							
+		|Consent							|true														|X|																															|	
+		|Correspondence				|false													|X|																															|	
+		|Status								|true														|X|true = good, false = bad																			|										
+   Then I can update the email address above with following details
+   #|FIELD NAME						|VALUE													|M|NOTES																												|
+    |Type									|Work														|X|case sensitive																								|						
+ 		|Status								|Bad														|X|case sensitive																								|
+		|Is Primary						|false													|	|true/false																										|
+		|Is Correspondence		|false													|	|true/false																										|
+		|Consent to Email			|false													|	|true/false																										|
+		|Obtained From				|$customerName,2								| |name of customer or $customerName,1 or 2	e.g.$customerName,1	|
+		|Method								|verbal													|	|written/verbal																								|
+		|Comments							|new Comment										|	|																															|
+		
+		
+		
+		
