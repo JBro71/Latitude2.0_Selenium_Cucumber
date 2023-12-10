@@ -8,7 +8,7 @@ Feature: Latitude 2.0 Vulnerabilites
   @addVulnerable 
   Scenario: Creating Care and Hardship records
    Given  I have account "LB78012617239" open in Latitude
-   Then I can "Add" a Care and Hardship record with the following details
+   Then I can add a Care and Hardship record with the following details
  #|FIELD NAME								|VALUE								|M|NOTES																																						|
   |Customer									|Miss August Rowe			|X|	Case Sensitive name of customer or $customerName,1 or 2	e.g.$customerName,1			|
  	|Care Type								|Prison								|X|																																									|
@@ -31,10 +31,10 @@ Feature: Latitude 2.0 Vulnerabilites
   |Release Date							|12/12/2024						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
   |Prison Informant					|No										|	|																																									|	
 
-	@findVulnerableRecord
+	@findVulnerableRecordAndCheck
   Scenario: Creating Care and Hardship records
    Given  I have account "LB78012617239" open in Latitude
-   Then I can search for a care record with the following details to check that it "does" exist
+   Then I can search for a care record with the following details
  #|FIELD NAME								|VALUE								|M|NOTES																																						|
  	|Count										|1										| |	Expected number of matching records																																								|
   |Customer									|Miss August Rowe			| |	Case Sensitive name of customer or $customerName,1 or 2	e.g.$customerName,1			|
@@ -71,6 +71,48 @@ Feature: Latitude 2.0 Vulnerabilites
   |Sentence Date						|01/01/2223						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
   |Release Date							|12/12/2024						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
   |Prison Informant					|No										|	|																																									|	
+
+
+@findVulnerableRecordAndUpdate
+  Scenario: Creating Care and Hardship records
+   Given  I have account "LB78012617239" open in Latitude
+   Then I can search for a care record with the following details
+ #|FIELD NAME								|VALUE								|M|NOTES																																						|
+ 	|Count										|1										| |	Expected number of matching records																																								|
+  |Customer									|Miss August Rowe			| |	Case Sensitive name of customer or $customerName,1 or 2	e.g.$customerName,1			|
+ 	|Care Type								|Prison								| |																																									|
+	|Date Open								|06/12/2023						|	|	date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 		|
+ 	|Status										|proof confirmed			| |																																									|
+	|Date Closed							|											|	|	date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 		|
+ 	|Care Type								|Prison								|	|																																									|
+	|Financial Hardship				|Debt Moratorium			|	|																																									|
+ And I can update the Care and Hardship record with the following details
+ #|FIELD NAME								|VALUE								|M|NOTES																																						|
+ 	|Care Type								|Prison								|	|																																									|
+	|Financial Hardship			|Debt Moratorium				|	|																																									|
+ 	|Have Consent							|false								|	|																																									|
+ 	|Confirmed Care						|false								|	|																																									| 	
+ 	|Care Proof Requested			|false								|	|																																									| 	
+ #	|Care Proof Received			|false								|	|																																									| 
+ 	|Financial Proof Requested|false								|	|																																									| 
+ # |Financial Proof Received	|false								|	|																																									|	 		
+  |Hold Days								|10										|	|																																									|
+  |hold days approved				|false								|	|																																									|
+ 	|Status										|Proof Un-Confirmed		|	|																																									|
+ 	|Comments									|edit comment					|	|																																									|
+ 	|Braile										|true									|	|																																									|
+ 	|Large Type								|true									|	|																																									| 
+  |Audio File								|true									|	|																																									|	
+  |Prison Name							|Swansea							|	|																																									|	 
+  |Prison Number						|456987								|	|																																									|	
+  |Sentence Date						|01/12/2223						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
+  |Release Date							|12/12/2025						|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY 			|	
+  |Prison Informant					|Yes									|	|																																									|	
+
+
+
+
+
 
 
 

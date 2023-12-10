@@ -30,6 +30,21 @@ public class EmailStepDefs {
 	}
 	
 	
+	@Then("I can search for an Email adresss with following details")
+	public void i_can_search_for_an_email_adresss_with_following_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and convert variables to real values
+		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		dataMap = StepDefCF.processVariables(dataMap);
+	
+		int actualCount = desktopEmail.findemailAddress(dataMap);
+		int expectedCount = actualCount;
+		try {
+		expectedCount = Integer.parseInt(dataMap.get("count"));
+		}catch (Exception e) {}
+		Assert.assertEquals("Number of Matching Email Address's : ", expectedCount, actualCount);
+		
+	}
+	
 
 	@Then("^I can add an email address for \"([^\"]*)\"$")
 	public void i_can_add_and_email_address_for(String customer, io.cucumber.datatable.DataTable dataTable) throws Exception {

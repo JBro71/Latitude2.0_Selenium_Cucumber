@@ -49,6 +49,7 @@ String logEntryPrefix;
 			tableMap.put("date open", "1");
 			tableMap.put("status", "2");
 			tableMap.put("date closed", "3");
+			
 			HashMap<String,String> careMap = new HashMap<String,String>();	
 			careMap.put("care type", "//input[@name='careTypeCode']");
 			careMap.put("financial hardship", "//input[@name='hardshipType']");
@@ -61,12 +62,12 @@ String logEntryPrefix;
 			boolean firstPass = true; // two passes around the loop variable to hold which pass we are on
 			//search for a match until one is found or all the data is checked
 			while (true) {
-				Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": Page: " + (pageCount+1));
+				Logging.logToConsole("DEBUG",logEntryPrefix+": Page: " + (pageCount+1));
 				// get the number of rows 	
 				int size = driver.findElements(By.xpath(tablePath+"1]")).size();
 				//look through each row in the table on the current page until a match is found or we run out of rows
 				for(int row = 1; row <= size; row++)	{
-					Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": Row: "+ row);	
+					Logging.logToConsole("DEBUG",logEntryPrefix+": Row: "+ row);	
 					//loop through each entry in the input parameters map and see if it matches the current table row being checked
 					match = true;
 					for (String key : tableMap.keySet()) { //check the table fields for a match
@@ -128,8 +129,6 @@ String logEntryPrefix;
 	}
 	
 	
-	
-	
 	public HashMap<String, String> careAndHardship(HashMap<String,String> paramsMap, String action) throws Exception  {
 			String account = pageUtils.testMap.get("account");
 			logEntryPrefix= "Account: "+account+" DesktopVulnerabilites/Care&Hardship/"+action+": "; 
@@ -181,7 +180,8 @@ String logEntryPrefix;
 				if(action.equals("add")){
 					button = driver.findElement(By.xpath("//button[@ng-click='vm.add()']"));}
 					else if (action.equals("check")){}
-						else {
+						else {//update
+							driver.findElement(By.xpath("//button[@ng-click='vm.editCareRecord()']")).click();
 							button = driver.findElement(By.xpath("//button[@ng-click='vm.update()']"));
 							xpathVar = "toUpdate";
 							}
@@ -304,9 +304,11 @@ String logEntryPrefix;
 						case "comments":
 							if(action.equals("check")) {
 								resultsMap.put(i,driver.findElement(By.xpath("//textarea[@ng-model='vm.selectedRow.comment']")).getAttribute("value"));		
-							}else {
+							}else if (action.equals("add")) {
 								driver.findElement(By.xpath("//textarea[@ng-model='vm."+xpathVar+".Comment']")).sendKeys(value);
-								}
+								}else {//f**k up by Genysis. "Comment" in the add box but "comment" in the update box :o(
+									driver.findElement(By.xpath("//textarea[@ng-model='vm."+xpathVar+".comment']")).sendKeys("\n "+ value);
+									}
 						 break; 
 						case "braile":
 							if (action.equals("check")) {
@@ -334,6 +336,7 @@ String logEntryPrefix;
 							if(action.equals("check")) {
 								resultsMap.put(i,inputWebElement.getAttribute("value"));		
 							}else {
+								inputWebElement.clear();
 								inputWebElement.sendKeys(value);
 								}
 						 break; 
@@ -342,6 +345,7 @@ String logEntryPrefix;
 							if(action.equals("check")) {
 								resultsMap.put(i,inputWebElement.getAttribute("value"));		
 							}else {
+								inputWebElement.clear();
 								inputWebElement.sendKeys(value);
 								}
 						 break; 
@@ -350,6 +354,7 @@ String logEntryPrefix;
 							if(action.equals("check")) {
 								resultsMap.put(i,inputWebElement.getAttribute("value"));		
 							}else {
+								inputWebElement.clear();
 								inputWebElement.sendKeys(value);
 								}
 						 break; 
@@ -358,6 +363,7 @@ String logEntryPrefix;
 							if(action.equals("check")) {
 								resultsMap.put(i,inputWebElement.getAttribute("value"));		
 							}else {
+								inputWebElement.clear();
 								inputWebElement.sendKeys(value);
 								}
 						 break; 
@@ -366,6 +372,7 @@ String logEntryPrefix;
 							if(action.equals("check")) {
 								resultsMap.put(i,inputWebElement.getAttribute("value"));		
 							}else {
+								inputWebElement.clear();
 								inputWebElement.sendKeys(value);
 								}
 						 break; 
