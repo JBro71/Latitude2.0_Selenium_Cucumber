@@ -26,14 +26,14 @@ public class PageUtils extends BaseTest {
 	
 	public void updateCheckBox(String set, String xpath) throws Exception {
 	//helper function to set or unset a check box
-		try {
+		//try {
 	WebElement inputWebElement = driver.findElement(By.xpath(xpath));
 	Boolean isSelected = inputWebElement.isSelected();
 		if((set.equalsIgnoreCase("true") && isSelected == false) || (set.equalsIgnoreCase("false")&& isSelected == true)) {
 			inputWebElement.click();
 			}
-		}catch (Exception e) { 
-			throw new Exception("updateCheckBox "+ testMap.get("account")+" :  unable to update " + xpath);}
+		//}catch (Exception e) { 
+			//throw new Exception("updateCheckBox "+ testMap.get("account")+" :  unable to update " + xpath);}
 	}
 	
 	public String checkCheckBox(String xpath) {		

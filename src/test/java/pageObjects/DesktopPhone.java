@@ -31,7 +31,7 @@ public class DesktopPhone {
 		}
 	
 
-		public void updateEmailAddress(int row, HashMap<String,String> paramsMap) throws Exception  {
+		public void updatePhoneNumber(int row, HashMap<String,String> paramsMap) throws Exception  {
 
 		String logEntryPrefix= "Account: "+pageUtils.testMap.get("account")+" DesktopEmail/Email/update: "; 
 		//try {
@@ -114,40 +114,36 @@ public class DesktopPhone {
 		}
 				
 		
-		
 		public void phone(String action, HashMap<String,String> paramsMap, int row) throws Exception  {
-		String logEntryPrefix= "Account: "+pageUtils.testMap.get("account")+" DesktopPhone/phone: "; 
-		Boolean check = false;
-		
-		Logging.logToConsole("INFO",logEntryPrefix+" start");
-		pageUtils.ReturnHome();
-		 
-		switch (action.toLowerCase()) {
-		case "add":
-			pageUtils.openLowerPanel("Phones");
-			driver.findElement(By.xpath("//a[@ng-click='vm.openAddPhone(vm.phoneTableData)']")).click();
-			break;
-		case "update":
-			pageUtils.Scroll(300);
-			driver.findElement(By.xpath("("+tablePath+"1])["+row+"]/div/a[2]")).click();
-			String path = "("+tablePath+"1])["+row+"]/div/a";
-			driver.switchTo().activeElement();
-			driver.findElement(By.xpath("(//ul[@class='dropdown-menu show'])[1]/li[1]/a")).click();
-			break;
-		case "check":
-			check = true;
-			break;
-			}
+			String logEntryPrefix= "Account: "+pageUtils.testMap.get("account")+" DesktopPhone/phone: "; 
+			Boolean check = false;
+			
+			Logging.logToConsole("INFO",logEntryPrefix+" start");
+			pageUtils.ReturnHome();
+			 
+			switch (action.toLowerCase()) {
+			case "add":
+				pageUtils.openLowerPanel("Phones");
+				driver.findElement(By.xpath("//a[@ng-click='vm.openAddPhone(vm.phoneTableData)']")).click();
+				break;
+			case "update":
+				pageUtils.Scroll(300);
+				driver.findElement(By.xpath("("+tablePath+"1])["+row+"]/lat-phone-actions/div/div/div")).click();
+				//String path = "("+tablePath+"1])["+row+"]/div/a";
+				driver.switchTo().activeElement();
+				driver.findElement(By.xpath("//body/div[@class='dropdown-menu']/div[1]/a[1]")).click();
+				break;
+				}
 				
 		// order in which the data should be entered
 		String[] entryOrder = {"phone number","phone extension","type","status","customer on account","name","on hold",
-				"hold expiration date","is correspondence","consent to call","consent to auto dial","consent to sms",
-				"consent to fax","obtained from","method","comments"};
+				"is correspondence","consent to call","consent to auto dial","consent to sms",
+				"consent to fax","obtained from","method","comments","hold expiration date"};
 
 		//iterate through the keys that have a value and execute them in correct entry order
-		Select dropdown;		
-		WebElement inputWebElement; // temp element to hold values in case statement
-		Boolean isSelected;
+		//Select dropdown;		
+		//WebElement inputWebElement; // temp element to hold values in case statement
+		//Boolean isSelected;
 		for (String i : entryOrder) {
 			String value = paramsMap.get(i);
 			if (value != null )
@@ -162,30 +158,34 @@ public class DesktopPhone {
 					
 					break; 
 				case "type":
-					driver.findElement(By.xpath("//div[@ng-model='vm.newPhone.typeId']")).click();
-					driver.findElement(By.xpath("//div[@ng-model='vm.newPhone.typeId']//input[@ng-model='$select.search']")).sendKeys(value);
+					//div[@ng-model='vm.newPhone.typeId']
+					driver.findElement(By.xpath("//div[@name='type']")).click();
+					driver.findElement(By.xpath("//div[@name='type']//input[@ng-model='$select.search']")).sendKeys(value);
 					driver.findElement(By.xpath("(//li[@class='ui-select-choices-group'])[1]/ul/li[1]")).click();
 					break;
 				case "status":
-					driver.findElement(By.xpath("//div[@ng-model='vm.newPhone.statusId']")).click();
-					driver.findElement(By.xpath("//div[@ng-model='vm.newPhone.statusId']//input[@ng-model='$select.search']")).sendKeys(value);
+					//div[@ng-model='vm.newPhone.statusId']
+					driver.findElement(By.xpath("//div[@name='status']")).click();
+					driver.findElement(By.xpath("//div[@name='status']//input[@ng-model='$select.search']")).sendKeys(value);
 					driver.findElement(By.xpath("(//li[@class='ui-select-choices-group'])[2]/ul/li[1]")).click();
 					break;
 				case "customer on account":
-					driver.findElement(By.xpath("//div[@ng-model='vm.newPhone.partyId']")).click();
-					driver.findElement(By.xpath("//div[@ng-model='vm.newPhone.partyId']//input[@ng-model='$select.search']")).sendKeys(value);
+					//div[@ng-model='vm.newPhone.partyId']
+					driver.findElement(By.xpath("//div[@name='debtor']")).click();
+					driver.findElement(By.xpath("//div[@name='debtor']//input[@ng-model='$select.search']")).sendKeys(value);
 					driver.findElement(By.xpath("(//li[@class='ui-select-choices-group'])[3]/ul/li[1]")).click();
 					break;	
 				case "name":
 					driver.findElement(By.xpath("//input[@name='name']")).sendKeys(value);
 					break; 
 				case "on hold":
-					pageUtils.updateCheckBox(value, "//div[@ng-model='vm.newPhone.partyId']");
+					//div[@ng-model='vm.newPhone.partyId']
+					pageUtils.updateCheckBox(value, "//input[@name='onHold']");
 					break; 
 				case "hold expiration date":
 					driver.findElement(By.xpath("//input[@id='dateHoldExpires']")).sendKeys(value);
 					break; 
-				case "is correspondence":
+				case "is correspondence":			
 					pageUtils.updateCheckBox(value, "//input[@name='chkCorrespondence']");
 					pageUtils.handlePopup("OK");
 					break;				

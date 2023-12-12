@@ -30,13 +30,13 @@ public class PhoneStepDefs {
 		StepDefCF = context.getStepDefCommonFunctions();
 	}
 	
-	/*
-	@Then("I can update the email address above with following details")
-	public void i_can_update_the_email_address_above_with_following_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
+	
+	@Then("I can update the phone number above with following values")
+	public void i_can_update_the_phone_number_above_with_following_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
 	//convert dataTable to Hashmap and convert variables to real values
 	HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
 	dataMap = StepDefCF.processVariables(dataMap);
-	// get the email address identified in email search step error if not present
+	// get the phone number identified in phone number search step error if not present
 	int row = 0;
 	try {
 		row = resultsMap.get("matchRow1");
@@ -44,18 +44,18 @@ public class PhoneStepDefs {
 		catch (Exception e) {throw new Exception(
 			"updateEmail "+ pageUtils.testMap.get("account")+" :  no email address identified to update");
 			}	
-	//desktopEmail.email("update",dataMap,row);
+	desktopPhone.phone("update",dataMap,row);
 	}
 
-	
-	@Then("I can update email address {string} belonging to {string}")
-	public void i_can_update_email_address_belonging_to(String emailAddress, String customer, io.cucumber.datatable.DataTable dataTable) throws Exception {
+	/*
+	@Then("I can update phone number {string} belonging to {string}")
+	public void i_can_update_phone_number_belonging_to(String phoneNumber, String customer, io.cucumber.datatable.DataTable dataTable) throws Exception {
 	//convert dataTable to Hashmap and convert variables to real values
 	HashMap<String,String> dataMapFind = new HashMap<String,String>();
-	dataMapFind.put("email address", emailAddress);
-	dataMapFind.put("contact", customer);
+	dataMapFind.put("number", phoneNumber);
+	dataMapFind.put("customer", customer);
 	dataMapFind = StepDefCF.processVariables(dataMapFind);
-	//resultsMap= desktopEmail.findemailAddress(dataMapFind);	
+	resultsMap= desktopPhone.findPhoneNumber(dataMapFind);	
 	
 	HashMap<String,String> dataMapUpdate = StepDefCF.convertDataTableToMap(dataTable);
 	dataMapUpdate = StepDefCF.processVariables(dataMapUpdate);
@@ -67,12 +67,11 @@ public class PhoneStepDefs {
 		catch (Exception e) {throw new Exception(
 			"updateEmail "+ pageUtils.testMap.get("account")+" :  no email address identified to update");
 			}	
-	//desktopEmail.email("update",dataMapUpdate,row);
+	desktopPhone.phone("update",dataMapUpdate,row);
 	}
-	
-	
-	
 	*/
+	
+	
 	@Then("I can search for a phone number with following details")
 	public void i_can_search_for_a_phone_number_with_following_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
 		//convert dataTable to Hashmap and convert variables to real values
