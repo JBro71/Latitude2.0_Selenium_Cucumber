@@ -1,4 +1,3 @@
-
 @DMC
 Feature: DMC
   Feature file for adding, amending or deleting DMC

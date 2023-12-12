@@ -23,6 +23,7 @@ public class Context extends BaseTest {
 	private DesktopCommunications desktopCommunications;
 	private DesktopCustomers desktopCustomers;
 	private DesktopEmail desktopEmail;
+	private DesktopPhone desktopPhone;
 	private StepDefCommonFunctions stepDefCommonFunctions;
 	private DesktopBatchApi desktopBatchApi;
 	
@@ -205,6 +206,15 @@ public class Context extends BaseTest {
 			desktopEmail = new DesktopEmail(driver, pageUtils);
 		}
 		return desktopEmail;
+	} 
+	
+	public DesktopPhone getDesktopPhone()
+	{
+		if(desktopPhone==null)
+		{
+			desktopPhone = new DesktopPhone(driver, pageUtils);
+		}
+		return desktopPhone;
 	} 
 	
 	public DesktopBatchApi getDesktopBatchApi()

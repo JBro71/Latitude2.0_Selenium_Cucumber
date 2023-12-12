@@ -149,7 +149,8 @@ public class PageUtils extends BaseTest {
 	public void openLowerPanel(String panelName) throws Exception { 
 		//open the named lower panel
 		Scroll(200);
-		driver.findElement(By.xpath("//button[normalize-space()='Available Panels']")).click();
+		//button[normalize-space()='Available Panels']
+		driver.findElement(By.xpath("//div[@class='custom-panel-menu']/div/button")).click();
 		List<WebElement> menu = driver.findElements(By.xpath("//div[@class='dropdown-menu show']/div/a"));
 		for (WebElement menuItem : menu) {
 		try {
@@ -177,6 +178,7 @@ public class PageUtils extends BaseTest {
 		String logEntryPrefix= "Account: "+testMap.get("account")+" PageUtils/"+dataMap.get("function")+"/find: "; 
 		HashMap<String,Integer> resultsMap = new HashMap<String,Integer>();	
 		resultsMap.put("numberOfMatches", 0);
+		String field1Xpath = "("+dataMap.get("tablePath")+"1])[1]";
 		WebElement buttonPrevious = driver.findElement(By.xpath(dataMap.get("buttonPrevious")));
 		WebElement buttonNext = driver.findElement(By.xpath(dataMap.get("buttonNext")));
 		// make sure we are at the first page
@@ -203,8 +205,8 @@ public class PageUtils extends BaseTest {
 					WebElement tableField = driver.findElement(By.xpath(tableFieldString));
 					//String value = driver.findElement(By.xpath(tableMap.get(key))).getText();
 					Logging.logToConsole("INFO",logEntryPrefix+" Key: " + key);
-					Logging.logToConsole("INFO",logEntryPrefix+" Table text: " + tableField.getText());
-					Logging.logToConsole("INFO",logEntryPrefix+" pramsMap value: " + paramsMap.get(key));
+					Logging.logToConsole("INFO",logEntryPrefix+" Table text:" + tableField.getText());
+					Logging.logToConsole("INFO",logEntryPrefix+" pramsMap value:" + paramsMap.get(key));
 					
 					//try {
 					if(paramsMap.containsKey(key) == false) {continue;}// don't need to check that value so skip
@@ -220,14 +222,14 @@ public class PageUtils extends BaseTest {
 						if(paramsMap.get(key).equals(tableField.getText())) {continue;}	
 						break;
 					case "colour":
+						WebElement tempElement = driver.findElement(By.xpath(tableFieldString+tableMap.get(key)[2]));
 						String tableFieldClass = driver.findElement(By.xpath(tableFieldString+tableMap.get(key)[2])).getAttribute("style");
 						if (paramsMap.get(key).equalsIgnoreCase("true")&& tableFieldClass.contains("green") ||
 								paramsMap.get(key).equalsIgnoreCase("false")&& tableFieldClass.contains("red")) 
 						{
 						continue;	
 						}
-						
-						
+						WebElement tempElement2 = driver.findElement(By.xpath(tableFieldString+tableMap.get(key)[2]));
 						break;
 					}
 						//}catch(Exception E) {}
@@ -260,19 +262,43 @@ public class PageUtils extends BaseTest {
 
 		if (!buttonNext.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText")))
 			{
+			String before = driver.findElement(By.xpath(field1Xpath)).getText();
+			Logging.logToConsole("INFO",logEntryPrefix+" before" + before);
 			buttonNext.click();
 			page++;
-			}
-			else if (firstPass ) 
+			// pages are sometimes slow to load. this code ensures page is fully loaded before moving on
+			for(int i=0; i<20; i++) {
+				try {
+					String after = driver.findElement(By.xpath(field1Xpath)).getText();
+					Logging.logToConsole("INFO",logEntryPrefix+" after" + after);
+					if(!before.equals(after)) {break;}
+					}catch(Exception e) {Logging.logToConsole("INFO",logEntryPrefix+" Error stale element");}
+				Thread.sleep(100);
+				Logging.logToConsole("INFO",logEntryPrefix+" Waiting for next table page to load ");
+				}
+			
+			} else if (firstPass ) 
 				{//start the second pass reset the pages
 				firstPass = false;
-				while(!buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) 
-					{
-					buttonPrevious.click();
+				if(page > 1) {
+					page = 1;
+					String before = driver.findElement(By.xpath(field1Xpath)).getText();	
+					while(!buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) 
+						{
+						buttonPrevious.click();
+						}
+					// pages are sometimes slow to load. this code ensures page is fully loaded before moving on
+					for(int i=0; i<20; i++) {
+						try {
+						String after = driver.findElement(By.xpath(field1Xpath)).getText();
+						Logging.logToConsole("INFO",logEntryPrefix+" after" + after);
+						if(!before.equals(after)) {break;}
+						}catch(Exception e) {Logging.logToConsole("INFO",logEntryPrefix+" Error stale element");}
+						Thread.sleep(100);
+						Logging.logToConsole("INFO",logEntryPrefix+" Waiting for next table page to load ");
+						}	
 					}
-				page = 0;
-				}
-				else {//next button is disabled and we are at the end of the second pass through. time to quit
+				}else {//next button is disabled and we are at the end of the second pass through. time to quit
 					return resultsMap;
 				}
 		

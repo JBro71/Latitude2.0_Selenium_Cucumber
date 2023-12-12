@@ -13,6 +13,7 @@ Feature: Checking The Anchor panels
 	#can use variables including $date,+N,FORMAT, $customerName,N
 	
 	
+	
 		  Scenario:  Checking the Account Status panel for multiple items
     Given I have account "LB3383867165" open in Latitude
 		Then the anchor panels will display the following values

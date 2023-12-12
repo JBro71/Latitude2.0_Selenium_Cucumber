@@ -218,7 +218,7 @@ public class DesktopEmail {
 				if(value.equalsIgnoreCase("written")) {
 					driver.findElement(By.xpath("//input[@id='consentWritten']")).click();
 					}else if (value.equalsIgnoreCase("verbal")){
-						inputWebElement = driver.findElement(By.xpath("//input[@id='consentVerbal']"));					
+						driver.findElement(By.xpath("//input[@id='consentVerbal']")).click();					
 					}
 				break;	
 			case "comments":
