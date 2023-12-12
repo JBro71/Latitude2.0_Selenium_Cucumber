@@ -47,7 +47,7 @@ public class PhoneStepDefs {
 	desktopPhone.phone("update",dataMap,row);
 	}
 
-	/*
+	
 	@Then("I can update phone number {string} belonging to {string}")
 	public void i_can_update_phone_number_belonging_to(String phoneNumber, String customer, io.cucumber.datatable.DataTable dataTable) throws Exception {
 	//convert dataTable to Hashmap and convert variables to real values
@@ -69,7 +69,7 @@ public class PhoneStepDefs {
 			}	
 	desktopPhone.phone("update",dataMapUpdate,row);
 	}
-	*/
+	
 	
 	
 	@Then("I can search for a phone number with following details")
