@@ -149,7 +149,7 @@ public class DesktopEmail {
 			driver.findElement(By.xpath("//a[@ng-click='vm.openAddEmailDialog()']")).click();
 			break;
 		case "update":
-			pageUtils.Scroll(300);
+			pageUtils.scrollTo(300);
 			driver.findElement(By.xpath("("+tablePath+"1])["+row+"]/div/a[2]")).click();
 			String path = "("+tablePath+"1])["+row+"]/div/a";
 			driver.switchTo().activeElement();

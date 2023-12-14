@@ -33,7 +33,7 @@ public class DesktopArrangements {
 		//ensure all the keys in the map are lower case	
 		HashMap<String,String> lcParamsMap = new HashMap<String, String>();
 		paramsMap.forEach((key, value) -> {lcParamsMap.put(key.toLowerCase(), value);});
-		pageUtils.Scroll(300); //open the arrangement panel and scroll to it
+		pageUtils.scrollTo(300); //open the arrangement panel and scroll to it
 		driver.findElement(By.xpath("//arrangements-menu[@class='ng-scope ng-isolate-scope']")).click();//open arrangement panel
 		driver.findElement(By.xpath("//a[normalize-space()='+']")).click();//add payment method
 		driver.findElement(By.xpath("//a[@ng-click=\"vm.openModal('add')\"]")).click(); // add
@@ -50,7 +50,7 @@ public class DesktopArrangements {
 	public void AddPaymentCard(HashMap<String,String> paramsMap) throws InterruptedException {
 		Logging.logToConsole("INFO","DesktopArrangements/Add Payment Card: Start");
 		Logging.logToConsole("DEBUG", "DesktopArrangements/Add Payment Card: values: "+ paramsMap);
-		pageUtils.Scroll(300); //open the arrangement panel and scroll to it
+		pageUtils.scrollTo(300); //open the arrangement panel and scroll to it
 		driver.findElement(By.xpath("//arrangements-menu[@class='ng-scope ng-isolate-scope']")).click();//open arrangement panel
 		
 		//ensure all the keys in the map are lower case	
@@ -90,7 +90,7 @@ public class DesktopArrangements {
 	public void AddArrangment(HashMap<String,String> paramsMap) throws InterruptedException {
 		Logging.logToConsole("INFO","DesktopArrangements/AddArrangment: Start");
 		Logging.logToConsole("DEBUG", "DesktopArrangements/AddArrangment: values: "+ paramsMap);
-		pageUtils.Scroll(300); //open the arrangement panel and scroll to it
+		pageUtils.scrollTo(300); //open the arrangement panel and scroll to it
 		driver.findElement(By.xpath("//arrangements-menu[@class='ng-scope ng-isolate-scope']")).click();//open arrangement panel
 		for(int i=1;i<20 ;i++) { //wait until this element is populated to move on otherwise will fail
 			Thread.sleep(500);
@@ -146,7 +146,7 @@ public class DesktopArrangements {
 							driver.findElement(By.xpath("//input[@name='count']")).sendKeys(lcParamsMap.get("payments"));	
 							break;
 						case "total":
-							pageUtils.Scroll(300);  //open the arrangement panel and scroll to it							
+							pageUtils.scrollTo(300);  //open the arrangement panel and scroll to it							
 							amount = paymentAmount(lcParamsMap.get("total"));
 							driver.findElement(By.xpath("//span[@ng-show='vm.amountEditable'][normalize-space()='ON']")).click();
 							driver.findElement(By.xpath("//span[@ng-show='vm.totalEditable']/following-sibling::span")).click();	
@@ -171,7 +171,7 @@ public class DesktopArrangements {
 					}
 					}
 			}
-			pageUtils.Scroll(600); 
+			pageUtils.scrollTo(600); 
 			driver.findElement(By.xpath("//button[normalize-space()='Propose']")).click(); // propose
 			driver.findElement(By.xpath("//button[@ng-show='vm.showSave()']")).click();  // save	
 			pageUtils.ReturnHome(); 

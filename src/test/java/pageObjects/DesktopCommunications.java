@@ -35,7 +35,7 @@ public class DesktopCommunications {
 		Logging.logToConsole("INFO","DesktopCommunications/communications: Start");
 
 		//scroll the screen to the section with the comms history
-		pageUtils.Scroll(400);
+		pageUtils.scrollTo(400);
 		pageUtils.defaultImplictWait();
 		
 		

@@ -34,7 +34,7 @@ public class DesktopInsolvency {
 			//Click the Debt management button then switch to iframe
 			driver.findElement(By.xpath("//button[@class='dropdown-toggle']")).click();
 			driver.findElement(By.xpath("//ul[@class='dropdown-menu'] //a[contains(text(),'Bankruptcy & Insolvency')]")).click();
-			pageUtils.Scroll(1000);
+			pageUtils.scrollTo(1000);
 			driver.switchTo().frame(driver.findElement(By.id("Bankruptcy&Insolvency4")));
 			
 			

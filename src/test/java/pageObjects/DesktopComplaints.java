@@ -33,7 +33,7 @@ public class DesktopComplaints {
 		Logging.logToConsole("INFO","DesktopComplaints/complaints: "+action+" Complaint");
 
 		//scroll the screen to the section with the DMC
-		pageUtils.Scroll(300);
+		pageUtils.scrollTo(300);
 		
 		//Click the Complaints button
 		driver.findElement(By.xpath("//complaints-menu[@class='ng-scope ng-isolate-scope']/div")).click();

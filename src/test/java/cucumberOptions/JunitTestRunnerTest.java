@@ -8,11 +8,11 @@ import io.cucumber.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(  
-	    features = {"src/test/java/features/templates"},
+	    features = {"src/test/java/features"},
 	    glue={"stepDefinitions"},
 	    stepNotifications = true, 
 	    monochrome=true,
-	   	tags = "@findEmailAddress",
+	   	tags = "@addManualAddress",
 	    plugin= {"pretty","html:target/cucumberReports"}) //,"json:target/cucumber.json","junit:target/cukes.xml"})
 
 

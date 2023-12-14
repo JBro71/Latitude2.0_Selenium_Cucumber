@@ -127,7 +127,7 @@ public class DesktopPhone {
 				driver.findElement(By.xpath("//a[@ng-click='vm.openAddPhone(vm.phoneTableData)']")).click();
 				break;
 			case "update":
-				pageUtils.Scroll(300);
+				pageUtils.scrollTo(300);
 				driver.findElement(By.xpath("("+tablePath+"1])["+row+"]/lat-phone-actions/div/div/div")).click();
 				//String path = "("+tablePath+"1])["+row+"]/div/a";
 				driver.switchTo().activeElement();

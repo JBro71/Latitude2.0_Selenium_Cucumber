@@ -26,15 +26,31 @@ public class PageUtils extends BaseTest {
 	
 	public void updateCheckBox(String set, String xpath) throws Exception {
 	//helper function to set or unset a check box
-		//try {
+		try {
 	WebElement inputWebElement = driver.findElement(By.xpath(xpath));
 	Boolean isSelected = inputWebElement.isSelected();
 		if((set.equalsIgnoreCase("true") && isSelected == false) || (set.equalsIgnoreCase("false")&& isSelected == true)) {
 			inputWebElement.click();
 			}
-		//}catch (Exception e) { 
-			//throw new Exception("updateCheckBox "+ testMap.get("account")+" :  unable to update " + xpath);}
+		}catch (Exception e) { 
+			throw new Exception("updateCheckBox "+ testMap.get("account")+" :  unable to update " + xpath);}
 	}
+	
+	public void updateStupidCheckBox(String set, String xpathCheckString, String xpathUpdateString) throws Exception {
+		//helper function to set or unset a check box
+			try {
+		WebElement checkWebElement = driver.findElement(By.xpath(xpathCheckString));
+		WebElement updateWebElement = driver.findElement(By.xpath(xpathUpdateString));
+		Boolean isSelected = checkWebElement.isSelected();
+			if((set.equalsIgnoreCase("true") && isSelected == false) || (set.equalsIgnoreCase("false")&& isSelected == true)) {
+				updateWebElement.click();
+				}
+			}catch (Exception e) { 
+				throw new Exception("updateCheckBox "+ testMap.get("account")+" :  unable to update " + xpathCheckString);}
+		}
+		
+	
+	
 	
 	public String checkCheckBox(String xpath) {		
 	if(driver.findElement(By.xpath(xpath)).isSelected()) {return "true";}
@@ -48,10 +64,29 @@ public class PageUtils extends BaseTest {
 			tempImplictWait(0);
 			driver.switchTo().activeElement();
 			driver.findElement(By.xpath("//button[contains(text(),'"+buttonText+"')]")).click();
-			//driver.findElement(By.xpath("//button[normalize-space()='OK']")).click();
 			}catch(Exception e) {
 		}
 		lastImplictWait();
+	}
+	
+	public void handleLaggyPopup(String dummyXpathString, String buttonText) throws Exception  {
+		//String logEntryPrefix = "";
+	try {
+		driver.findElement(By.xpath(dummyXpathString)).click();
+		//Logging.logToConsole("DEBUG",logEntryPrefix+" handling primary confirmation dialogue1");
+	}catch (Exception e) {	
+		tempImplictWait(0);
+		for (int j =0; j<20;j++) {
+			try {
+				handlePopup(buttonText);
+				//Logging.logToConsole("DEBUG",logEntryPrefix+" handling primary confirmation dialogue3");
+				driver.findElement(By.xpath(dummyXpathString)).click();;
+				//Logging.logToConsole("DEBUG",logEntryPrefix+" handling primary confirmation dialogue4");
+				break;
+				}catch(Exception e2) {Thread.sleep(100);}
+			}
+		lastImplictWait();
+		}
 	}
 	
 	public void updateTestMap(String key, String value) {
@@ -130,13 +165,17 @@ public class PageUtils extends BaseTest {
 	
 	
 	public void ReturnHome() throws InterruptedException {
+		driver.switchTo().defaultContent();
 		js.executeScript("window.scrollBy(0,-1000)");
 	}
 	
-	public void Scroll(int move) throws InterruptedException { 
-		//scroll the screen to the section with the Arrangement panel
+	public void scrollTo(int move) throws InterruptedException { 
 			js.executeScript("window.scrollBy(0,-1000)");
 			Thread.sleep(300);
+			js.executeScript("window.scrollBy(0," + move + ")");						
+	}
+	
+	public void scrollBy(int move) throws InterruptedException { 
 			js.executeScript("window.scrollBy(0," + move + ")");						
 	}
 	
@@ -148,7 +187,7 @@ public class PageUtils extends BaseTest {
 	
 	public void openLowerPanel(String panelName) throws Exception { 
 		//open the named lower panel
-		Scroll(200);
+		scrollTo(200);
 		//button[normalize-space()='Available Panels']
 		driver.findElement(By.xpath("//div[@class='custom-panel-menu']/div/button")).click();
 		List<WebElement> menu = driver.findElements(By.xpath("//div[@class='dropdown-menu show']/div/a"));
@@ -219,7 +258,7 @@ public class PageUtils extends BaseTest {
 								}
 						break;
 					case "text":
-						if(paramsMap.get(key).equals(tableField.getText())) {continue;}	
+						if(paramsMap.get(key).equalsIgnoreCase(tableField.getText())) {continue;}	
 						break;
 					case "colour":
 						WebElement tempElement = driver.findElement(By.xpath(tableFieldString+tableMap.get(key)[2]));
