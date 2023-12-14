@@ -1,12 +1,11 @@
 @phone
-Feature: phone
+Feature: phones
   Feature file for adding, amending, deleting or checking phone
 
   Background:
   Given I am logged into the Latitude Desktop
 
-
-	@addPhone
+@addPhone
   Scenario:  Adding an phone number
   Given  I have account "LB78012617239" open in Latitude				   
   Then I can add an phone number for "$customerName,2" 
@@ -23,10 +22,9 @@ Feature: phone
 		|Consent To FAX				|true														|	|true/false																										|
 		|Obtained From				|$customerName,2								|	|true/false																										|	
 		|Method								|verbal													|	|written/verbal																								|	
-		|Comments							|this is a comment							|	|																															|		
+		|Comments							|this is a comment							|	|																															|
 	
-		
-  @findPhoneNumber
+	@findPhoneNumber
   Scenario:  Search for a phone number
   Given  I have account "LB78012617239" open in Latitude				   
 	Then I can search for a phone number with following details
@@ -39,7 +37,7 @@ Feature: phone
 		|Consent to Fax								|true														| |																															|							
 		|Consent to Sms								|true														| |																															|	
 		|Status												|true														| |true = good, false = bad																			|									
-		|Customer											|Mrs Ciaran Colon								| |name of customer or $customerName,1 or 2	e.g.$customerName,1	|																															|	
+		|Customer											|Mrs Ciaran Colon								| |name of customer or $customerName,1 or 2	e.g.$customerName,1	|																																
 		|Attempts											|0															| |																															|	
 		|Last Attempt									|																| |																															|	
 		|Name													|																| |																															|	
@@ -47,7 +45,8 @@ Feature: phone
 		|on hold											|																| |																															|	
 		|hold expiration							|																| |																															|	
   
-		
+  
+  	
 		@findAndUpdatePhoneNumber
   Scenario:  Seach for and edit a  phone number
   Given  I have account "LB78012617239" open in Latitude				   
