@@ -59,8 +59,6 @@ public class OpenAccount {
 				}
 		}
 		pageUtils.defaultImplictWait();
-		pageUtils.testMap.put("customer1", null);
-		pageUtils.testMap.put("customer2", null);
 	}
 	
 	

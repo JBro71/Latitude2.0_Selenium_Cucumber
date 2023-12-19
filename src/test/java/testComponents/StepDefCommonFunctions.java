@@ -65,6 +65,13 @@ public class StepDefCommonFunctions extends BaseTest {
 					}catch (Exception e) {
 						throw new Exception("PageUtils/processVariables/"+accountNumber+" : unable to get customer Id field:" + key);
 						}
+				break;
+			case "$defaultClient":
+				try {
+					dataMap.put(key,prop.getProperty("defaultClient"));
+					}catch (Exception e) {
+						throw new Exception("PageUtils/processVariables/"+accountNumber+" : date variable invalid");
+						}
 				break;	
 			}
 		}

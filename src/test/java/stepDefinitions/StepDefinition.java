@@ -72,8 +72,11 @@ public class StepDefinition <Public> extends BaseTest{
 		
 		if (!pageUtils.testMap.get("account").equals(accountNumber)) { //no account open or a different account open to that needed
 		//pageUtils.CloseAccount(); // close an existing account if one open
+			
 		openAccount.OpenNewAccount(accountNumber);
 		pageUtils.updateTestMap("account",accountNumber);
+		pageUtils.updateTestMap("customer1", null);
+		pageUtils.updateTestMap("customer2", null);
 		//reset the customer details
 		}
 		else {

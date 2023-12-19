@@ -2,20 +2,15 @@ package testComponents;
 
 import java.util.HashMap;
 import java.util.Map;
-//import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
-//import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
-//import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-//import com.fasterxml.jackson.core.type.TypeReference;
-//import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,14 +18,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 
-//import pages.AccountPickerPage;
-import pageObjects.DPA;
 import pageObjects.DesktopAnchorPanels;
-//import pageObjects.DesktopArrangements;
-//import pages.LoginPage;
-import pageObjects.SearchPage;
-//import pages.SplashPage;
-//import stepDefinitions.StepDefinition;
 import utils.Logging;
 //import utilities.Parameters;
 
@@ -41,10 +29,7 @@ public class BaseTest {
 	public WebDriver driver;
 	public static WebDriver staticDriver;
 	public static boolean firstTest = true;
-	//public DesktopArrangements arrangements;
 	public DesktopAnchorPanels anchor;
-	//public static desktopOpen;
-	//list of all account numbers mapped to file numbers
 	public static HashMap<String,String[]> fileNumbersMap = new HashMap<String, String[]>();
 	//public values used in test
 	public HashMap<String, String> testMap = new HashMap<String, String>();
@@ -69,23 +54,25 @@ public class BaseTest {
 		Filenumbers(); 					//load a list of all the file numbers	
 		
 		//initialise the driver
-		switch (prop.getProperty("browser").toLowerCase()) {
-			case "edge":
-				//EdgeOptions options = new EdgeOptions();
-				System.setProperty("webdriver.edge.driver", "C:/Users/jbroad/Drivers/msedgedriver.exe");
-				driver = new EdgeDriver();
-				break;		
-			case "firefox":	
-				System.setProperty("webdriver.gecko.driver", "C:/Users/jbroad/Drivers/geckodriver.exe");
-				driver = new FirefoxDriver();	
-			default:
-				System.setProperty("webdriver.chrome.driver", "C:/Users/jbroad/Drivers/chromedriver.exe");
-				driver = new ChromeDriver();
+		if (prop.getProperty("runType").equalsIgnoreCase("run")){
+			switch (prop.getProperty("browser").toLowerCase()) {
+				case "edge":
+					//EdgeOptions options = new EdgeOptions();
+					System.setProperty("webdriver.edge.driver", "C:/Users/jbroad/Drivers/msedgedriver.exe");
+					driver = new EdgeDriver();
+					break;		
+				case "firefox":	
+					System.setProperty("webdriver.gecko.driver", "C:/Users/jbroad/Drivers/geckodriver.exe");
+					driver = new FirefoxDriver();	
+				default:
+					System.setProperty("webdriver.chrome.driver", "C:/Users/jbroad/Drivers/chromedriver.exe");
+					driver = new ChromeDriver();
+			}
+					
+			staticDriver = driver;
+			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
 		}
-				
-		staticDriver = driver;
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(prop.getProperty("implicitWait"))));
-
 		return;
 		}
 		

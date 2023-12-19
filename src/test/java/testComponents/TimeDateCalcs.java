@@ -1,11 +1,47 @@
 package testComponents;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TimeDateCalcs extends BaseTest{
 
+	public static String now(String datePattern) {
+		LocalDateTime nowDateTime = LocalDateTime.now();
+		DateTimeFormatter pattern = DateTimeFormatter.ofPattern(datePattern);
+		return nowDateTime.format(pattern);  
+	}
+
+		
 	
+public static boolean stageRunDateReached(String startDate, String dateDelayString, String dateDelayUnits) throws Exception {
+	// variable pattern expected is $+999
+	 LocalDateTime nowDateTime = LocalDateTime.now();
+	 LocalDateTime targetDateTime = nowDateTime;
+	 DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+	 LocalDateTime dateTime = LocalDateTime.parse(startDate, pattern);
+	 dateDelayUnits = dateDelayUnits.toLowerCase().split("s")[0];
+	 int intDateDelay = Integer.parseInt(dateDelayString);
+	 switch (dateDelayUnits) {
+		case "second":
+			targetDateTime = dateTime.plusSeconds(intDateDelay);	
+		break;
+		case "minute":
+			targetDateTime = dateTime.plusMinutes(intDateDelay);
+		break;
+		case "hour":
+			targetDateTime = dateTime.plusHours(intDateDelay);
+		break;
+		case "day":
+			targetDateTime = dateTime.plusDays(intDateDelay);
+		break;
+	 }
+	 
+	 if(targetDateTime.isBefore(nowDateTime)) {
+		 return true;
+	 }else {return false;}
+	}
+
 	
 
 

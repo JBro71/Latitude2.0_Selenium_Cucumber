@@ -8,6 +8,7 @@ import pageObjects.*;
 
 public class Context extends BaseTest {
 	private PageUtils pageUtils;
+	private FileTools fileTools;
 	private DesktopVulnerabilites desktopVulnerabilites;
 	private LoginPage loginPage;
 	private SearchPage searchPage;
@@ -49,6 +50,15 @@ public class Context extends BaseTest {
 			pageUtils = new PageUtils(driver, testMap);
 		}
 		return pageUtils;
+	} 
+	
+	public FileTools getFileTools()
+	{
+		if(fileTools==null)
+		{
+			fileTools = new FileTools(pageUtils);
+		}
+		return fileTools;
 	} 
 	
 
