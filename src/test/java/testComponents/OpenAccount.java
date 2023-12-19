@@ -28,6 +28,9 @@ public class OpenAccount {
 	
 	public void OpenNewAccount(String accountNumber) throws Exception {
 		//close existing account if one open
+		String logEntryPrefix= "OpenAccount/OpenNewAccount/accountNumber: " +accountNumber+ ": " ; 
+		Logging.logToConsole("DEBUG", logEntryPrefix + "Opening new account");
+		
 		pageUtils.CloseAccount();
 		
 		//**********************find and open new account******************

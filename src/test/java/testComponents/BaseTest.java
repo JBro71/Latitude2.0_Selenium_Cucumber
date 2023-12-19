@@ -1,6 +1,7 @@
 package testComponents;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -31,8 +32,10 @@ public class BaseTest {
 	public static boolean firstTest = true;
 	public DesktopAnchorPanels anchor;
 	public static HashMap<String,String[]> fileNumbersMap = new HashMap<String, String[]>();
+	public static HashMap<String,List<String>> staticTestDataMap = new HashMap<String,List<String>>();
 	//public values used in test
 	public HashMap<String, String> testMap = new HashMap<String, String>();
+
 	public static HashMap<String, String> staticTestMap = new HashMap<String, String>();
 
 	
@@ -93,6 +96,7 @@ public class BaseTest {
 		Logging.logToConsole("INFO","LogLevel: " + BaseTest.prop.getProperty("logLevel"));
 		Logging.logToConsole("INFO", "Browser: " + BaseTest.prop.getProperty("browser"));
 		Logging.logToConsole("INFO", "Default Implicit Wait" + BaseTest.prop.getProperty("implicitWait"));
+		
 	}
 	
 

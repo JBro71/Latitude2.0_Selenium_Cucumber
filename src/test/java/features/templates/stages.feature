@@ -1,10 +1,10 @@
 @tag
-Feature: Sandbox
-  Feature file for adding, amending or deleting 
+Feature: Test Stages Template
+  Feature file test stages
 
   
-	@updateAddress
-  Scenario: find test data
+	@testStages
+  Scenario: find test data and run stages
   Given that I am running test "test1"
  	And that I have an account open in Latitude with the following details 
    #|FIELD NAME						|VALUE																	|M|NOTES																												|

@@ -90,7 +90,7 @@ public class Context extends BaseTest {
 		if(stepDefCommonFunctions==null)
 		{
 			getDesktopCustomers();
-			stepDefCommonFunctions = new StepDefCommonFunctions(driver, pageUtils, desktopCustomers );
+			stepDefCommonFunctions = new StepDefCommonFunctions(driver, pageUtils,fileTools, desktopCustomers );
 		}
 		return stepDefCommonFunctions;
 	} 

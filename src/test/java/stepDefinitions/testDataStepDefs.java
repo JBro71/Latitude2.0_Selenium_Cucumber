@@ -11,6 +11,7 @@ import utils.Context;
 import utils.Logging;
 import testComponents.PageUtils;
 import testComponents.FileTools;
+import testComponents.OpenAccount;
 import testComponents.StepDefCommonFunctions;
 import testComponents.TimeDateCalcs;
 
@@ -18,9 +19,10 @@ public class testDataStepDefs {
 	Context context;
 	PageUtils pageUtils;
 	FileTools fileTools;
-	StepDefCommonFunctions StepDefCF;
+	StepDefCommonFunctions stepDefCF;
 	HashMap<String,Integer> resultsMap;
 	String testId;
+	OpenAccount openAccount;
 
 	
 	public testDataStepDefs(Context context)
@@ -29,7 +31,8 @@ public class testDataStepDefs {
 		//desktopCustomers = context.getDesktopCustomers();
 		pageUtils = context.getPageUtils();
 		fileTools = context.getFileTools();
-		StepDefCF = context.getStepDefCommonFunctions();
+		stepDefCF = context.getStepDefCommonFunctions();
+		openAccount = context.getOpenAccount();
 	}
 
 	
@@ -38,6 +41,7 @@ public class testDataStepDefs {
 		this.testId = testId;
 		pageUtils.testMap.put("testId", testId);
 		fileTools.getTestFile(testId);
+
 	}
 	
 
@@ -85,22 +89,24 @@ public class testDataStepDefs {
 	
 	@Given("that I have an account open in Latitude with the following details")
 	public void that_i_have_an_account_open_in_latitude_with_the_following_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		if(!stepDefCF.run()) {return;}// if run is false do not run
 		//convert dataTable to Hashmap and convert variables to real values
-		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
-		dataMap = StepDefCF.processVariables(dataMap);
+		HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
+		dataMap = stepDefCF.processVariables(dataMap);
 		String fileNameString = "";
 		String[] entryOrder = {"client","stage","household size",};
 		for (String i : entryOrder) {
-			String value = dataMap.get(i);
+			String value = dataMap.get(i).toLowerCase();
 			if (value != null )
-			{ 
+				{ 
 				fileNameString = fileNameString + value;	
-			}
-			FileTools.getTestDataFromFile()fileNameString;
-		}
-		
-		
-		
+				}
+			}	
+			fileTools.loadTestDataFromFile(fileNameString);
+			String accountNumber = stepDefCF.getTestDataItem(fileNameString);
+			
+			openAccount.OpenNewAccount(accountNumber);
+			
 		
 	}
 	

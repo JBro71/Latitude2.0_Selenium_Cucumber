@@ -10,7 +10,7 @@ Feature: phones
   Given  I have account "LB78012617239" open in Latitude				   
   Then I can add an phone number for "$customerName,2" 
    #|FIELD NAME						|VALUE													|M|NOTES																												|
-   	|Phone Number					|07875544896										|X|																															|				
+   	|Phone Number					|07876544891										|X|																															|				
   	|Phone Extension			|122														|X|case sensitive																								|						
  		|Type									|Work														|X|case sensitive																								|
 		|Status								|Good														|	|true/false																										|

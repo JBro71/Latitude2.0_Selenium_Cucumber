@@ -1,10 +1,12 @@
-@tag
-Feature: Sandbox
-  Feature file for adding, amending or deleting 
+@phone
+Feature: phones
+  Feature file for adding, amending, deleting or checking phone
 
-  
-	@updateAddress
-  Scenario: find test data
+  Background:
+  Given I am logged into the Latitude Desktop
+
+  @testStages
+  Scenario: find test data and run stages
   Given that I am running test "test1"
  	And that I have an account open in Latitude with the following details 
    #|FIELD NAME						|VALUE																	|M|NOTES																												|

@@ -1,6 +1,7 @@
 package testComponents;
 
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -17,15 +18,17 @@ public class StepDefCommonFunctions extends BaseTest {
 	//Context  context;
 	WebDriver driver;
 	PageUtils pageUtils;
+	FileTools fileTools;
 	DesktopCustomers desktopCustomers;
 	String accountNumber;
 	//JavascriptExecutor js;
 	
 	
-	public StepDefCommonFunctions(WebDriver driver, PageUtils pageUtils,DesktopCustomers desktopCustomers ) { // initialise Webdriver in this class from the calling class
+	public StepDefCommonFunctions(WebDriver driver, PageUtils pageUtils, FileTools fileTools, DesktopCustomers desktopCustomers ) { // initialise Webdriver in this class from the calling class
 		// initialisation
 		this.driver = driver;
 		this.pageUtils = pageUtils;
+		this.fileTools = fileTools;
 		//js = (JavascriptExecutor)driver;
 		this.desktopCustomers = desktopCustomers;
 		accountNumber = pageUtils.testMap.get("account");
@@ -119,8 +122,8 @@ public class StepDefCommonFunctions extends BaseTest {
 	public String getCustomerId(String customerIdString ) throws Exception {
 		//get the debtorID for debtor1 or 2
 		if (pageUtils.testMap.get("customerId1") == null) {
-			pageUtils.testMap.put("customerId1", fileNumbersMap.get(accountNumber)[1]);
-			pageUtils.testMap.put("customerId2", fileNumbersMap.get(accountNumber)[2]);
+			pageUtils.updateTestMap("customerId1", fileNumbersMap.get(accountNumber)[1]);
+			pageUtils.updateTestMap("customerId2", fileNumbersMap.get(accountNumber)[2]);
 		}
 		
 		String[] temp = fileNumbersMap.get("A2EE80657316496ABC");
@@ -146,9 +149,30 @@ public class StepDefCommonFunctions extends BaseTest {
 		return dataMap;
 	}
 	
-	
-	
-	
 
+	public String getTestDataItem(String fileNameString ) throws IOException{
+		String testDataItemStr = BaseTest.staticTestDataMap.get(fileNameString).remove(0);
+		String[] testDataItemArr = testDataItemStr.split(",");
+		String customer2 = "";
+		if (testDataItemArr.length > 2) {// may not be a customer2
+			customer2 = testDataItemArr[2];
+		}
+		fileTools.caseStart();
+		pageUtils.updateTestMap("testAccount",testDataItemArr[0]);
+		pageUtils.updateTestMap("customer1", testDataItemArr[1]);
+		pageUtils.updateTestMap("customer2", customer2);
+		return testDataItemArr[0];
+	}
+	
+	public Boolean run(){
+		try {
+			if(pageUtils.testMap.get("run").equals("true")){
+				return true;
+				}
+			return false;
+			}catch (Exception e) {
+				return true;
+				}
+	}
 
 }
