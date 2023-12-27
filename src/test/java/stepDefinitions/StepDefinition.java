@@ -74,9 +74,9 @@ public class StepDefinition <Public> extends BaseTest{
 		//pageUtils.CloseAccount(); // close an existing account if one open
 			
 		openAccount.OpenNewAccount(accountNumber);
-		pageUtils.updateTestMap("account",accountNumber);
-		pageUtils.updateTestMap("customer1", null);
-		pageUtils.updateTestMap("customer2", null);
+		pageUtils.updateTestMap("account",accountNumber, true);
+		pageUtils.updateTestMap("customer1", null, true);
+		pageUtils.updateTestMap("customer2", null, true);
 		//reset the customer details
 		}
 		else {

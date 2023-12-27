@@ -72,22 +72,26 @@ public static String CalculateDate(String date, String datePattern) {
 	}
 
 
-
-public static String ReturnDate(String date, String datePattern) throws Exception {
+public static String ReturnDate(String referenceDateString, String dateDelta, String datePattern) throws Exception {
 	// variable pattern expected is $+999
 	
 	//If a variable then add or subtract the given number of days from/to todays date
-	 LocalDate today = LocalDate.now();
+	DateTimeFormatter pattern;
+	LocalDate referenceDateLocalDate = LocalDate.now();
+	if(!referenceDateString.equals("")){
+		referenceDateLocalDate = LocalDate.parse(referenceDateString, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+		//22-12-2023 00:40:20
+		}
 	 LocalDate targetDate;
-	 DateTimeFormatter pattern;
+
 	 try {
-		 int dayDelta = Integer.parseInt(date.substring(1,date.length()));
+		 int dayDelta = Integer.parseInt(dateDelta.substring(1,dateDelta.length()));
 		 
-		if (date.substring(0,1).equals("+")){
-			targetDate = today.plusDays(dayDelta);
+		if (dateDelta.substring(0,1).equals("+")){
+			targetDate = referenceDateLocalDate.plusDays(dayDelta);
 			}
 			else {
-				targetDate = today.minusDays(dayDelta);
+				targetDate = referenceDateLocalDate.minusDays(dayDelta);
 				}
 		
 		pattern = DateTimeFormatter.ofPattern(datePattern);
@@ -99,5 +103,22 @@ public static String ReturnDate(String date, String datePattern) throws Exceptio
 
 	}
 
+/*
+public static String ReturnDateTime(String referenceDateTimeString, String dateTimePattern) throws Exception {
+	// variable pattern expected is $+999
+	
+	//If a variable then add or subtract the given number of days from/to todays date
+	DateTimeFormatter pattern;
+	LocalDateTime referenceDateLocalDateTime = LocalDateTime.now();
+	if(!referenceDateTimeString.equals("")){
+		referenceDateLocalDateTime = LocalDateTime.parse(referenceDateTimeString, DateTimeFormatter.ofPattern(dateTimePattern));
+		//22-12-2023 00:40:20
+		}
+	 
+	 pattern = DateTimeFormatter.ofPattern(dateTimePattern);
+	return referenceDateLocalDateTime.format(pattern);  
+
+	}
+*/
 }
 

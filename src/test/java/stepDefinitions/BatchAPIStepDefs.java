@@ -14,7 +14,7 @@ import pageObjects.DesktopBatchApi;
 public class BatchAPIStepDefs {
 	Context context;
 	PageUtils pageUtils;
-	StepDefCommonFunctions StepDefCF;
+	StepDefCommonFunctions stepDefCF;
 	DesktopCustomers desktopCustomers;
 	DesktopBatchApi desktopBatchApi;
 	HashMap<String,String> payloadMap;
@@ -25,7 +25,7 @@ public class BatchAPIStepDefs {
 	{
 		this.context = context;
 		pageUtils = context.getPageUtils();
-		StepDefCF = context.getStepDefCommonFunctions();
+		stepDefCF = context.getStepDefCommonFunctions();
 		desktopBatchApi = context.getDesktopBatchApi();
 		desktopCustomers = context.getDesktopCustomers();
 
@@ -33,9 +33,10 @@ public class BatchAPIStepDefs {
 	
 	@Then("I can check if a batchAPI entry has been created that matches these details")
 	public void i_can_check_if_a_batch_api_entry_has_been_created_that_matches_these_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		if(!stepDefCF.run()) {return;}// if run is false do not run
 		//convert dataTable to Hashmap and convert variables to real values
-		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
-		dataMap = StepDefCF.processVariables(dataMap);
+		HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
+		dataMap = stepDefCF.processVariables(dataMap);
 		String batchApiPayload = desktopBatchApi.getBatchApi(dataMap);
 		//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ batchApiPayload);
 		Assert.assertNotEquals("getBatchAPI: no payload returned for account:" + pageUtils.testMap.get("account") , batchApiPayload, "");
@@ -48,11 +49,12 @@ public class BatchAPIStepDefs {
 	
 	@Then("I can check if the batchAPI entry contains the following JSON values")
 	public void i_can_check_if_the_batch_api_entry_contains_the_following_json_values(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		if(!stepDefCF.run()) {return;}// if run is false do not run
 		//convert dataTable to Hashmap 
 		//requires i_can_check_if_a_batch_api_entry_has_been_created_that_matches_these_details to be run first
-		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
 		//convert any variables to actual values
-		dataMap = StepDefCF.processVariables(dataMap);
+		dataMap = stepDefCF.processVariables(dataMap);
 		//convert all the keys in the map are lower case	
 		HashMap<String,String> lowercasePayloadMap = new HashMap<String, String>();
 		payloadMap.forEach((key, value) -> {lowercasePayloadMap.put(key.toLowerCase(), value);});

@@ -1,6 +1,7 @@
 package stepDefinitions;
 
 import io.cucumber.java.Before;
+import testComponents.BaseTest;
 import io.cucumber.java.After;
 import utils.Logging;
 
@@ -24,6 +25,13 @@ public class Hooks {
 	@After
 	public void teardown() {
 		Logging.logToConsole("INFO", "***********Generic After Hook***********");
+		try {
+		if(BaseTest.staticTestMap.get("run").equals("true")) {
+			
+		testComponents.FileTools.writeTestReport("STAGE FAILED");	
+		}
+		BaseTest.staticTestMap.put("run", "");
+		}catch (Exception e) {Logging.logToConsole("INFO", "Hook Failed");}
 	}
 	
 	

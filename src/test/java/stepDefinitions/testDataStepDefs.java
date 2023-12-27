@@ -10,6 +10,7 @@ import pageObjects.DesktopCustomers;
 import utils.Context;
 import utils.Logging;
 import testComponents.PageUtils;
+import testComponents.BaseTest;
 import testComponents.FileTools;
 import testComponents.OpenAccount;
 import testComponents.StepDefCommonFunctions;
@@ -40,7 +41,10 @@ public class testDataStepDefs {
 	public void that_i_am_running_test(String testId) throws Exception {
 		this.testId = testId;
 		pageUtils.testMap.put("testId", testId);
+		testComponents.FileTools.writeTestReport("\n"+testId);
 		fileTools.getTestFile(testId);
+		
+		
 
 	}
 	
@@ -50,9 +54,9 @@ public class testDataStepDefs {
 		String logEntryPrefix= "testDataStepDefs/testStage/test: " +testId+ ": " ; 
 		Logging.logToConsole("DEBUG", logEntryPrefix +"TestStage: " + stage);
 		int lastStage = Integer.parseInt(pageUtils.testMap.get("lastStage"));
-		
-		if (Integer.parseInt(stage) == lastStage+1) {
-			pageUtils.testMap.put("run","false");
+		int stageInt = Integer.parseInt(stage);
+		if (stageInt == lastStage+1) {
+			pageUtils.updateTestMap("run", "false", true);
 			String referenceDateTimeString;
 			if(delayStartParameter.equalsIgnoreCase("first")) {
 				referenceDateTimeString = pageUtils.testMap.get("testStartDateTime");
@@ -64,24 +68,31 @@ public class testDataStepDefs {
 			boolean runNow = TimeDateCalcs.stageRunDateReached(referenceDateTimeString, delayString, delayUnitsString);
 			Logging.logToConsole("DEBUG", logEntryPrefix +"Next Test Stage: " + stage+" run now? " + runNow);
 			if(runNow) {
-				pageUtils.testMap.put("run","true");
+				pageUtils.updateTestMap("run", "true", true);
 				fileTools.writeTestFileLine(testId, "INPROGRESS");
-				
-				//////put run code here
+				//testComponents.FileTools.writeTestReport("STAGE"+stage+", INPROGRESS");
+				openAccount.OpenNewAccount(pageUtils.testMap.get("account"));
+				}else {
+					testComponents.FileTools.writeTestReport("STAGE"+stage+", Stage execution date/time not yet reached");
 				}
 				
 			}else if(Integer.parseInt(stage) == lastStage+2 && pageUtils.testMap.get("run").equals("true")) {// test has got here without failing so previous stage complete
 				fileTools.writeTestFileLine(testId, "PASS");
-				pageUtils.testMap.put("run","false");
+				testComponents.FileTools.writeTestReport("STAGE"+(lastStage+1)+", PASS");
+				pageUtils.updateTestMap("run", "false", true);
 			}
 		}
 		
+	
+	
 	@Then("Test is complete")
 	public void test_is_complete() throws IOException {
 		if(pageUtils.testMap.get("run").equals("true")) {// test has got here without failing so previous stage complete and it is the last Stage
 			fileTools.writeTestFileLine(testId, "COMPLETE");
-			pageUtils.testMap.put("run","false");
+			testComponents.FileTools.writeTestReport("TEST COMPLETE");
+			pageUtils.updateTestMap("run", "false", true);
 		}
+		BaseTest.staticTestMap.put("stageStatus", "");
 	}
 
 	

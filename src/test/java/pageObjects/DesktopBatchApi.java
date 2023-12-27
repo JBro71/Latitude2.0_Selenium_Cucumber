@@ -60,21 +60,21 @@ public class DesktopBatchApi {
 		int size = driver.findElements(By.xpath(tablePath+"2]")).size();
 		//look through each row in the table on the current page until a match is found or we run out of rows
 		for(int row = 0; row < size; row++)	{
-		Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": Row: "+ row+1);	
+		Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": Row: "+ (row+1));	
 		//loop through each entry in the input parameters map and see if it matches the current table row being checked
 		for (Map.Entry<String, String> mapEntry :paramsMap.entrySet()) {
 			String key = mapEntry.getKey().toLowerCase();
-			//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": column: "+ key);
-			//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+" input search value: "+ mapEntry.getValue());
-			//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": tableMap.get(key): "+ tableMap.get(key));
+			Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": column: "+ key);
+			Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+" input search value: "+ mapEntry.getValue());
+			Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": tableMap.get(key): "+ tableMap.get(key));
 			List<WebElement> column = driver.findElements(By.xpath(tablePath+ tableMap.get(key) +"]"));
-			//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": actual table value: " + column.get(row).getText());
+			Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": actual table value: " + column.get(row).getText());
 			if(!mapEntry.getValue().equalsIgnoreCase(column.get(row).getText())) {
 				//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": no match ");
 				match = false;
 				break;
 				}
-			//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": match field ");
+			Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": match field ");
 			match = true;
 		 }
 		if(match) {

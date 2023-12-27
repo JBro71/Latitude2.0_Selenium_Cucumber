@@ -15,7 +15,7 @@ import testComponents.TimeDateCalcs;
 public class EmailStepDefs {
 	Context context;
 	PageUtils pageUtils;
-	StepDefCommonFunctions StepDefCF;
+	StepDefCommonFunctions stepDefCF;
 	DesktopEmail desktopEmail;
 	DesktopCustomers desktopCustomers;
 	HashMap<String,Integer> resultsMap;
@@ -27,15 +27,16 @@ public class EmailStepDefs {
 		desktopEmail = context.getDesktopEmail();
 		desktopCustomers = context.getDesktopCustomers();
 		pageUtils = context.getPageUtils();
-		StepDefCF = context.getStepDefCommonFunctions();
+		stepDefCF = context.getStepDefCommonFunctions();
 	}
 	
 	
 	@Then("I can update the email address above with following details")
 	public void i_can_update_the_email_address_above_with_following_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
+	if(!stepDefCF.run()) {return;}// if run is false do not run
 	//convert dataTable to Hashmap and convert variables to real values
-	HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
-	dataMap = StepDefCF.processVariables(dataMap);
+	HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
+	dataMap = stepDefCF.processVariables(dataMap);
 	// get the email address identified in email search step error if not present
 	int row = 0;
 	try {
@@ -50,15 +51,16 @@ public class EmailStepDefs {
 	
 	@Then("I can update email address {string} belonging to {string}")
 	public void i_can_update_email_address_belonging_to(String emailAddress, String customer, io.cucumber.datatable.DataTable dataTable) throws Exception {
+	if(!stepDefCF.run()) {return;}// if run is false do not run
 	//convert dataTable to Hashmap and convert variables to real values
 	HashMap<String,String> dataMapFind = new HashMap<String,String>();
 	dataMapFind.put("email address", emailAddress);
 	dataMapFind.put("contact", customer);
-	dataMapFind = StepDefCF.processVariables(dataMapFind);
+	dataMapFind = stepDefCF.processVariables(dataMapFind);
 	resultsMap= desktopEmail.findemailAddress(dataMapFind);	
 	
-	HashMap<String,String> dataMapUpdate = StepDefCF.convertDataTableToMap(dataTable);
-	dataMapUpdate = StepDefCF.processVariables(dataMapUpdate);
+	HashMap<String,String> dataMapUpdate = stepDefCF.convertDataTableToMap(dataTable);
+	dataMapUpdate = stepDefCF.processVariables(dataMapUpdate);
 	
 	int row = 0;
 	try {
@@ -75,9 +77,10 @@ public class EmailStepDefs {
 	
 	@Then("I can search for an email address with following details")
 	public void i_can_search_for_an_email_adresss_with_following_details(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		if(!stepDefCF.run()) {return;}// if run is false do not run
 		//convert dataTable to Hashmap and convert variables to real values
-		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
-		dataMap = StepDefCF.processVariables(dataMap);
+		HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
+		dataMap = stepDefCF.processVariables(dataMap);
 		
 		resultsMap= desktopEmail.findemailAddress(dataMap);	
 		
@@ -92,10 +95,11 @@ public class EmailStepDefs {
 
 	@Then("^I can add an email address for \"([^\"]*)\"$")
 	public void i_can_add_and_email_address_for(String customer, io.cucumber.datatable.DataTable dataTable) throws Exception {
-		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
+		if(!stepDefCF.run()) {return;}// if run is false do not run
+		HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
 		//Add the customer to the dataMap
 		dataMap.put("customer on account", customer);
-		dataMap = StepDefCF.processVariables(dataMap);
+		dataMap = stepDefCF.processVariables(dataMap);
 		desktopEmail.email("add",dataMap,0);
 	
 		}

@@ -70,12 +70,12 @@ String logEntryPrefix;
 					Logging.logToConsole("DEBUG",logEntryPrefix+": Row: "+ row);	
 					//loop through each entry in the input parameters map and see if it matches the current table row being checked
 					match = true;
+					driver.findElement(By.xpath("("+tablePath+ "1])["+row+"]")).click();
 					for (String key : tableMap.keySet()) { //check the table fields for a match
 						WebElement tableField = driver.findElement(By.xpath("("+tablePath+ tableMap.get(key) +"])["+row+"]"));
-						//String value = driver.findElement(By.xpath(tableMap.get(key))).getText();
-						//Logging.logToConsole("INFO",logEntryPrefix+" Key: " + key);
-						//Logging.logToConsole("INFO",logEntryPrefix+" Table text: " + tableField.getText());
-						//Logging.logToConsole("INFO",logEntryPrefix+" pramsMap value: " + paramsMap.get(key));
+						Logging.logToConsole("INFO",logEntryPrefix+" Key: " + key);
+						Logging.logToConsole("INFO",logEntryPrefix+" Table text: " + tableField.getText());
+						Logging.logToConsole("INFO",logEntryPrefix+" pramsMap value: " + paramsMap.get(key));
 						
 						try {
 						//String temp = paramsMap.get(key);
@@ -90,6 +90,9 @@ String logEntryPrefix;
 						for (String key : careMap.keySet()) { // check the non table fields for a match
 							if(paramsMap.get(key) == null) {continue;}
 							String value = driver.findElement(By.xpath(careMap.get(key))).getAttribute("value");
+							Logging.logToConsole("INFO",logEntryPrefix+" Key: " + key);
+							Logging.logToConsole("INFO",logEntryPrefix+" Field text: " + value);
+							Logging.logToConsole("INFO",logEntryPrefix+" pramsMap value: " + paramsMap.get(key));
 							if(paramsMap.get(key).equals(value)) {continue;}// if a match then skip to the next loop/value to check
 							match = false;
 							break;

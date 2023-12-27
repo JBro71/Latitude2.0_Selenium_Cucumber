@@ -20,7 +20,6 @@ public class StepDefCommonFunctions extends BaseTest {
 	PageUtils pageUtils;
 	FileTools fileTools;
 	DesktopCustomers desktopCustomers;
-	String accountNumber;
 	//JavascriptExecutor js;
 	
 	
@@ -31,12 +30,12 @@ public class StepDefCommonFunctions extends BaseTest {
 		this.fileTools = fileTools;
 		//js = (JavascriptExecutor)driver;
 		this.desktopCustomers = desktopCustomers;
-		accountNumber = pageUtils.testMap.get("account");
+		
 	}
 
 
 	public HashMap<String, String> processVariables(HashMap<String, String> dataMap) throws Exception {
-		
+		String accountNumber = pageUtils.testMap.get("account");
 		for (String key : dataMap.keySet()) {
 			// check the value is not empty
 			if (dataMap.get(key)== null){
@@ -45,7 +44,7 @@ public class StepDefCommonFunctions extends BaseTest {
 			}
 			//iterate over map and split by "," looking for "customer" variables
 			String[] valueSplit = dataMap.get(key).split(",");
-			
+
 			switch (valueSplit[0]) {
 			case "$customerName":
 				try {
@@ -57,9 +56,31 @@ public class StepDefCommonFunctions extends BaseTest {
 				break;
 			case "$date":
 				try {
-					dataMap.put(key,TimeDateCalcs.ReturnDate(valueSplit[1], valueSplit[2]));
+					dataMap.put(key,TimeDateCalcs.ReturnDate("",valueSplit[1], valueSplit[2]));
 					}catch (Exception e) {
 						throw new Exception("PageUtils/processVariables/"+accountNumber+" : date variable invalid");
+						}
+				break;	
+			case "$startDate":
+				try {
+					String dateString = "";
+					if (pageUtils.testMap.containsKey("testStartDateTime")){
+						dateString = pageUtils.testMap.get("testStartDateTime").substring(0, 10);
+					}
+					dataMap.put(key,TimeDateCalcs.ReturnDate(dateString,valueSplit[1], valueSplit[2]));
+					}catch (Exception e) {
+						throw new Exception("PageUtils/processVariables/"+accountNumber+" :startDate variable invalid" + e);
+						}
+				break;	
+			case "$lastDate":
+				try {
+					String dateString = "";
+					if (pageUtils.testMap.containsKey("lastStageDateTime")){
+						dateString = pageUtils.testMap.get("lastStageDateTime").substring(0, 10);
+					}
+					dataMap.put(key,TimeDateCalcs.ReturnDate(dateString,valueSplit[1], valueSplit[2]));
+					}catch (Exception e) {
+						throw new Exception("PageUtils/processVariables/"+accountNumber+" : lastDate variable invalid");
 						}
 				break;	
 			case "$customerId":
@@ -103,13 +124,14 @@ public class StepDefCommonFunctions extends BaseTest {
 	
 	
 	public HashMap<String, String> calculateVariableDates(HashMap<String, String> dataMap) throws Exception {
+		String accountNumber = pageUtils.testMap.get("account");
 		//check the map for any variable dates and update the values to date strings in the specified format
 		try {
 			for (String key : dataMap.keySet()) {
 				//iterate over map and split by , looking for date variables
 				String[] valueSplit = dataMap.get(key).split(",");
 				if(valueSplit[0].equalsIgnoreCase("$date")) {
-					dataMap.put(key,TimeDateCalcs.ReturnDate(valueSplit[1], valueSplit[2]));
+					dataMap.put(key,TimeDateCalcs.ReturnDate("", valueSplit[1], valueSplit[2]));
 					}	
 		    	}
 		}catch (Exception e) {
@@ -120,14 +142,15 @@ public class StepDefCommonFunctions extends BaseTest {
 	
 	
 	public String getCustomerId(String customerIdString ) throws Exception {
+		String accountNumber = pageUtils.testMap.get("account");
 		//get the debtorID for debtor1 or 2
 		if (pageUtils.testMap.get("customerId1") == null) {
-			pageUtils.updateTestMap("customerId1", fileNumbersMap.get(accountNumber)[1]);
-			pageUtils.updateTestMap("customerId2", fileNumbersMap.get(accountNumber)[2]);
+			pageUtils.updateTestMap("customerId1", fileNumbersMap.get(accountNumber)[1], false);
+			pageUtils.updateTestMap("customerId2", fileNumbersMap.get(accountNumber)[2], false);
 		}
 		
-		String[] temp = fileNumbersMap.get("A2EE80657316496ABC");
-		String temp2 = fileNumbersMap.get("A2EE80657316496ABC")[2];
+		//String[] temp = fileNumbersMap.get("A2EE80657316496ABC");
+		//String temp2 = fileNumbersMap.get("A2EE80657316496ABC")[2];
 		String customerId = pageUtils.testMap.get("customerId"+customerIdString);
 		if(customerId.equals("NULL")){
 			throw new Exception("pageUtils/getCustomerId/"+accountNumber+" :  cannot get customerID customer "+customerIdString+" does not exist");
@@ -137,6 +160,7 @@ public class StepDefCommonFunctions extends BaseTest {
 
 	
 	public HashMap<String,String> convertDataTableToMap(io.cucumber.datatable.DataTable dataTable ) throws Exception {
+		String accountNumber = pageUtils.testMap.get("account");
 		HashMap<String,String> dataMap = new HashMap<String,String>();
 		try {	
 		List<List<String>> dataList = dataTable.asLists(); //get data table
@@ -158,9 +182,9 @@ public class StepDefCommonFunctions extends BaseTest {
 			customer2 = testDataItemArr[2];
 		}
 		fileTools.caseStart();
-		pageUtils.updateTestMap("testAccount",testDataItemArr[0]);
-		pageUtils.updateTestMap("customer1", testDataItemArr[1]);
-		pageUtils.updateTestMap("customer2", customer2);
+		pageUtils.updateTestMap("account",testDataItemArr[0], true);
+		pageUtils.updateTestMap("customer1", testDataItemArr[1],true);
+		pageUtils.updateTestMap("customer2", customer2, true);
 		return testDataItemArr[0];
 	}
 	

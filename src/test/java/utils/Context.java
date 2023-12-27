@@ -34,6 +34,7 @@ public class Context extends BaseTest {
 	{
 		initilizeDriver();
 		getPageUtils();
+		getFileTools();
 	}
 	
 	

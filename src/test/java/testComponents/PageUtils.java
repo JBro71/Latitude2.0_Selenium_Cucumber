@@ -89,9 +89,11 @@ public class PageUtils extends BaseTest {
 		}
 	}
 	
-	public void updateTestMap(String key, String value) {
+	public void updateTestMap(String key, String value, boolean staticBool) {
 		testMap.put(key,value);
+		if(staticBool) {
 		staticTestMap.put(key,value);
+		}
 	}
 	
 	public void defaultImplictWait() {

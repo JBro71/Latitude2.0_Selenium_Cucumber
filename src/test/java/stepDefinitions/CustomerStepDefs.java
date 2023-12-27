@@ -9,12 +9,14 @@ import pageObjects.DesktopCustomers;
 import utils.Context;
 import utils.Logging;
 import testComponents.PageUtils;
+import testComponents.StepDefCommonFunctions;
 import testComponents.TimeDateCalcs;
 
 public class CustomerStepDefs {
 	Context context;
 	PageUtils pageUtils;
 	DesktopCustomers desktopCustomers;
+	StepDefCommonFunctions stepDefCF;
 
 	
 	public CustomerStepDefs(Context context)
@@ -22,19 +24,18 @@ public class CustomerStepDefs {
 		this.context = context;
 		desktopCustomers = context.getDesktopCustomers();
 		pageUtils = context.getPageUtils();
+		stepDefCF = context.getStepDefCommonFunctions();
 	}
 	
 	@Then("^I can amend \"([^\"]*)\" to \"([^\"]*)\" for \"([^\"]*)\"$")
 	public void i_can_amend_to_for(String field, String value, String customer) throws Exception {
+		if(!stepDefCF.run()) {return;}// if run is false do not run
+		//convert dataTable to Hashmap and convert variables to real values
 		HashMap<String,String> dataMap = new HashMap<String, String>();
-		dataMap.put(field, value);
-		customer = customer.toLowerCase();
-		//if value passed is "customer1" or "customer2" extract the number 
-		if(customer.equals("customer1")||customer.equals("customer2")) {
-		desktopCustomers.getCustomers();
-		customer = pageUtils.testMap.get(customer);
-		}
-		desktopCustomers.amendCustomer(customer, dataMap);
+		dataMap.put(field.toLowerCase(), value);
+		dataMap.put("customer", customer);
+		dataMap = stepDefCF.processVariables(dataMap);
+		desktopCustomers.amendCustomer(dataMap);
 	}
 
 

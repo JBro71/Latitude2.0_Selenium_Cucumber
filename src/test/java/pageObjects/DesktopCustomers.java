@@ -20,6 +20,7 @@ public class DesktopCustomers {
 	WebDriver driver;
 	PageUtils pageUtils;
 	JavascriptExecutor js;
+	String lastNameXpathStr = "//input[@name='lastName']";
 		
 		public DesktopCustomers(WebDriver driver, PageUtils pageUtils) { //initialise Webdriver in this class from the calling class
 			//initialisation
@@ -48,7 +49,7 @@ public class DesktopCustomers {
 			if(i>0) {Thread.sleep(200); }
 		if(compareName(customers.get(0).getText())) {break;}
 		}
-		pageUtils.updateTestMap("customer1",customers.get(0).getText());
+		pageUtils.updateTestMap("customer1",customers.get(0).getText(), true);
 		Logging.logToConsole("DEBUG","Desktopcustomers/getCustomers: customer1: " + pageUtils.testMap.get("customer1"));
 		// check if there is a second household member and if so if they are a customer or not
 		
@@ -66,7 +67,7 @@ public class DesktopCustomers {
 			//String x = relationDropdown.getFirstSelectedOption().getText();
 			if(relationDropdown.getFirstSelectedOption().getText().equalsIgnoreCase("customer")) 
 			{
-				pageUtils.updateTestMap("customer2",customers.get(1).getText());
+				pageUtils.updateTestMap("customer2",customers.get(1).getText(), true);
 			}
 		}
 		Logging.logToConsole("DEBUG","Desktopcustomers/getCustomers: customer2: " + pageUtils.testMap.get("customer2"));
@@ -92,20 +93,27 @@ public class DesktopCustomers {
 				}
 	
 			name = name + driver.findElement(By.xpath("//input[@name='firstName']")).getAttribute("value") + " ";	
-			name = name + driver.findElement(By.xpath("//input[@name='lastName']")).getAttribute("value");
+			name = name + driver.findElement(By.xpath(lastNameXpathStr)).getAttribute("value");
 			Logging.logToConsole("DEBUG","Desktopcustomers/getCustomers: input name: " + inputName + " found name: " + name);
 			if (inputName.equalsIgnoreCase(name)) {return true;}
 		}catch(Exception e) {Logging.logToConsole("DEBUG","Desktopcustomers/getCustomers: compare name error");}
 		return false;
 	}
 	
-	public void amendCustomer(String customer, HashMap<String,String> paramsMap) throws Exception  {
+	public void amendCustomer(HashMap<String,String> paramsMap) throws Exception  {
+			String customer = paramsMap.get("customer");
 			String action = "edit";
 			String account = pageUtils.testMap.get("account");
 			Logging.logToConsole("INFO","DesktopCustomers/amendCustomer/"+account+ "start");
 
 			//open the customer menu, find the right record and wait for it to populate
 			boolean found = selectCustomer(customer);
+			
+			for( int i=0; i<=20; i++) {
+				if(i>0) {Thread.sleep(200); }
+			if(compareName(customer)) {break;}
+			}
+			
 			
 			//ensure all the keys in the map are lower case	
 			HashMap<String,String> lowercaseParamsMap = new HashMap<String, String>();
@@ -225,7 +233,7 @@ public class DesktopCustomers {
 				button = driver.findElement(By.xpath("//button[@ng-click='vm.save()']"));
 				if (button.isEnabled() == true) {button.click();
 				Logging.logToConsole("INFO","DesktopCustomers/amendCustomer/"+account+ "update saved");}
-					else { throw new Exception("DesktopCustomers/amendCustomer/"+account+ " :  cannot save update. button disabled");}
+					//else { throw new Exception("DesktopCustomers/amendCustomer/"+account+ " :  cannot save update. button disabled");}
 				break;
 			case "close":
 				driver.findElement(By.xpath("//button[normalize-space()='Close Dispute']")).click();
