@@ -31,7 +31,7 @@ public class DesktopCommunications {
 	
 		
 		
-	public boolean communicationHistory(HashMap<String,String> paramsMap) throws InterruptedException  {
+	public int communicationHistory(HashMap<String,String> paramsMap) throws InterruptedException  {
 		Logging.logToConsole("INFO","DesktopCommunications/communications: Start");
 
 		//scroll the screen to the section with the comms history
@@ -51,13 +51,8 @@ public class DesktopCommunications {
 		
 		// Page button web elements next previous etc
 		WebElement buttonPrevious =  driver.findElement(By.xpath("//div[@ng-show='vm.letterHistoryGrid.pageCount > 1']//a[@class='page-link ng-binding'][normalize-space()='Previous']"));
-		//WebElement buttonPrevious =  driver.findElement(By.xpath("//div[@ng-show='vm.letterHistoryGrid.pageCount > 1']//li[@ng-if='::directionLinks'][1]")); //alternative xpath
-		//WebElement button1 =  driver.findElement(By.xpath("//div[@ng-show='vm.letterHistoryGrid.pageCount > 1']//li[@ng-if='::directionLinks'][1]/following-sibling::li[1]"));
-		//div[@ng-show='vm.letterHistoryGrid.pageCount > 1']//a[@class='page-link ng-binding'][normalize-space()='1'] alternative path
-		//WebElement buttonNext =  driver.findElement(By.xpath("//div[@ng-show='vm.letterHistoryGrid.pageCount > 1']//li[@ng-if='::directionLinks'][2]"));
 		WebElement buttonNext =  driver.findElement(By.xpath("//div[@ng-show='vm.letterHistoryGrid.pageCount > 1']//a[@class='page-link ng-binding'][normalize-space()='Next']"));
 		WebElement buttonLast = driver.findElement(By.xpath("//div[@ng-show='vm.letterHistoryGrid.pageCount > 1']//li[@ng-if='::directionLinks'][2]/preceding-sibling::li[1]"));
-		//div[@ng-show='vm.letterHistoryGrid.pageCount > 1']//a[@class='page-link ng-binding'][normalize-space()='Next']/parent::li/preceding-sibling::li[1]
 
 		
 		// go to the last page and then count the pages
@@ -97,6 +92,7 @@ public class DesktopCommunications {
 		tableMap.put("subject",10);
 		
 		boolean match = false;
+		int matchCount = 0;
 
 		//int page = 0;
 		int pageCount = 0;
@@ -124,9 +120,11 @@ public class DesktopCommunications {
 
 		}
 		if(match) {
-					Logging.logToConsole("DEBUG",
+					Logging.logToConsole("INFO",
 							"DesktopCommunications/communications: Match Found: "+ "Page: "+(numberOfPages-pageCount)+" Row: "+(row+1));
-					break;
+					matchCount++;
+					match = false;
+					//break;
 					}
 			} //row loop
 				//if the previous button is enabled click to go back a page
@@ -141,6 +139,6 @@ public class DesktopCommunications {
 				} //while loop
 		
 		pageUtils.ReturnHome();
-		return match;
+		return matchCount;
 	}	
 }

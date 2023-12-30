@@ -5,7 +5,7 @@ Feature: vulnerabilities
   Background:
   Given I am logged into the Latitude Desktop
 
-  @basicVulnerable @basicVulnerableTest1 
+  @basicVulnerablex @basicVulnerableTest1 
   Scenario: add an Email address and then a care and hardship record of type visual. check the correct batchapi and comms outputs.
   Given that I am running test "test1"
   
@@ -83,7 +83,7 @@ Feature: vulnerabilities
  	  |HoldDays							|15										| |																																									|
  	  
 
-	Then I wait to run stage "3" until "1" "day" after the "first" stage
+	Then I wait to run stage "3" until "1" "calendarDay" after the "first" stage
 	
 	And I can check if a communication was sent with the following details
    #|FIELD NAME				|VALUE												|M|NOTES																																						|
@@ -98,7 +98,7 @@ Feature: vulnerabilities
 	###########################################################################################################################################
 	
 	
-	 @basicVulnerable @basicVulnerableTest2
+	 @basicVulnerablex @basicVulnerableTest2
   Scenario: Add a care and hardship record of type Audio. check the correct batchapi and comms outputs.
   Given that I am running test "test2"
   
@@ -164,7 +164,7 @@ Feature: vulnerabilities
  	  |HoldDays							|30										| |																																									|
  	  
 
-	Then I wait to run stage "3" until "1" "day" after the "first" stage
+	Then I wait to run stage "3" until "1" "calendarDay" after the "first" stage
 	
 	And I can check if a communication was sent with the following details
    #|FIELD NAME				|VALUE												|M|NOTES																																						|

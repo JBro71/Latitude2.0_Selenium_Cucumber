@@ -135,7 +135,7 @@ String logEntryPrefix;
 	public HashMap<String, String> careAndHardship(HashMap<String,String> paramsMap, String action) throws Exception  {
 			String account = pageUtils.testMap.get("account");
 			logEntryPrefix= "Account: "+account+" DesktopVulnerabilites/Care&Hardship/"+action+": "; 
-			//try {
+			try {
 				Logging.logToConsole("INFO",logEntryPrefix+" Start"+ action);
 				pageUtils.defaultImplictWait();
 				//Select dropdown;
@@ -167,8 +167,6 @@ String logEntryPrefix;
 						}
 				}
 				pageUtils.implictWait(1);
-				
-
 				
 				// order in which the data should be entered
 				String[] entryOrder = {"have consent","care type","financial hardship","confirmed care","times in care","care proof required",
@@ -387,20 +385,20 @@ String logEntryPrefix;
 
 							
 				if (!action.equals("check")) {
-					if (button.isEnabled() == true) {
 						button.click();
 						Logging.logToConsole("INFO",logEntryPrefix+" care record "+action+"ed");
-						}
-						else { 
-							button = driver.findElement(By.xpath("//button[@ng-click='vm.close()']"));
-							driver.switchTo().defaultContent();
-							throw new Exception(logEntryPrefix+" unable to "+action+" care record. Button disabled");
-							}
 					}
 				
 				driver.switchTo().defaultContent();
 				return resultsMap;
-			}
+				
+			}catch (Exception e) { 
+				driver.findElement(By.xpath("//button[@ng-click='vm.close()']")).click();
+				driver.switchTo().defaultContent();
+				throw new Exception(logEntryPrefix+" unable to "+action+" care record."+ "\n" + e );
+				
+				}	
+		}
 		
 
 	

@@ -27,8 +27,8 @@ public class Hooks {
 		Logging.logToConsole("INFO", "***********Generic After Hook***********");
 		try {
 		if(BaseTest.staticTestMap.get("run").equals("true")) {
-			
-		testComponents.FileTools.writeTestReport("STAGE FAILED");	
+		int stage = Integer.parseInt(BaseTest.staticTestMap.get("lastStage"))+1;	
+		testComponents.FileTools.writeTestReport("STAGE"+stage+" FAILED");	
 		}
 		BaseTest.staticTestMap.put("run", "");
 		}catch (Exception e) {Logging.logToConsole("INFO", "Hook Failed");}

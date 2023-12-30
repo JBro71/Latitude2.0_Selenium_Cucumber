@@ -35,6 +35,15 @@ public static boolean stageRunDateReached(String startDate, String dateDelayStri
 		case "day":
 			targetDateTime = dateTime.plusDays(intDateDelay);
 		break;
+		case "calendarday":
+			// check to see if the calendar day has changed
+			//int referenceDayInt = Integer.parseInt(startDate.split("-")[0]);
+			targetDateTime = dateTime.plusDays(intDateDelay);
+			targetDateTime = targetDateTime.minusHours(targetDateTime.getHour());
+			targetDateTime = targetDateTime.minusMinutes(targetDateTime.getMinute());
+			targetDateTime = targetDateTime.minusSeconds(targetDateTime.getSecond());
+		break;
+		
 	 }
 	 
 	 if(targetDateTime.isBefore(nowDateTime)) {

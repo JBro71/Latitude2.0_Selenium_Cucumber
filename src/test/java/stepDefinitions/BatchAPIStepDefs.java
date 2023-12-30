@@ -2,6 +2,8 @@ package stepDefinitions;
 
 import java.util.HashMap;
 import org.junit.Assert;
+
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import io.cucumber.java.en.*;
 import pageObjects.DesktopCustomers;
@@ -17,7 +19,7 @@ public class BatchAPIStepDefs {
 	StepDefCommonFunctions stepDefCF;
 	DesktopCustomers desktopCustomers;
 	DesktopBatchApi desktopBatchApi;
-	HashMap<String,String> payloadMap;
+	HashMap<String,String> payloadMap = new HashMap<String,String>();
 
 
 	
@@ -41,7 +43,9 @@ public class BatchAPIStepDefs {
 		//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ batchApiPayload);
 		Assert.assertNotEquals("getBatchAPI: no payload returned for account:" + pageUtils.testMap.get("account") , batchApiPayload, "");
 		Gson gson = new Gson();
-		payloadMap = gson.fromJson(batchApiPayload, HashMap.class);
+		HashMap<String,String> tempPayloadMap = gson.fromJson(batchApiPayload, new TypeToken<HashMap<String, String>>(){
+			private static final long serialVersionUID = 1L;}.getType());
+		tempPayloadMap.forEach((key, value) -> {payloadMap.put(key.toLowerCase(), value);});
 		Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ payloadMap);
 	}
 
@@ -55,11 +59,18 @@ public class BatchAPIStepDefs {
 		HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
 		//convert any variables to actual values
 		dataMap = stepDefCF.processVariables(dataMap);
-		//convert all the keys in the map are lower case	
+		//convert all the keys in the map are lower case
+		/*
 		HashMap<String,String> lowercasePayloadMap = new HashMap<String, String>();
+		for (String key : payloadMap.keySet()) {
+			Logging.logToConsole("DEBUG","DesktopBatchApi/key: "+ key);
+			Logging.logToConsole("DEBUG","DesktopBatchApi/value: "+ payloadMap.get(key));
+			
+		}
 		payloadMap.forEach((key, value) -> {lowercasePayloadMap.put(key.toLowerCase(), value);});
+		*/
 		dataMap.forEach((key, value) -> {
-			String payloadValue = lowercasePayloadMap.get(key.toLowerCase());
+			String payloadValue = payloadMap.get(key);
 			Assert.assertEquals("checkBatchAPI/" + pageUtils.testMap.get("account")+" field: " + key, value, payloadValue);
 		});
 	}

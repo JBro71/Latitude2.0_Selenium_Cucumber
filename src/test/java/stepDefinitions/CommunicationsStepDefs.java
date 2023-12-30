@@ -35,7 +35,13 @@ public class CommunicationsStepDefs {
 		//convert dataTable to Hashmap and convert variables to real values
 		HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
 		dataMap = stepDefCF.processVariables(dataMap);
-		boolean match = desktopCommunications.communicationHistory(dataMap);
+		int expectedCount = 1;
+		if(dataMap.containsKey("count")) {
+			expectedCount = Integer.parseInt(dataMap.get("count"));
+			dataMap.remove("count");
+		}
+			
+		int matchCount = desktopCommunications.communicationHistory(dataMap);
 		// check if returned values match expected values
 		String valueString = "";
 		String separator = "";
@@ -43,6 +49,7 @@ public class CommunicationsStepDefs {
 			 valueString = valueString +separator + value; 
 			separator = "/";
 		}
-		Assert.assertTrue("Communications Issued check. "+pageUtils.testMap.get("account") +" requested coms ("+valueString+ ") does not exist", match);	    
+		//Assert.assertTrue("Communications Issued check. "+pageUtils.testMap.get("account") +" requested coms ("+valueString+ ") does not exist", match);
+		Assert.assertEquals("Communications Issued check. "+pageUtils.testMap.get("account") +" requested coms ("+valueString+ ") count does not match", expectedCount, matchCount);
 	}
 }

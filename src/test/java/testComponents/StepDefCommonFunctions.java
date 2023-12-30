@@ -46,6 +46,13 @@ public class StepDefCommonFunctions extends BaseTest {
 			String[] valueSplit = dataMap.get(key).split(",");
 
 			switch (valueSplit[0]) {
+			case "$accountNumber":
+				try {
+					dataMap.put(key, accountNumber);
+					}catch (Exception e) {
+						throw new Exception("PageUtils/processVariables/"+accountNumber+" : unable to get customer name field:" + key);
+						}
+				break;
 			case "$customerName":
 				try {
 					desktopCustomers.getCustomers();
@@ -54,6 +61,31 @@ public class StepDefCommonFunctions extends BaseTest {
 						throw new Exception("PageUtils/processVariables/"+accountNumber+" : unable to get customer name field:" + key);
 						}
 				break;
+			case "$customerTitle":
+				try {
+					desktopCustomers.getCustomers();
+					dataMap.put(key, pageUtils.testMap.get("customer" + valueSplit[1]).split(" ")[0]) ;
+					}catch (Exception e) {
+						throw new Exception("PageUtils/processVariables/"+accountNumber+" : unable to get customer name field:" + key);
+						}
+				break;	
+			case "$customerFirstName":
+				try {
+					desktopCustomers.getCustomers();
+					dataMap.put(key, pageUtils.testMap.get("customer" + valueSplit[1]).split(" ")[1]) ;
+					}catch (Exception e) {
+						throw new Exception("PageUtils/processVariables/"+accountNumber+" : unable to get customer name field:" + key);
+						}
+				break;	
+			case "$customerSurname":
+				try {
+					desktopCustomers.getCustomers();
+					dataMap.put(key, pageUtils.testMap.get("customer" + valueSplit[1]).split(" ")[2]) ;
+					}catch (Exception e) {
+						throw new Exception("PageUtils/processVariables/"+accountNumber+" : unable to get customer name field:" + key);
+						}
+				break;	
+				
 			case "$date":
 				try {
 					dataMap.put(key,TimeDateCalcs.ReturnDate("",valueSplit[1], valueSplit[2]));
