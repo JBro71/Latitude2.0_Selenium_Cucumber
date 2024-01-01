@@ -54,12 +54,12 @@ public class StepDefCommonFunctions extends BaseTest {
 						}
 				break;
 			case "$customerName":
-				try {
+				//try {
 					desktopCustomers.getCustomers();
 					dataMap.put(key, pageUtils.testMap.get("customer" + valueSplit[1]));
-					}catch (Exception e) {
-						throw new Exception("PageUtils/processVariables/"+accountNumber+" : unable to get customer name field:" + key);
-						}
+					//}catch (Exception e) {
+						//throw new Exception("PageUtils/processVariables/"+accountNumber+" : unable to get customer name field:" + key +"/n" +e);
+						//}
 				break;
 			case "$customerTitle":
 				try {

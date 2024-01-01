@@ -173,8 +173,6 @@ public class DesktopDMC {
 					case "company":
 						if (action.equalsIgnoreCase("check")) {
 							inputWebElement =  driver.findElement(By.xpath("//span[@class='vs__selected']"));
-							//Object attrs = js.executeScript("var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;",inputWebElement);
-							//Logging.logToConsole("DEBUG","DesktopDMC/CheckDMC: " + "Attributes" +" "+ attrs);	
 							Logging.logToConsole("DEBUG",logEntryPrefix+ "/CheckDMC: " + i +" "+ inputWebElement.getText());	
 							resultsMap.put(i,inputWebElement.getText());  
 							}else {

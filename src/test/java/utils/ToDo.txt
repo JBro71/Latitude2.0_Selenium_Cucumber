@@ -1,4 +1,6 @@
 where using variable data need to add the debtorId's to the data and use those instead of sourcing from the master file and also the client customerId
 do something to allow arrears and balance to be checked in comms and batchAPI
-make change to allow a custom folder in the J_unit beforeAll to store the test results
-Sort out test dataMap static and otherwise, what do we need in the static map and why?
+complete insolvency
+complete arrangements
+complete complaints
+add check DMC

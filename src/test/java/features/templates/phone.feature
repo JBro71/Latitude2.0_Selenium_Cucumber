@@ -74,7 +74,7 @@ Feature: phones
 		|Comments									|this is a comment							|	|																																							|		
 		
 		@updatePhoneNumber
-  Scenario:  Seach for and edit a  phone number
+  Scenario:  Search for and edit a  phone number
   Given  I have account "LB78012617239" open in Latitude				   
  	Then I can update phone number "01406 727156" belonging to "$customerName,1"
    #|FIELD NAME								|VALUE													|M|NOTES																																				|

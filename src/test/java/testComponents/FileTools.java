@@ -23,6 +23,8 @@ public class FileTools  extends BaseTest {
 	static String dataFilePath = "//src//test//java//data//working//";
 	static String testReportPath = "//target//JunitReports//";
 	String testFilePath = "//src//test//java//data//tests//";
+	String[] testFileLineDataItems = {"account","lastStage","lastState","testStartDateTime","lastStageDateTime","customer1","customer2",
+			"customer1Id","customer2Id","customer1ClientId","customer2ClientId","originalBalance","originalArrears"};
 	String testId = "";
 	
 	public FileTools(PageUtils pageUtils) { 
@@ -59,16 +61,22 @@ public class FileTools  extends BaseTest {
 		for (String key : BaseTest.staticTestDataMap.keySet()) { //for each set of test data
 			List<String> fileLineList = BaseTest.staticTestDataMap.get(key);
 			FileUtils.writeLines(new File(filePath+key+".txt"), fileLineList,"\n",false);
-			/*
-			FileUtils.delete(new File(filePath+key+".txt"));
-			for (String fileLine : fileLineList) {
-				FileUtils.writeStringToFile(new File(filePath+key+".txt"), "\n"+fileLine, StandardCharsets.UTF_8,true);
-			}
-			*/
 		} 
 	}
 	
+	
+	public void loadTestFileLine(String[] lineArray) throws Exception {
+			for (int i=0; i<testFileLineDataItems.length; i++) {
+				try {
+					pageUtils.updateTestMap(testFileLineDataItems[i],lineArray[i], true);
+					}
+					catch (Exception e) {
+						pageUtils.updateTestMap(testFileLineDataItems[i],"", true);
+						}
+			}
+	}
 
+	
 	public void getTestFile(String testId) throws Exception {
 		this.testId = testId;
 		String logEntryPrefix= "FileTools/getTestFile/file: " +testId+ ": " ; 
@@ -80,12 +88,13 @@ public class FileTools  extends BaseTest {
 			 
 				switch (lineArray[2]) {
 					case "PASS":  // previous step passed on last run
-						pageUtils.updateTestMap("account", lineArray[0],true); //accountNumber
-						pageUtils.updateTestMap("lastStage", lineArray[1].split("E")[1], true); //last stage number
-						pageUtils.updateTestMap("testStartDateTime", lineArray[3], false); 
-						pageUtils.updateTestMap("lastStageDateTime", lineArray[4], false);
-						pageUtils.updateTestMap("customer1", lineArray[5], true);
-						if(lineArray.length>6) {pageUtils.updateTestMap("customer2", lineArray[6], true);}
+						loadTestFileLine(lineArray);
+						//pageUtils.updateTestMap("account", lineArray[0],true); //accountNumber
+						//pageUtils.updateTestMap("lastStage", lineArray[1].split("E")[1], true); //last stage number
+						//pageUtils.updateTestMap("testStartDateTime", lineArray[3], false); 
+						//pageUtils.updateTestMap("lastStageDateTime", lineArray[4], false);
+						//pageUtils.updateTestMap("customer1", lineArray[5], true);
+						//if(lineArray.length>6) {pageUtils.updateTestMap("customer2", lineArray[6], true);}
 						pageUtils.updateTestMap("run", "false", true);
 						
 						return;	
@@ -93,7 +102,7 @@ public class FileTools  extends BaseTest {
 						if(prop.getProperty("restart").equalsIgnoreCase("true")) {
 							testComponents.FileTools.writeTestReport("Test Previously Completed, Restarting");
 							caseStart();
-						}else {
+						}else {// no restart so do nothing
 							pageUtils.updateTestMap("lastStage", "0", true ); //last stage number
 							pageUtils.updateTestMap("run", "false", true);
 							testComponents.FileTools.writeTestReport("Test Previously Completed, RESTART not Enabled");
@@ -103,18 +112,15 @@ public class FileTools  extends BaseTest {
 						int lastStageInt = Integer.parseInt(lineArray[1].split("E")[1]);
 						if(prop.getProperty("retry").equalsIgnoreCase("true")) {
 							if (lastStageInt > 1) { //retry from last stage tried
-								pageUtils.updateTestMap("account", lineArray[0], true); //accountNumber
-								pageUtils.updateTestMap("lastStage", Integer.toString(lastStageInt-1),true); //skip back one stage
-								pageUtils.updateTestMap("testStartDateTime", lineArray[3],false); 
-								pageUtils.updateTestMap("lastStageDateTime", lineArray[4],false);
-								pageUtils.updateTestMap("customer1", lineArray[5],true);
-								if(lineArray.length>6) {pageUtils.updateTestMap("customer2", lineArray[6], true);}
+								loadTestFileLine(lineArray);
+								//pageUtils.updateTestMap("account", lineArray[0], true); //accountNumber
+								//pageUtils.updateTestMap("lastStage", Integer.toString(lastStageInt-1),true); //skip back one stage
+								//pageUtils.updateTestMap("testStartDateTime", lineArray[3],false); 
+								//pageUtils.updateTestMap("lastStageDateTime", lineArray[4],false);
+								//pageUtils.updateTestMap("customer1", lineArray[5],true);
+								//if(lineArray.length>6) {pageUtils.updateTestMap("customer2", lineArray[6], true);}
 								pageUtils.updateTestMap("run", "false",true);	
-								//testComponents.FileTools.writeTestReport("STAGE"+(lastStageInt-1)+",Previously failed, retrying");
-								//BaseTest.staticTestMap.put("stageStatus", "INPROGRESS");
 								}else { //last stage attempted was first stage so try again from the start with new data
-									//pageUtils.updateTestMap("lastStage", "0" ,false); //last stage number
-									//pageUtils.updateTestMap("run", "true",false);
 									testComponents.FileTools.writeTestReport("STAGE1, Previously failed, retstarting with new data");
 									caseStart();
 									}
@@ -143,27 +149,32 @@ public class FileTools  extends BaseTest {
 	
 	public void caseStart() throws IOException {
 		String nowDate = TimeDateCalcs.now("dd-MM-YYYY HH:mm:ss");
-		pageUtils.updateTestMap("account", "",true); //accountNumber
-		pageUtils.updateTestMap("customer1", "", true);
-		pageUtils.updateTestMap("customer2", "", true);
+		for (int i=0; i<testFileLineDataItems.length; i++) {
+				pageUtils.updateTestMap(testFileLineDataItems[i],"", true);
+				}
 		pageUtils.updateTestMap("lastStage", "0",true ); //last stage number
 		pageUtils.updateTestMap("testStartDateTime", nowDate , false); //last stage number
 		pageUtils.updateTestMap("lastStageDateTime", nowDate , false); //last stage number			
 		pageUtils.updateTestMap("run", "true", true);
-		//testComponents.FileTools.writeTestReport("STAGE1,INPROGRESS");
-		//BaseTest.staticTestMap.put("stageStatus", "INPROGRESS");
 	}
 	
 	
 	public void writeTestFileLine(String testId, String status) throws IOException {
 		String filePath = System.getProperty("user.dir")+ testFilePath + testId +".txt";
 		String fileLine = pageUtils.testMap.get("account")+","+ 
-			"STAGE"+(Integer.parseInt(pageUtils.testMap.get("lastStage"))+1)+","+
+			(Integer.parseInt(pageUtils.testMap.get("lastStage"))+1)+","+
 			status+","+
 			pageUtils.testMap.get("testStartDateTime")+","+ 
 			TimeDateCalcs.now("dd-MM-yyyy HH:mm:ss")+","+ 
 			pageUtils.testMap.get("customer1")+","+ 
-			pageUtils.testMap.get("customer2");
+			pageUtils.testMap.get("customer2")+","+
+			pageUtils.testMap.get("customer1Id")+","+ 
+			pageUtils.testMap.get("customer2Id")+","+
+			pageUtils.testMap.get("customer1ClientId")+","+ 
+			pageUtils.testMap.get("customer2ClientId")+","+
+			pageUtils.testMap.get("originalBalance")+","+ 
+			pageUtils.testMap.get("originalArrears");
+		
 		FileUtils.writeStringToFile(new File(filePath), "\n"+fileLine, StandardCharsets.UTF_8,true);
 	}
 	

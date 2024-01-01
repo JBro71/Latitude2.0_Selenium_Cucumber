@@ -51,6 +51,7 @@ Feature: basic vulnerabilities
 		
 	 And I can check if a batchAPI entry has been created that matches these details
    #|FIELD NAME						|VALUE													|M|NOTES																																						|
+  	|Count								|1															| |Expected number of matching records, zero if no match expected										|
     |Date Created					|$startDate,+0,dd/MM/yyyy				|	|date in format dd/MM/yyyy or delta from today in format $date,+N,dd/MM/yyyy 			|	
    	|Event								|Vulnerable											|	|																																									|
    	|Debtor ID						|$customerId,1									| |customerId or $customerId,1 or 2	e.g.$customerId,1																|
@@ -83,6 +84,7 @@ Feature: basic vulnerabilities
 	
 	And I can check if a communication was sent with the following details
    #|FIELD NAME				|VALUE												|M|NOTES																																						|
+   	|Count						|1														| |Expected number of matching records																							|
     |Method						|SMS								 					|	|																																									|
    	|Code							|VUN01												|	|																																									|
    	|Date Requested		|$startDate,+0,dd/MM/yyyy			|	|date in format dd/MM/yyyy or delta from today in format $date,+N,dd/MM/yyyy			|  	
@@ -91,6 +93,7 @@ Feature: basic vulnerabilities
    	
   Then I can check if a batchAPI entry has been created that matches these details
    #|FIELD NAME						|VALUE													|M|NOTES																																						|
+   	|Count								|1															| |Expected number of matching records, zero if no match expected										|
     |Date Created					|$startDate,+0,dd/MM/yyyy				|	|date in format dd/MM/yyyy or delta from today in format $date,+N,dd/MM/yyyy 			|	
    	|Event								|Communications									|	|																																									|
    	|Value								|VUN01													| |																																									|

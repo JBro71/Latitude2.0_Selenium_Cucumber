@@ -69,7 +69,8 @@ public class Context extends BaseTest {
 		{
 			getDPA();
 			getSearchPage();
-			openAccount = new OpenAccount(driver, pageUtils, searchPage, dpa);
+			getDesktopAnchorPanels();
+			openAccount = new OpenAccount(driver, pageUtils, searchPage, dpa, desktopAnchorPanels);
 		}
 		return openAccount;
 	} 

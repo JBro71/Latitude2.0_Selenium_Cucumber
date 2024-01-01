@@ -14,8 +14,8 @@ import io.cucumber.junit.Cucumber;
 	    glue={"stepDefinitions"},
 	    stepNotifications = true, 
 	    monochrome=true,
-	   	tags = "@addManualAddress or @addPhone",
-	    plugin= {"pretty","html:target/cucumberReports"}) //,"json:target/cucumber.json","junit:target/cukes.xml"})
+	   	tags = "@insolvencyAdd",
+	    plugin= {"pretty","html:target/cucumberReports/testReport.html"}) //,"json:target/cucumber.json","junit:target/cukes.xml"})
 
 
 
@@ -25,8 +25,6 @@ public class JunitTestRunnerTest {
 	@BeforeClass
 	  public static void setupClass() {
 	    System.out.println("JUnit BeforeClass hook started");
-	    //String port = HamsterUtil.performExpensiveHamsterTraining();
-	   // HamsterSteps.injectPort(port);
 	  }
 	
 	// A method with annotation @AfterClass runs at test class completion time, i.e. after the whole bunch of all tests

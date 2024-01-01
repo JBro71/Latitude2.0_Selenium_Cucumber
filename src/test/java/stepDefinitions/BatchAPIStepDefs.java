@@ -39,14 +39,30 @@ public class BatchAPIStepDefs {
 		//convert dataTable to Hashmap and convert variables to real values
 		HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
 		dataMap = stepDefCF.processVariables(dataMap);
-		String batchApiPayload = desktopBatchApi.getBatchApi(dataMap);
-		//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ batchApiPayload);
-		Assert.assertNotEquals("getBatchAPI: no payload returned for account:" + pageUtils.testMap.get("account") , batchApiPayload, "");
-		Gson gson = new Gson();
-		HashMap<String,String> tempPayloadMap = gson.fromJson(batchApiPayload, new TypeToken<HashMap<String, String>>(){
-			private static final long serialVersionUID = 1L;}.getType());
-		tempPayloadMap.forEach((key, value) -> {payloadMap.put(key.toLowerCase(), value);});
-		Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ payloadMap);
+		
+		int expectedCount = 1;
+		if(dataMap.containsKey("count")) {
+			expectedCount = Integer.parseInt(dataMap.get("count"));
+			dataMap.remove("count");
+		}
+		
+		HashMap<String,String> resultsMap = desktopBatchApi.getBatchApi(dataMap);
+		int matchCount = Integer.parseInt(resultsMap.get("matchCount"));
+		
+		String valueString = pageUtils.hashMapToString(dataMap);
+		// check if returned values match expected values		
+		Assert.assertEquals("BatchAPI entries Check. "+pageUtils.testMap.get("account") +
+				" entry ("+valueString+ ") count does not match", expectedCount, matchCount);
+
+		if(matchCount > 0) {// store the JSON in payloadMap for later use
+			String batchApiPayload = resultsMap.get("matchedJsonString1");
+			//Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ batchApiPayload);
+			Gson gson = new Gson();
+			HashMap<String,String> tempPayloadMap = gson.fromJson(batchApiPayload, new TypeToken<HashMap<String, String>>(){
+				private static final long serialVersionUID = 1L;}.getType());
+			tempPayloadMap.forEach((key, value) -> {payloadMap.put(key.toLowerCase(), value);});
+			Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi: "+ payloadMap);
+		}
 	}
 
 	

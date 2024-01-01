@@ -35,8 +35,8 @@ public class BaseTest {
 	public static HashMap<String,List<String>> staticTestDataMap = new HashMap<String,List<String>>();
 	//public values used in test
 	public HashMap<String, String> testMap = new HashMap<String, String>();
-
 	public static HashMap<String, String> staticTestMap = new HashMap<String, String>();
+	public static String now = "date here";
 
 	
 	public void initilizeDriver() throws IOException {
@@ -47,8 +47,8 @@ public class BaseTest {
 		staticTestMap.put("account", ""); 		//Initialise the account value;
 		staticTestMap.put("customer1", null);
 		staticTestMap.put("customer2", null);
-		staticTestMap.put("customerId1", null);
-		staticTestMap.put("customerId2",null);
+		staticTestMap.put("customer1Id", null);
+		staticTestMap.put("customer2Id",null);
 		staticTestMap.put("lastImplicitWait", "0");
 		staticTestMap.put("run", "true");
 	    //copy the values from the Static Map

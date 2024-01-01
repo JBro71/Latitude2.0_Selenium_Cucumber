@@ -70,7 +70,6 @@ public class testDataStepDefs {
 			if(runNow) {
 				pageUtils.updateTestMap("run", "true", true);
 				fileTools.writeTestFileLine(testId, "INPROGRESS");
-				//testComponents.FileTools.writeTestReport("STAGE"+stage+", INPROGRESS");
 				openAccount.OpenNewAccount(pageUtils.testMap.get("account"));
 				}else {
 					testComponents.FileTools.writeTestReport("STAGE"+stage+", Stage execution date/time not yet reached");
@@ -115,8 +114,10 @@ public class testDataStepDefs {
 			}	
 			fileTools.loadTestDataFromFile(fileNameString);
 			String accountNumber = stepDefCF.getTestDataItem(fileNameString);
-			
 			openAccount.OpenNewAccount(accountNumber);
+			//new account so opening and original balance are the same
+			pageUtils.testMap.put("originalBalance", pageUtils.testMap.get("openingBalance"));
+			pageUtils.testMap.put("originalArrears", pageUtils.testMap.get("openingArrears"));
 			
 		
 	}

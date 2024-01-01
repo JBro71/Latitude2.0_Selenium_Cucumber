@@ -28,7 +28,7 @@ public class DesktopBatchApi {
 		}
 	
 	
-	public String getBatchApi(HashMap<String,String> paramsMap) throws Exception  {
+	public HashMap<String,String> getBatchApi(HashMap<String,String> paramsMap) throws Exception  {
 		String account = pageUtils.testMap.get("account");
 		Logging.logToConsole("INFO","DesktopBatchApi/getBatchApi/"+account+": start");
 		pageUtils.ReturnHome();
@@ -53,6 +53,8 @@ public class DesktopBatchApi {
 				
 		int pageCount = 0;
 		boolean match = false;
+		int matchCount = 0;
+		HashMap<String,String> resultsMap = new HashMap<String,String>();
 		//search for a match until one is found or all the data is checked
 		while (!match) {
 		Logging.logToConsole("DEBUG","DesktopBatchApi/getBatchApi/"+account+": Page: " + pageCount);
@@ -80,7 +82,13 @@ public class DesktopBatchApi {
 		if(match) {
 			Logging.logToConsole("DEBUG",
 							"DesktopBatchApi/getBatchApi/"+account+": Match Found: "+ " Row: "+(row+1));
-			return driver.findElement(By.xpath("("+tablePath+ tableMap.get("payload")+"])["+(row+1)+"]")).getText();
+			matchCount++;
+			match = false;
+			//for the first match store the JSON
+			if(matchCount == 1) {
+				resultsMap.put("matchedJsonString1", driver.findElement(By.xpath("("+tablePath+ tableMap.get("payload")+"])["+(row+1)+"]")).getText()); 
+			}
+			//return driver.findElement(By.xpath("("+tablePath+ tableMap.get("payload")+"])["+(row+1)+"]")).getText();
 				}
 		} //row loop
 		if (!buttonNext.getAttribute("class").equalsIgnoreCase("k-link k-pager-nav k-disabled"))
@@ -93,7 +101,7 @@ public class DesktopBatchApi {
 		
 			} //while loop
 				
-				
-		return "";
+		resultsMap.put("matchCount", Integer.toString(matchCount));	
+		return resultsMap;
 	}	
 }

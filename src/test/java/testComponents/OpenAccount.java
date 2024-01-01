@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 
 import pageObjects.DPA;
 import pageObjects.SearchPage;
+import pageObjects.DesktopAnchorPanels;
 import utils.Logging;
 
 public class OpenAccount {
@@ -15,17 +16,18 @@ public class OpenAccount {
 	PageUtils pageUtils;
 	SearchPage searchPage;
 	DPA dpa;
-		
-		public OpenAccount(WebDriver driver, PageUtils pageUtils, SearchPage searchPage, DPA dpa) { //initialise Webdriver in this class from the calling class
+	DesktopAnchorPanels desktopAnchorPanels;
+	
+		public OpenAccount(WebDriver driver, PageUtils pageUtils, SearchPage searchPage, DPA dpa, DesktopAnchorPanels desktopAnchorPanels ) { //initialise Webdriver in this class from the calling class
 			//initialisation
 			this.driver = driver;
 			this.pageUtils = pageUtils;
 			this.searchPage = searchPage;
 			this.dpa = dpa;
+			this.desktopAnchorPanels = desktopAnchorPanels; 
 		}
 	
-	
-	
+		
 	public void OpenNewAccount(String accountNumber) throws Exception {
 		//close existing account if one open
 		String logEntryPrefix= "OpenAccount/OpenNewAccount/accountNumber: " +accountNumber+ ": " ; 
@@ -38,7 +40,7 @@ public class OpenAccount {
 		
 		//**********************dismiss DPA screen******************
 		dpa.dismisDPA();
-		pageUtils.closeAnchorPanel();
+		
 		int sleepTime = 100;		
 		int totalSleepTime = 0;
 		pageUtils.implictWait(0);
@@ -62,6 +64,13 @@ public class OpenAccount {
 				}
 		}
 		pageUtils.defaultImplictWait();
+		
+		//********************get balance and close anchor panels***************
+		pageUtils.testMap.put("openingBalance", 
+				pageUtils.moneyToSimpleString(desktopAnchorPanels.queryAnchorPanels("Client Overview","Original Balance")));
+		pageUtils.testMap.put("openingArrears", 
+				pageUtils.moneyToSimpleString(desktopAnchorPanels.queryAnchorPanels("Client Overview","Current Arrears")));
+		pageUtils.closeAnchorPanel();
 	}
 	
 	

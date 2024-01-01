@@ -24,6 +24,34 @@ public class PageUtils extends BaseTest {
 
 	}
 	
+	
+	public String moneyToSimpleString(String valueStr) throws Exception {
+		//takes a monetary amount in the form £9,999.00 and removes the commas and £
+		try {
+			Logging.logToConsole("DEBUG", "PageUtils/moneyToSimpleString/amount:"+ valueStr);
+			
+			//valueStr = valueStr.split("£")[1]; 
+			//remove first character
+			valueStr = valueStr.substring(1,valueStr.length());
+			String[] valueArray = valueStr.split(",");
+			valueStr = "";
+			for (String value: valueArray) {
+				valueStr = valueStr + value;
+				}
+			return valueStr;
+		}catch (Exception e) {return "ERROR Processing amount: " + valueStr ;}
+		}
+	
+	public String hashMapToString(HashMap<String,String> dataMap) throws Exception {
+	String valueString = "";
+	String separator = "";
+	for (String value : dataMap.values()) {
+		 valueString = valueString +separator + value; 
+		separator = "/";
+		}
+	return valueString;
+	}
+	
 	public void updateCheckBox(String set, String xpath) throws Exception {
 	//helper function to set or unset a check box
 		try {

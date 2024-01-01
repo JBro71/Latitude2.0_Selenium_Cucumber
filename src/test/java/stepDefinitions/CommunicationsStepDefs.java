@@ -40,16 +40,10 @@ public class CommunicationsStepDefs {
 			expectedCount = Integer.parseInt(dataMap.get("count"));
 			dataMap.remove("count");
 		}
-			
+		// check if returned values match expected values			
 		int matchCount = desktopCommunications.communicationHistory(dataMap);
-		// check if returned values match expected values
-		String valueString = "";
-		String separator = "";
-		for (String value : dataMap.values()) {
-			 valueString = valueString +separator + value; 
-			separator = "/";
-		}
-		//Assert.assertTrue("Communications Issued check. "+pageUtils.testMap.get("account") +" requested coms ("+valueString+ ") does not exist", match);
-		Assert.assertEquals("Communications Issued check. "+pageUtils.testMap.get("account") +" requested coms ("+valueString+ ") count does not match", expectedCount, matchCount);
+		String valueString = pageUtils.hashMapToString(dataMap);
+		Assert.assertEquals("Communications Issued check. "+pageUtils.testMap.get("account") +
+				" requested coms ("+valueString+ ") count does not match", expectedCount, matchCount);
 	}
 }
