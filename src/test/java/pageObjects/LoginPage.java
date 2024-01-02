@@ -18,18 +18,24 @@ import utils.Logging;
 
 
 public class LoginPage {
-		
 	
-	public void login (WebDriver driver) throws InterruptedException {
+	WebDriver driver;
 	
-		Logging.logToConsole("DEBUG", "log in to Latitude");
+	public LoginPage(WebDriver driver) { //initialise Webdriver in this class from the calling class
+		//initialisation
+		this.driver=driver;
+	}
+	
+	public void login () throws InterruptedException {
+	
+		Logging.logToConsole("DEBUG", "LoginPage/login: log in to Latitude");
 		driver.get(BaseTest.prop.getProperty("LatitudeUrl"));
 		driver.manage().window().maximize();
 
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 		//click the login button repeatedly until next page appears (don't ask)
 		for(int i=0;i<20; i++) {
-			Logging.logToConsole("DEBUG", "logging in. Try No:" + i+1);
+			Logging.logToConsole("DEBUG", "LoginPage/login: logging in. Try No:" + i );
 			try {
 			driver.findElement(By.xpath("//a[contains(text(),'windows login')]")).click();
 			} catch (Exception e) 
@@ -39,13 +45,13 @@ public class LoginPage {
 			//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[normalize-space()='Agent Desktop']")));
 			} catch (Exception e) 
 				{ 
-				Logging.logToConsole("DEBUG", "error: " +  e);
+				//Logging.logToConsole("DEBUG", "error: " +  e);
 				Thread.sleep(500);
 				continue;
 				}
 			break;
 		}
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
-		Logging.logToConsole("DEBUG", "Login Complete");
+		Logging.logToConsole("DEBUG", "LoginPage/login: Login Complete");
 	}
 }

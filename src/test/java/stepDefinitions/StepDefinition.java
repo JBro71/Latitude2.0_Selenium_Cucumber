@@ -1,45 +1,133 @@
 package stepDefinitions;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import testComponents.StepDefCommonFunctions;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+
 import io.cucumber.java.en.*;
-import testComponents.BaseTest;
+import testComponents.*;
+import utils.Context;
+import utils.Logging;
 import pageObjects.*;
 
 
-
 public class StepDefinition <Public> extends BaseTest{
-
+	
+	Context context;
+	PageUtils pageUtils;
+	StepDefCommonFunctions StepDefCF;
+	LoginPage loginPage;
+	SplashPage splashPage;
+	SearchPage searchPage;
+	DesktopAnchorPanels desktopAnchorPanels;
+	OpenAccount openAccount;
+	DesktopArrangements arrangements;
+	DesktopVulnerabilites vulnerabilities;
+	
+	public StepDefinition(Context context)
+	{
+		this.context = context;
+		pageUtils = context.getPageUtils();
+		StepDefCF = context.getStepDefCommonFunctions();
+		searchPage = context.getSearchPage();
+		loginPage = context.getLoginPage();
+		splashPage = context.getSplashPage();
+		desktopAnchorPanels = context.getDesktopAnchorPanels();
+		openAccount = context.getOpenAccount();
+		arrangements = context.getDesktopArrangements();
+		vulnerabilities = context.getDesktopVulnerabilites();
+	}
+	
+	
+	@Then("I can convert field names to a string")
+	public void i_can_convert_field_names_to_a_string(io.cucumber.datatable.DataTable dataTable) throws Exception {
+		//convert dataTable to Hashmap and convert variables to real values
+		List<List<String>> dataList = dataTable.asLists(); //get data table
+		String fieldString = "\"";
+		String caseString = "";
+		for (List<String> keyValuePair : dataList) {
+			fieldString = fieldString + keyValuePair.get(0).toLowerCase() +"\",\"";
+			caseString = caseString + "case \"" +keyValuePair.get(0).toLowerCase()+"\":\n\n break; \n";
+			}	
+		System.out.println(fieldString);
+		System.out.println(caseString);
+	}
 	
 	
 	@Given("I am logged into the Latitude Desktop")
 	public void i_am_logged_into_the_latitude_desktop() throws IOException, InterruptedException {
-		//********Launch Browser*************
-		boolean existingSession = initilizeDriver();
-		
-		if (!existingSession) { //no existing session
-		testMap.put("account", ""); //Initialise the account value;
-		//***********Log in*****************
-		LoginPage loginPage = new LoginPage();
-		loginPage.login(driver);
-
-		//****************** Splash screen*******************
-		SplashPage splashPage = new SplashPage(driver);
+		//if this is the first test launch browser otherwise re-use existing instance
+		if (firstTest) {
+		loginPage.login();
 		splashPage.splash("goto desktop");
 		}
 	}
 	
 	
 	@Given("^I have account \"([^\"]*)\" open in Latitude$")
-	public void i_have_account_open_in_latitude(String accountNumber) throws InterruptedException {
-		if (!testMap.get("account").equals(accountNumber)) { //account not open then open
-		OpenNewAccount(accountNumber);
-		testMap.put("account",accountNumber);
-		}	
+	public void i_have_account_open_in_latitude(String accountNumber) throws Exception  {
+		
+		if (!pageUtils.testMap.get("account").equals(accountNumber)) { //no account open or a different account open to that needed
+		//pageUtils.CloseAccount(); // close an existing account if one open
+			
+		openAccount.OpenNewAccount(accountNumber);
+		pageUtils.updateTestMap("account",accountNumber, true);
+		pageUtils.updateTestMap("customer1", null, true);
+		pageUtils.updateTestMap("customer2", null, true);
+		//reset the customer details
+		}
+		else {
+			pageUtils.closeAnchorPanel();
+		}
+		pageUtils.ReturnHome(); // scroll back to the top
 	}
 
-	@Given("the {string} anchor panel will display a {string} value of {string}")
-	public void the_anchor_panel_will_display_a_value_of(String string, String string2, String string3) {
-	    // Write code here that turns the phrase above into concrete actions
-	    throw new io.cucumber.java.PendingException();
-	}
+	
+	@Then("if I add a payment card with the following details")
+	public void if_i_add_a_payment_card_with_the_following_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException {
+		HashMap<String,String> paymentCardMap = new HashMap<String, String>();
+		List<List<String>> dataList = dataTable.asLists(); //get data table
+		 for (String keyValuePair : dataList.get(0)) { 
+			   //Logging.logToConsole("Debug","payment card: "+ keyValuePair);
+			    String[] dataPairArray = keyValuePair.split(":");
+			    String key = dataPairArray[0];
+			    String  value = dataPairArray[1].replaceAll("^\\s+", "");
+			    if (key.equals("expiry")) {
+			    	String[] expiryMonthYear = value.split("/");
+			    	paymentCardMap.put("card expiry month", expiryMonthYear[0]);
+			    	paymentCardMap.put("card expiry year", expiryMonthYear[1]);
+			    	}
+				    else {
+				    	paymentCardMap.put(key,value);
+				    }	
+			    }
+	    	arrangements.AddPaymentCard(paymentCardMap);
+		}
+	
+	@Then("I can add a card arrangement using the following details")
+	public void i_can_add_a_card_arrangement_using_the_following_details(io.cucumber.datatable.DataTable dataTable) throws InterruptedException, IOException {
+		HashMap<String,String> dataMap = new HashMap<String, String>();
+		List<List<String>> dataList = dataTable.asLists(); //get data table
+		 for (String keyValuePair : dataList.get(0)) { 
+			   //Logging.logToConsole("Debug","payment card: "+ keyValuePair);
+			    String[] dataPairArray = keyValuePair.split(":");
+			    String key = dataPairArray[0];
+			    String  value = dataPairArray[1]. replaceAll("^\\s+", "");
+			    if (key.equals("expiry")) {
+			    	String[] expiryMonthYear = value.split("/");
+			    	dataMap.put("card expiry month", expiryMonthYear[0]);
+			    	dataMap.put("card expiry year", expiryMonthYear[1]);
+			    	}
+				    else {
+				    	dataMap.put(key,value);
+				    }	
+			    }
+	    	arrangements.AddArrangment(dataMap);
+	    			}
+
+	
+	
 }

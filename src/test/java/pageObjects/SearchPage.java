@@ -59,25 +59,47 @@ public class SearchPage {
 		
 		}	
 		
-		public void openAccount(String accountNumber) {
-			Logging.logToConsole("DEBUG", "opening account: " + accountNumber);
+		public void openAccount(String accountNumber) throws Exception {
+			Logging.logToConsole("DEBUG", "SearchPage/openAccount: opening account: " + accountNumber);
 			driver.findElement(By.xpath("//input[@type='text']")).sendKeys(accountNumber);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-			
+			//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
+			//code to retry if the account number search fails as it sometimes does
 			for(int i=0;i<3; i++) {
 			Select search =  new Select(driver.findElement(By.xpath("//lat-quicksearch[@class='ng-isolate-scope']//div//select")));
 			search.selectByVisibleText("[ a ]   Account #");	
 			driver.findElement(By.xpath("//input[@type='text']")).sendKeys(accountNumber);
 			driver.findElement(By.xpath("//i[@class='icon-search']")).click();	
 			
-			if (driver.findElement(By.xpath("//input[@type='text']")).getText().equalsIgnoreCase("No matches")){
-				Logging.logToConsole("DEBUG", "account open failed");
-				continue;	
-			}
-			break;
-			}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
+			for(int z=0;z<5; z++) {
+				//check if there has been a no match and if so break out to the outer loop
+				Thread.sleep(200);
+				Logging.logToConsole("DEBUG", "SearchPage/openAccount: placeholder: " + driver.findElement(By.xpath("//input[@type='text']")).getAttribute("placeholder")
+						+ "Text: " + driver.findElement(By.xpath("//input[@type='text']")).getText());
+				try {
+					if (driver.findElement(By.xpath("//input[@type='text']")).getAttribute("placeholder").equalsIgnoreCase("No matches"))
+						{
+							Logging.logToConsole("DEBUG", "SearchPage/openAccount: account open failed, no match retrying");
+							break;
+						}else if (!driver.findElement(By.xpath("//input[@type='text']")).getText().equals("")) 
+								{
+								Logging.logToConsole("DEBUG", "SearchPage/openAccount: account open failed, error retrying");
+								break;
+								}
+					}catch (Exception e) {
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
+						return;}
+				
+				if (z==4) {
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
+					Logging.logToConsole("DEBUG", "SearchPage/apenAccount: account opened");
+					return;
+				}
+				}
 		}
-		
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(BaseTest.prop.getProperty("implicitWait"))));
+		Logging.logToConsole("DEBUG", "SearchPage/apenAccount: account not found");
+		throw new Exception("Unable to open account: " + accountNumber + " giving up");
+		}
 		
 }

@@ -5,7 +5,10 @@ import testComponents.BaseTest;
 public class Logging {
 	public static void logToConsole(String messageLevel, String message) {
 		Integer messageLevelInt = logLevelLookup(messageLevel);
-		Integer setLevelInt = Integer.parseInt(BaseTest.prop.getProperty("logLevel"));
+		Integer setLevelInt = 4;
+		try {
+		setLevelInt = Integer.parseInt(BaseTest.prop.getProperty("logLevel"));
+		}catch(Exception e) {setLevelInt = 4;}
 		if (setLevelInt >= messageLevelInt) {
 			System.out.println(messageLevel.toUpperCase() + " Message: " + message);
 		}

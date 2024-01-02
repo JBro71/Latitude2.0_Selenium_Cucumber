@@ -1,3 +1,11 @@
 select distinct look.Account_Number,  look.File_number
 FROM  [Latitude].[Collect].[Account_Reference_Lookup] look
  order by File_Number
+ 
+ select look.Account_Number,look.File_number,  MIN(look.debtorID) debtor_1, MAX(look2.debtorID) debtor_2
+FROM  [Latitude].[Collect].[Account_Reference_Lookup] look
+left outer join [Latitude].[Collect].[Account_Reference_Lookup] look2
+  on look.File_Number = look2.File_Number
+  and look.DebtorID != look2.DebtorID   
+group by look.Account_Number, look.File_number
+ order by Account_Number
