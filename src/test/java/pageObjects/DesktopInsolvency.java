@@ -52,7 +52,7 @@ public class DesktopInsolvency {
 						driver.findElement(By.xpath("//textarea[@id='comment']")).click();
 						//driver.findElement(By.xpath(buttonSaveStr+"/parent::div")).click();
 						driver.switchTo().defaultContent();
-						js.executeScript("window.scrollBy(0,200)");
+						js.executeScript("window.scrollBy(400,00)");
 						break;
 					}catch (Exception e){
 						Logging.logToConsole("DEBUG",logEntryPrefix + "element not found" + e);
@@ -112,9 +112,10 @@ public class DesktopInsolvency {
 								break;
 								
 							case "expiration date":
-								inputWebElement = driver.findElement(By.xpath("//button[@id='expiration-date']"));
+								inputWebElement = driver.findElement(By.xpath("//label[@id='expiration-date__value_']"));
 								if(check) {
-									resultsMap.put(i,inputWebElement.getText());	
+									String dateString = dateUnpicker(inputWebElement.getText());
+									resultsMap.put(i,dateString); //getAttribute("value"));	
 									}else {
 										inputWebElement.click(); //click on calendar
 										datePicker(value);									
@@ -122,9 +123,10 @@ public class DesktopInsolvency {
 								break;
 								
 							case "insolvency date":
-								inputWebElement = driver.findElement(By.xpath("//button[@id='insolvency-date']"));
+								inputWebElement = driver.findElement(By.xpath("//label[@id='insolvency-date__value_']"));
 								if(check) {
-									resultsMap.put(i,inputWebElement.getText());	
+									String dateString = dateUnpicker(inputWebElement.getText());
+									resultsMap.put(i,dateString); //getAttribute("value"));	
 									}else {
 										inputWebElement.click(); //click on calendar
 										datePicker(value);									
@@ -132,19 +134,26 @@ public class DesktopInsolvency {
 								break;
 								
 							case "discharged date":
-								inputWebElement = driver.findElement(By.xpath("(//button[@id='discharged-date'])[1]"));
+								inputWebElement = driver.findElement(By.xpath("(//label[@id='discharged-date__value_'])[1]"));
 								if(check) {
-									resultsMap.put(i,inputWebElement.getText());	
+									String dateString = dateUnpicker(inputWebElement.getText());
+									resultsMap.put(i,dateString); //getAttribute("value"));	
 									}else {
 										inputWebElement.click(); //click on calendar
+										driver.switchTo().defaultContent();	
+										//frig becasue the picker disapears off the bottom of the page
+										js.executeScript("window.scrollBy(200,00)");
+										Thread.sleep(100);
+										driver.switchTo().frame(driver.findElement(By.xpath("//custom-reference-panel-with-url[@class='ng-scope']/iframe")));
 										datePicker(value);									
 										}
 								break;
 								
 							case "iva failed date":
-								inputWebElement = driver.findElement(By.xpath("//button[@id='iva-failed-date']"));
+								inputWebElement = driver.findElement(By.xpath("//label[@id='iva-failed-date__value_']"));
 								if(check) {
-									resultsMap.put(i,inputWebElement.getText());	
+									String dateString = dateUnpicker(inputWebElement.getText());
+									resultsMap.put(i,dateString); //getAttribute("value"));	
 									}else {
 										inputWebElement.click(); //click on calendar
 										datePicker(value);									
@@ -152,9 +161,10 @@ public class DesktopInsolvency {
 								break;
 								
 							case "dro date":
-								inputWebElement = driver.findElement(By.xpath("//button[@id='dro-date']"));
+								inputWebElement = driver.findElement(By.xpath("//label[@id='dro-date__value_']"));
 								if(check) {
-									resultsMap.put(i,inputWebElement.getText());	
+									String dateString = dateUnpicker(inputWebElement.getText());
+									resultsMap.put(i,dateString); //getAttribute("value"));	
 									}else {
 										inputWebElement.click(); //click on calendar
 										datePicker(value);									
@@ -162,9 +172,10 @@ public class DesktopInsolvency {
 								break;
 								
 							case "dro schedule received":
-								inputWebElement = driver.findElement(By.xpath("//button[@id='dro-schedule-received']"));
+								inputWebElement = driver.findElement(By.xpath("//label[@id='dro-schedule-received__value_']"));
 								if(check) {
-									resultsMap.put(i,inputWebElement.getText());	
+									String dateString = dateUnpicker(inputWebElement.getText());
+									resultsMap.put(i,dateString); //getAttribute("value"));	
 									}else {
 										inputWebElement.click(); //click on calendar
 										datePicker(value);									
@@ -342,7 +353,9 @@ public class DesktopInsolvency {
 			try { //incase string is not a valid date
 			String[] longDateArray = longDateStr.split(" ");
 			int currentMonthInt = Arrays.asList(months).indexOf(longDateArray[2]) + 1; //convert month name to a number 1-12
-			return longDateArray[1]+"/"+ currentMonthInt +"/" + longDateArray[3];
+			String currentMonthStr = Integer.toString(currentMonthInt);
+			if (currentMonthInt < 10) {currentMonthStr = "0"+ currentMonthStr;} //zero pad single digits
+			return longDateArray[1]+"/"+ currentMonthStr +"/" + longDateArray[3];
 			}catch (Exception e) {return "";}
 			
 		}

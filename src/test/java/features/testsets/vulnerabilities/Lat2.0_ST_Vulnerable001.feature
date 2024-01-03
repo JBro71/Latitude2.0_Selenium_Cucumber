@@ -5,7 +5,7 @@ Feature: basic vulnerabilities
   Background:
   Given I am logged into the Latitude Desktop
 
-  @basicVulnerable  @Lat2.0_ST_Vulnerable001
+  @basicVulnerable  @Lat2.0_ST_Vulnerable001 
   Scenario: Care and hardship record of type PHYSICAL DIFFICULTY. Check the correct batchapi and SMS comms outputs.
   Given that I am running test "Lat2.0_ST_Vulnerable001"
   
@@ -74,7 +74,6 @@ Feature: basic vulnerabilities
 		|HoldDays											|30														| |																																									|
 		|CareProofRequested						|0														| |																																									|
  	  |CareProofReceived						|0														| |																																									| 	  	  
-		|HoldDays											|30														| |																																									|		
 		|HardshipProofRequested				|0														| |																																									|
  	  |HardshipProofReceived				|0														| |																																									| 	  	  
 		|Confirmed										|1														| |																																									|		
@@ -89,7 +88,7 @@ Feature: basic vulnerabilities
     |Method						|SMS								 					|	|																																									|
    	|Code							|VUN01												|	|																																									|
    	|Date Requested		|$startDate,+0,dd/MM/yyyy			|	|date in format dd/MM/yyyy or delta from today in format $date,+N,dd/MM/yyyy			|  	
-   	|Recipient				|$customerName,1							|	|																																									|
+   	|Recipient				|$customerName,1							|	|name of customer or $customerName,1 or 2	e.g.$customerName,1											|
    	|Subject    			|															| |name of customer or $customerName,1 or 2	e.g.$customerName,1											|
    	
   Then I can check if a batchAPI entry has been created that matches these details

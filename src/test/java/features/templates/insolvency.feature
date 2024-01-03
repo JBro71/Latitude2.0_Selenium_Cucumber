@@ -6,7 +6,6 @@ Feature: Insolvency Template
 
 
 
-  
 
 	@insolvency @insolvencyAdd
   Scenario:  Adding Insolvency
@@ -18,7 +17,7 @@ Feature: Insolvency Template
    	|start date										|$date,+0,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
    	|expiration date							|$date,+20,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
   	|insolvency date							|$date,-10,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
-  	#|discharged date							|$date,-2,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
+  	|discharged date							|$date,-2,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
   	|indefinite discharge					|false										|	|																																									|  	
   	|iva failed date							|$date,-5,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
   	|dro date											|$date,-7,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
@@ -72,13 +71,13 @@ Feature: Insolvency Template
     |party												|$customerName,1	  			|	|																																									|
    	|insolvency type							|Debt Relief Orders				|	|																																									|
    	|start date										|$date,+1,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
-   	#|expiration date							|$date,+21,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
-  	#|insolvency date							|$date,-11,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
+   	|expiration date							|$date,+21,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
+  	|insolvency date							|$date,-11,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
   	|indefinite discharge					|false										|	|																																									|  	
-  	#|discharged date							|$date,-3,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
-  	#|iva failed date							|$date,-6,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
-  	#|dro date											|$date,-8,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
-  	#|dro schedule received				|$date,-11,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|	
+  	|discharged date							|$date,-3,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
+  	|iva failed date							|$date,-6,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
+  	|dro date											|$date,-8,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
+  	|dro schedule received				|$date,-11,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|	
    	|dro amount										|1000											|	|																																									|   
    	|courts												|Aldershot Justice Centre	|	|																																									|  
    	|insolvency practitioner			|Adcrofts									|	|																																									|   	
@@ -93,10 +92,4 @@ Feature: Insolvency Template
    	
    	
    	
-   	 @insolvency @insolvencyUpdate2
-  Scenario:  Update Insolvency
-   Given  I have account "A3EE80657316494ABC" open in Latitude 		
-  Then I can "update" an Insolvency with the following details
-   #|FIELD NAME										|VALUE										|M|NOTES																																						|
-    |party												|$customerName,1	  			|	|																																									|
-   	|start date										|$date,+10,dd/MM/yyyy			|	|date in format dd/MM/YYYY or delta from today in format $date,+N,dd/MM/YYYY			|
+   	

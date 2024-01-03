@@ -38,7 +38,7 @@ public class AddressStepDefs {
 	HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
 	dataMap.put("address type", addressType);
 	dataMap = StepDefCF.processVariables(dataMap);
-	// get the phone number identified in phone number search step error if not present
+	// get the add identified in phone number search step error if not present
 	int row = 0;
 	try {
 		row = resultsMap.get("matchRow1");

@@ -72,7 +72,7 @@ public class testDataStepDefs {
 				fileTools.writeTestFileLine(testId, "INPROGRESS");
 				openAccount.OpenNewAccount(pageUtils.testMap.get("account"));
 				}else {
-					testComponents.FileTools.writeTestReport("STAGE"+stage+", Stage execution date/time not yet reached");
+					testComponents.FileTools.writeTestReport("STAGE"+stage+", Stage execution date/time not yet reached. Due at: TBA");
 				}
 				
 			}else if(Integer.parseInt(stage) == lastStage+2 && pageUtils.testMap.get("run").equals("true")) {// test has got here without failing so previous stage complete

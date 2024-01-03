@@ -109,7 +109,7 @@ public class FileTools  extends BaseTest {
 						}
 						break;
 					case "INPROGRESS": // previous step did not complete
-						int lastStageInt = Integer.parseInt(lineArray[1].split("E")[1]);
+						int lastStageInt = Integer.parseInt(lineArray[1]);
 						if(prop.getProperty("retry").equalsIgnoreCase("true")) {
 							if (lastStageInt > 1) { //retry from last stage tried
 								loadTestFileLine(lineArray);
@@ -119,6 +119,7 @@ public class FileTools  extends BaseTest {
 								//pageUtils.updateTestMap("lastStageDateTime", lineArray[4],false);
 								//pageUtils.updateTestMap("customer1", lineArray[5],true);
 								//if(lineArray.length>6) {pageUtils.updateTestMap("customer2", lineArray[6], true);}
+								pageUtils.updateTestMap("lastStage", Integer.toString(lastStageInt-1),true); //skip back one stage
 								pageUtils.updateTestMap("run", "false",true);	
 								}else { //last stage attempted was first stage so try again from the start with new data
 									testComponents.FileTools.writeTestReport("STAGE1, Previously failed, retstarting with new data");

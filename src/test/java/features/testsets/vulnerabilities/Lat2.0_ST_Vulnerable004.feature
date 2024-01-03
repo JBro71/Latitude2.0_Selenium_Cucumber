@@ -5,7 +5,7 @@ Feature: basic vulnerabilities
   Background:
   Given I am logged into the Latitude Desktop
 
-  @basicVulnerable 
+  @basicVulnerable @Lat2.0_ST_Vulnerable004
   Scenario: Care and hardship record of type MENTAL HEALTH. Check the correct batchapi and SMS comms outputs.
   Given that I am running test "Lat2.0_ST_Vulnerable004"
   
