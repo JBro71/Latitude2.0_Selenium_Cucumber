@@ -14,7 +14,7 @@ import io.cucumber.junit.Cucumber;
 	    glue={"stepDefinitions"},
 	    stepNotifications = true, 
 	    monochrome=true,
-	   	tags = "@insolvencyAdd",
+	   	tags = "@insolvencyCheck",
 	    plugin= {"pretty","html:target/cucumberReports/testReport.html"}) //,"json:target/cucumber.json","junit:target/cukes.xml"})
 
 

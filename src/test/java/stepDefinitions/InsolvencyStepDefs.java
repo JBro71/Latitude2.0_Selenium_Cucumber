@@ -32,14 +32,14 @@ public class InsolvencyStepDefs {
 		HashMap<String,String> dataMap = StepDefCF.convertDataTableToMap(dataTable);
 		dataMap = StepDefCF.processVariables(dataMap);
 		action = action.toLowerCase();
-		HashMap<String,String> testMap = desktopInsolvency.insolvency(dataMap, action);
+		HashMap<String,String> resultsMap = desktopInsolvency.insolvency(dataMap, action);
 		// check if returned values match expected values
-		//if(action.equalsIgnoreCase("check")) {
-			//for (String key : dataMap.keySet()) {
-				//Assert.assertEquals("account" + pageUtils.testMap.get("account")+"DMC values : " + key, dataMap.get(key), resultsMap.get(key));
-		    //}
+		if(action.equalsIgnoreCase("check")) {
+			for (String key : dataMap.keySet()) {
+				Assert.assertEquals("account" + pageUtils.testMap.get("account")+"DMC values : " + key, dataMap.get(key), resultsMap.get(key));
+		    }
 			
-		//}
+		}
 	}
 	
 	@Then("I can delete an Insolvency for customer {string}")

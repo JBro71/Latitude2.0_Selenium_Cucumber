@@ -18,6 +18,8 @@ public class DesktopInsolvency {
 	WebDriver driver;
 	PageUtils pageUtils;
 	JavascriptExecutor js;
+	String[] months = {"January", "February", "March", "April", "May", "June", 
+			"July", "August", "September","October","November","December"};
 		
 		public DesktopInsolvency(WebDriver driver, PageUtils pageUtils) { //initialise Webdriver in this class from the calling class
 			//initialisation
@@ -99,9 +101,10 @@ public class DesktopInsolvency {
 								break;
 								
 							case "start date":
-								inputWebElement = driver.findElement(By.xpath("//button[@id='start-date']"));
+								inputWebElement = driver.findElement(By.xpath("//label[@id='start-date__value_']"));
 								if(check) {
-									resultsMap.put(i,inputWebElement.getText());	
+									String dateString = dateUnpicker(inputWebElement.getText());
+									resultsMap.put(i,dateString); //getAttribute("value"));	
 									}else {
 										inputWebElement.click(); //click on calendar
 										datePicker(value);									
@@ -276,6 +279,7 @@ public class DesktopInsolvency {
 					break;
 				case "check":
 					//no action required
+					break;
 				case "delete":
 					driver.findElement(By.xpath("//button[@class='btn btn-danger']")).click();
 					break;
@@ -307,8 +311,6 @@ public class DesktopInsolvency {
 			// date picker element that displays the month and year selected
 			WebElement currentMonthYear = driver.findElement(By.xpath("//header[contains(@id,'__calendar-grid-caption_')]"));
 		
-			String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September","October","November","December"};
-			
 			// click the year+ or year- buttons until the selected year matches the required year
 			for (int x=0; x<25;x++) { //25 is a fail safe to avoid locking 
 				String[] currentMonthYearString = currentMonthYear.getText().split(" ");
@@ -335,5 +337,14 @@ public class DesktopInsolvency {
 			driver.findElement(By.xpath(dateXpath)).click();
 		}
 		
+		
+		public String dateUnpicker(String longDateStr) throws InterruptedException {
+			try { //incase string is not a valid date
+			String[] longDateArray = longDateStr.split(" ");
+			int currentMonthInt = Arrays.asList(months).indexOf(longDateArray[2]) + 1; //convert month name to a number 1-12
+			return longDateArray[1]+"/"+ currentMonthInt +"/" + longDateArray[3];
+			}catch (Exception e) {return "";}
+			
+		}
 		
 }
