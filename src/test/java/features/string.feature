@@ -21,3 +21,4 @@ Feature: Latitude 2.0 Vulnerabilites
 		|Post Code						|SA1 1WD												|	|																															|				
 		|Country							|United Kingdom									|	|																															|	
 		
+		
