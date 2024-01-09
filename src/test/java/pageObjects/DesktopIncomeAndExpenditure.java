@@ -51,17 +51,25 @@ public class DesktopIncomeAndExpenditure {
 		driver.switchTo().defaultContent();
 		pageUtils.openLowerPanel("SFS Income and Expenditure");	
 		currentTab = "summary"; // set the value of the starting tab
-		Thread.sleep(300);
-		scrollToBottomPanel();
-		driver.switchTo().frame(driver.findElement(By.xpath(iframeXpathStr)));
-		driver.findElement(By.xpath("//button[@id='add-button']")).click();  //add i&E
-		//check panels to make sure they have not loaded badly
+		int sleepTime = 100;
+		for (int k=0; k<5 ; k++) {
+			Thread.sleep(sleepTime);
+			try {
+				scrollToBottomPanel();
+				driver.switchTo().frame(driver.findElement(By.xpath(iframeXpathStr)));
+				driver.findElement(By.xpath("//button[@id='add-button']")).click();  //add i&E
+			}catch (Exception e) {
+				Logging.logToConsole("INFO",logEntryPrefix+" add button error attempt: "+ (k+1));
+				sleepTime = sleepTime +100;
+				driver.switchTo().defaultContent();
+				continue;
+				}
+			break;
+		}
+		
+		//check summary panel to ensure it has loaded properly
 		if(!tabLoadedCheck("summary","//select[@id='customers-employment-status']")) {continue;}
-		//if(!tabLoadedCheck("income","//select[@id='customer-salarywage']")) {continue;}
-		//if(!tabLoadedCheck("expenditure (fixed)","//select[@id='pension-payments']")) {continue;}
-		//if(!tabLoadedCheck("expenditure (flexible)","//select[@id='pension-payments']")) {continue;}
-		
-		
+
 		
 		// order in which the data should be entered
 		String[] entryOrder = {"summary/status/customers employment status", "income/benefits/jobseekers allowance (contribution based)",
@@ -89,29 +97,18 @@ public class DesktopIncomeAndExpenditure {
 				break;
 			case "income/benefits/jobseekers allowance (contribution based)":
 				tabError = updateFrequencyValueField("[@id='jobseekers-allowance-contribution-based']",value);
-				
 				break;
 			case "expenditure (fixed)/pensions and insurances/mortgage payment protection":
 				tabError = updateFrequencyValueField("[@id='mortgage-payment-protection']",value);
-				
 				break;
 			case "expenditure (flexible)/communications and leisure/newspapers, magazines, stationary, postage":
 				tabError = updateFrequencyValueField("[@id='newspapers-magazines-stationary-postage']",value);
-			
 				 break; 
 			case "expenditure (flexible)/food and housekeeping/school meals and meals at work":
-				xpathStr = "[@id='school-meals-and-meals-at-work']";
-				dropdown =  new Select(driver.findElement(By.xpath("//select" + xpathStr)));
-				dropdown.selectByVisibleText(value[0]);
-				driver.findElement(By.xpath("//input" + xpathStr)).clear();
-				driver.findElement(By.xpath("//input" + xpathStr)).sendKeys(value[1]);		
+				tabError = updateFrequencyValueField("[@id='school-meals-and-meals-at-work']",value);	
 				 break; 
 			case "expenditure (flexible)/personal costs/clothing and footwear":
-				xpathStr = "[@id='clothing-and-footwear']";
-				dropdown =  new Select(driver.findElement(By.xpath("//select" + xpathStr)));
-				dropdown.selectByVisibleText(value[0]);
-				driver.findElement(By.xpath("//input" + xpathStr)).clear();
-				driver.findElement(By.xpath("//input" + xpathStr)).sendKeys(value[1]);	
+				tabError = updateFrequencyValueField("[@id='clothing-and-footwear']",value);	
 				 break; 
 			case "savings/savings/monthly savings amount":
 				element = driver.findElement(By.xpath("//input[@id='monthly-savings-amount']"));
@@ -135,7 +132,7 @@ public class DesktopIncomeAndExpenditure {
 			if(tabError) {break;}
 		}//for entryOrder Loop
 		 if(!tabError) {break;}
-		} // for (int i=0;i<10;i++) load error loop
+		} //  load error loop i.e. for (int i=0;i<10;i++)
 		
 		selectTab("summary");
 		driver.findElement(By.xpath("//select[@id='ie-status']")).sendKeys(status);	
@@ -143,6 +140,8 @@ public class DesktopIncomeAndExpenditure {
 	}
 		
 		
+		
+		// function to select the correct tab
 		public void selectTab(String requiredTab) throws InterruptedException {
 			Logging.logToConsole("INFO","select panel: "+ requiredTab+" Existing Panel: "+currentTab  );
 			if(currentTab.equals(requiredTab)) {return;} // already on required Tab
@@ -170,12 +169,23 @@ public class DesktopIncomeAndExpenditure {
 			case "notes":	
 				xpathStr = "//a[@id='notes-tab___BV_tab_button__']";
 				break;
-			}	
-			scrollToBottomPanel();
-			driver.switchTo().frame(driver.findElement(By.xpath(iframeXpathStr)));
-			//js.executeScript("arguments[0].scrollIntoView(true);", driver.findElement(By.xpath(xpathStr)));
-			driver.findElement(By.xpath(xpathStr)).click();
-			currentTab = requiredTab; // update the value of the current tab
+			}
+			int sleepTime = 0;
+			for (int k=0; k<5 ; k++) {
+				Thread.sleep(sleepTime);
+				try {
+					scrollToBottomPanel();
+					driver.switchTo().frame(driver.findElement(By.xpath(iframeXpathStr)));
+					driver.findElement(By.xpath(xpathStr)).click();
+					currentTab = requiredTab; // update the value of the current tab
+				}catch (Exception e) {
+					Logging.logToConsole("INFO","click " +requiredTab+ "  tab button error attempt: "+ (k+1));
+					sleepTime = sleepTime + 50;
+					driver.switchTo().defaultContent();
+					continue;
+					}
+				break;
+			}
 		}
 		
 		
@@ -195,28 +205,35 @@ public class DesktopIncomeAndExpenditure {
 		}
 		
 		
-		
+		//check if a tab has loaded correctly
 		public boolean tabLoadedCheck(String panel, String xpathStr ) throws Exception  {
 			selectTab(panel);
 			Select dropdown = new Select(driver.findElement(By.xpath(xpathStr)));
 			List<WebElement> options = dropdown.getOptions();
 			if(options.size() < 2) { //page did not load correctly
-				Logging.logToConsole("DEBUG","tab loaded check failed tab: "+ panel );
-				driver.findElement(By.xpath("//button[@id='cancel-button']")).click();
-				Thread.sleep(25);
-				driver.switchTo().defaultContent();
-				driver.findElement(By.xpath("//a[normalize-space()='SFS Income and Expenditure']//i[@class='icon-remove']")).click();
+				cancelAndCloseIAndEPanel();
 				return false;
 				}
 			return true;
 			}
 		
-		public boolean updateFrequencyValueField(String xpathStr, String[] value) {	
+		//Cancel and close panel
+		public void cancelAndCloseIAndEPanel() throws Exception  {
+				driver.findElement(By.xpath("//button[@id='cancel-button']")).click();
+				Thread.sleep(25);
+				driver.switchTo().defaultContent();
+				driver.findElement(By.xpath("//a[normalize-space()='SFS Income and Expenditure']//i[@class='icon-remove']")).click();	
+			}
+		
+		
+		//update a field that has a frequency and a text value
+		public boolean updateFrequencyValueField(String xpathStr, String[] value) throws Exception {	
 		Select dropdown = new Select(driver.findElement(By.xpath("//select" + xpathStr)));
 		List<WebElement> options = dropdown.getOptions();
-		if(options.size() < 2) {
+		if(options.size() < 2) {// select values have not been loaded correctly
+			cancelAndCloseIAndEPanel();
 			return true;
-		}
+			}
 		dropdown.selectByVisibleText(value[0]);
 		driver.findElement(By.xpath("//input" + xpathStr)).clear();
 		driver.findElement(By.xpath("//input" + xpathStr)).sendKeys(value[1]);

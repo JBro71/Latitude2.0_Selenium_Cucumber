@@ -31,6 +31,7 @@ public class Context extends BaseTest {
 	private DesktopHouseholdNotes desktopHouseholdNotes;
 	private DesktopIncomeAndExpenditure desktopIncomeAndExpenditure;
 	private DesktopEvents desktopEvents;
+	private DesktopWorkFlowAlerts desktopWorkFlowAlerts;
 	
 	public Context() throws IOException
 	{
@@ -275,5 +276,14 @@ public class Context extends BaseTest {
 			desktopEvents = new DesktopEvents(driver, pageUtils);
 		}
 		return desktopEvents;
+	} 
+	
+	public DesktopWorkFlowAlerts getWorkFlowAlerts()
+	{
+		if(desktopWorkFlowAlerts==null)
+		{
+			desktopWorkFlowAlerts = new DesktopWorkFlowAlerts(driver, pageUtils);
+		}
+		return desktopWorkFlowAlerts;
 	} 
 }

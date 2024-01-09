@@ -254,9 +254,24 @@ public class PageUtils extends BaseTest {
 		if(dataMap.containsKey("staleElementCheckColumn")) {
 			staleElementCheckColumn = dataMap.get("staleElementCheckColumn");
 		}
-		String field1Xpath = "("+dataMap.get("tablePath")+staleElementCheckColumn+"])[1]";
+		String stateCheckXpathStr = "("+dataMap.get("tablePath")+staleElementCheckColumn+"])[1]";
 		
-		// check if table has any pages
+		// check the table is fully loaded before proceeding
+		int numberOfRows = 0;
+		int previousNumberOfRows = 1;
+		for(int i=0; i<10;i++) {
+			Thread.sleep(100);
+			List<WebElement> column = driver.findElements(By.xpath(dataMap.get("tablePath")+"1]"));
+			numberOfRows = column.size();
+			Logging.logToConsole("INFO",logEntryPrefix+" old row count" + previousNumberOfRows +" new row count" + numberOfRows+" text: " + column.get(0).getText());
+			if(numberOfRows>1 && numberOfRows == previousNumberOfRows) {
+				break;
+				}
+			previousNumberOfRows = numberOfRows;
+		}
+		
+		
+		// check if table is expected to have page buttons
 		boolean pages = true;
 		if (dataMap.containsKey("pages")) {
 			if(dataMap.get("pages").equalsIgnoreCase("false")) {
@@ -269,6 +284,8 @@ public class PageUtils extends BaseTest {
 		if (paramsMap.containsKey("pagestocheck")) {
 			 pagesToCheck = Integer.parseInt(paramsMap.get("pagestocheck"));      
 		}
+		
+		
 		WebElement buttonPrevious = null;
 		WebElement buttonNext = null;
 		if(pages) {
@@ -291,17 +308,17 @@ public class PageUtils extends BaseTest {
 			}
 		}else {//pageless tables sometimes take time to load probably due to their size
 				for(int i=0;i<10;i++) {
-				try {
-				String refValue = driver.findElement(By.xpath(field1Xpath)).getText();
-				Logging.logToConsole("DEBUG",logEntryPrefix+" Table load reference Value: " + refValue);
-				if(!refValue.equals("dummy")) {
-					break;
-					}
-				}catch (Exception e) {Logging.logToConsole("DEBUG",logEntryPrefix+" Table load reference Value: ERROR");}
-				Thread.sleep(100);
+					try {
+						String refValue = driver.findElement(By.xpath(stateCheckXpathStr)).getText();
+						Logging.logToConsole("DEBUG",logEntryPrefix+" Table load reference Value: " + refValue);
+						if(!refValue.equals("dummy")) {
+							break;
+							}
+						}catch (Exception e) {Logging.logToConsole("DEBUG",logEntryPrefix+" Table load reference Value: ERROR");}
+					Thread.sleep(100);
 				}
 			
-		}
+				}
 		int page = 1;
 		boolean match = false; // boolean to hold the matchstatus
 		int matchCount = 0;
@@ -336,10 +353,14 @@ public class PageUtils extends BaseTest {
 						break;
 					case "datetime":
 						//remove the time from the datetime before checking
-						if(paramsMap.get(key).equalsIgnoreCase(tableField.getText().split(",")[0])) {continue;}
+						if(paramsMap.get(key).equalsIgnoreCase(tableField.getText().split(",")[0])) {
+							Logging.logToConsole("DEBUG",logEntryPrefix+"MATCH");
+							continue;}
 						break;	
 					case "text":
-						if(paramsMap.get(key).equalsIgnoreCase(tableField.getText())) {continue;}	
+						if(paramsMap.get(key).equalsIgnoreCase(tableField.getText())) {
+							Logging.logToConsole("DEBUG",logEntryPrefix+"MATCH");
+							continue;}	
 						break;
 					case "colour":
 						WebElement tempElement = driver.findElement(By.xpath(tableFieldString+tableMap.get(key)[2]));
@@ -355,7 +376,7 @@ public class PageUtils extends BaseTest {
 						//}catch(Exception E) {}
 					match = false;
 					break;
-				}
+				} //table loop
 				
 				if(match) {
 					for (String key : fieldMap.keySet()) { // check the non table fields for a match
@@ -393,14 +414,14 @@ public class PageUtils extends BaseTest {
 			
 		if (!nextButtonDisabled && page <= pagesToCheck && pages) // check all the pages till next disabled OR until specified limit reached
 			{
-			String before = driver.findElement(By.xpath(field1Xpath)).getText();
+			String before = driver.findElement(By.xpath(stateCheckXpathStr)).getText();
 			Logging.logToConsole("INFO",logEntryPrefix+" before" + before);
 			buttonNext.click();
 			page++;
 			// pages are sometimes slow to load. this code ensures page is fully loaded before moving on
 			for(int i=0; i<20; i++) {
 				try {
-					String after = driver.findElement(By.xpath(field1Xpath)).getText();
+					String after = driver.findElement(By.xpath(stateCheckXpathStr)).getText();
 					Logging.logToConsole("INFO",logEntryPrefix+" after" + after);
 					if(!before.equals(after)) {break;}
 					}catch(Exception e) {Logging.logToConsole("INFO",logEntryPrefix+" Error stale element");}
@@ -413,7 +434,7 @@ public class PageUtils extends BaseTest {
 				firstPass = false;
 				if(page > 1) {
 					page = 1;
-					String before = driver.findElement(By.xpath(field1Xpath)).getText();	
+					String before = driver.findElement(By.xpath(stateCheckXpathStr)).getText();	
 					while(true) {
 						try {
 							if (buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) {
@@ -432,7 +453,7 @@ public class PageUtils extends BaseTest {
 					// pages are sometimes slow to load. this code ensures page is fully loaded before moving on
 					for(int i=0; i<20; i++) {
 						try {
-						String after = driver.findElement(By.xpath(field1Xpath)).getText();
+						String after = driver.findElement(By.xpath(stateCheckXpathStr)).getText();
 						Logging.logToConsole("INFO",logEntryPrefix+" before: " + before);
 						Logging.logToConsole("INFO",logEntryPrefix+" after: " + after);
 						if(!before.equals(after)) {break;}

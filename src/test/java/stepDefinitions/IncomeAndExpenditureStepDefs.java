@@ -42,8 +42,6 @@ public class IncomeAndExpenditureStepDefs {
 			dataMap.put(key, value);
 			}	
 		
-		//HashMap<String,String> dataMap = stepDefCF.convertDataTableToMap(dataTable);
-		//dataMap = stepDefCF.processVariables(dataMap);
 		dIAndE.incomeAndExpenditure(dataMap, status);
 	}
 	
