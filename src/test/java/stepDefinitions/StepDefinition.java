@@ -56,6 +56,23 @@ public class StepDefinition <Public> extends BaseTest{
 		System.out.println(caseString);
 	}
 	
+	@Then("I can convert I and E field names to a string")
+	public void i_can_convert_i_and_e_field_names_to_a_string(io.cucumber.datatable.DataTable dataTable) {
+		//convert dataTable to Hashmap and convert variables to real values
+		List<List<String>> dataList = dataTable.asLists(); //get data table
+		String fieldString = "\"";
+		String caseString = "";
+		for (List<String> itemList : dataList) {
+			for (int i=0; i<5; i++) {if(itemList.get(i) == null) {itemList.set(i, "");}} // replace nulls with ""
+			String key = itemList.get(0).toLowerCase()+ "/" + itemList.get(1).toLowerCase()+ "/" + itemList.get(2).toLowerCase();
+			fieldString = fieldString + key +"\",\"";
+			caseString = caseString + "case \"" +key+"\":\n\n break; \n";
+		}
+		System.out.println(fieldString);
+		System.out.println(caseString);	
+	}
+	
+	
 	
 	@Given("I am logged into the Latitude Desktop")
 	public void i_am_logged_into_the_latitude_desktop() throws IOException, InterruptedException {

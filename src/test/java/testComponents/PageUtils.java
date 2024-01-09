@@ -244,17 +244,64 @@ public class PageUtils extends BaseTest {
 	
 	
 	public HashMap<String,Integer> findInTable(HashMap<String,String[]> tableMap,HashMap<String,String> fieldMap,HashMap<String,String> dataMap, HashMap<String,String> paramsMap ) throws Exception { 
+		implictWait(1);
 		String logEntryPrefix= "Account: "+testMap.get("account")+" PageUtils/"+dataMap.get("function")+"/find: "; 
 		HashMap<String,Integer> resultsMap = new HashMap<String,Integer>();	
 		resultsMap.put("numberOfMatches", 0);
-		String field1Xpath = "("+dataMap.get("tablePath")+"1])[1]";
-		WebElement buttonPrevious = driver.findElement(By.xpath(dataMap.get("buttonPrevious")));
-		WebElement buttonNext = driver.findElement(By.xpath(dataMap.get("buttonNext")));
-		// make sure we are at the first page
-		while(!buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) {
-			buttonPrevious.click();
+		
+		// need to check a column for changes after clicking next/back to ensure it has changed before checking the data
+		String staleElementCheckColumn = "1";
+		if(dataMap.containsKey("staleElementCheckColumn")) {
+			staleElementCheckColumn = dataMap.get("staleElementCheckColumn");
+		}
+		String field1Xpath = "("+dataMap.get("tablePath")+staleElementCheckColumn+"])[1]";
+		
+		// check if table has any pages
+		boolean pages = true;
+		if (dataMap.containsKey("pages")) {
+			if(dataMap.get("pages").equalsIgnoreCase("false")) {
+				pages = false;   
+			}
 		}
 		
+		//check all the pages unless a parameter has been set to limit the number
+		int pagesToCheck = 1000;
+		if (paramsMap.containsKey("pagestocheck")) {
+			 pagesToCheck = Integer.parseInt(paramsMap.get("pagestocheck"));      
+		}
+		WebElement buttonPrevious = null;
+		WebElement buttonNext = null;
+		if(pages) {
+			buttonPrevious = driver.findElement(By.xpath(dataMap.get("buttonPrevious")));
+			buttonNext = driver.findElement(By.xpath(dataMap.get("buttonNext")));
+			// make sure we are at the first page
+			//String buttonvalue = buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName"));
+			
+			//while(!buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) {
+				//buttonPrevious.click();
+			//}
+			//boolean previousButtonDisabled = false;
+			while(true) {
+				try {
+					if (buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) {
+						break; // previous button is disabled
+						}else {buttonPrevious.click();} //previous button IS disabled
+					}catch (Exception e) {buttonPrevious.click(); // disabled attribute not present at all so button is not disabled so try again}
+				}
+			}
+		}else {//pageless tables sometimes take time to load probably due to their size
+				for(int i=0;i<10;i++) {
+				try {
+				String refValue = driver.findElement(By.xpath(field1Xpath)).getText();
+				Logging.logToConsole("DEBUG",logEntryPrefix+" Table load reference Value: " + refValue);
+				if(!refValue.equals("dummy")) {
+					break;
+					}
+				}catch (Exception e) {Logging.logToConsole("DEBUG",logEntryPrefix+" Table load reference Value: ERROR");}
+				Thread.sleep(100);
+				}
+			
+		}
 		int page = 1;
 		boolean match = false; // boolean to hold the matchstatus
 		int matchCount = 0;
@@ -287,6 +334,10 @@ public class PageUtils extends BaseTest {
 								continue;
 								}
 						break;
+					case "datetime":
+						//remove the time from the datetime before checking
+						if(paramsMap.get(key).equalsIgnoreCase(tableField.getText().split(",")[0])) {continue;}
+						break;	
 					case "text":
 						if(paramsMap.get(key).equalsIgnoreCase(tableField.getText())) {continue;}	
 						break;
@@ -328,8 +379,19 @@ public class PageUtils extends BaseTest {
 					Logging.logToConsole("DEBUG",logEntryPrefix+": Match Found: "+"page" + page + " Row: "+ row);
 					}
 				} //row loop	
-
-		if (!buttonNext.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText")))
+			//check if the disabled attribute is present and matches given value
+			boolean nextButtonDisabled = false;
+			if(pages) {
+				String bN = buttonNext.getAttribute(dataMap.get("buttonDisabledAttributeName"));
+				try {
+				if (buttonNext.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) {
+					nextButtonDisabled = true;
+				}
+				}catch (Exception e) {// disabled attribute not present at all so button is not disabled
+					}	
+			}
+			
+		if (!nextButtonDisabled && page <= pagesToCheck && pages) // check all the pages till next disabled OR until specified limit reached
 			{
 			String before = driver.findElement(By.xpath(field1Xpath)).getText();
 			Logging.logToConsole("INFO",logEntryPrefix+" before" + before);
@@ -346,21 +408,33 @@ public class PageUtils extends BaseTest {
 				Logging.logToConsole("INFO",logEntryPrefix+" Waiting for next table page to load ");
 				}
 			
-			} else if (firstPass ) 
+			} else if (firstPass && pages) 
 				{//start the second pass reset the pages
 				firstPass = false;
 				if(page > 1) {
 					page = 1;
 					String before = driver.findElement(By.xpath(field1Xpath)).getText();	
-					while(!buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) 
-						{
-						buttonPrevious.click();
+					while(true) {
+						try {
+							if (buttonPrevious.getAttribute(dataMap.get("buttonDisabledAttributeName")).equals(dataMap.get("buttonDisabledAttributeText"))) {
+								break; // previous button is disabled
+								}else {
+									//js.executeScript("arguments[0].scrollIntoView();", buttonPrevious);
+									js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+									buttonPrevious.click();} //previous button IS disabled
+							
+							}catch (Exception e) {
+								//js.executeScript("arguments[0].scrollIntoView();", buttonPrevious);
+								js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+								buttonPrevious.click(); // disabled attribute not present at all so button is not disabled so try again}
 						}
+					}
 					// pages are sometimes slow to load. this code ensures page is fully loaded before moving on
 					for(int i=0; i<20; i++) {
 						try {
 						String after = driver.findElement(By.xpath(field1Xpath)).getText();
-						Logging.logToConsole("INFO",logEntryPrefix+" after" + after);
+						Logging.logToConsole("INFO",logEntryPrefix+" before: " + before);
+						Logging.logToConsole("INFO",logEntryPrefix+" after: " + after);
 						if(!before.equals(after)) {break;}
 						}catch(Exception e) {Logging.logToConsole("INFO",logEntryPrefix+" Error stale element");}
 						Thread.sleep(100);

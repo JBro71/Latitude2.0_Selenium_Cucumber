@@ -28,6 +28,7 @@ public class DMCStepDefs {
 	}
 	
 	
+	
 	@Then("^I can \"([^\"]*)\" a DMC with the following details$")
 	public void if_i_add_a_DMC_with_the_following_details(String action, io.cucumber.datatable.DataTable dataTable) throws Exception {
 		//convert dataTable to Hashmap and convert variables to real values

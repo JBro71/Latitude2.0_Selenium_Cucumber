@@ -32,6 +32,7 @@ public class LoginPage {
 		driver.get(BaseTest.prop.getProperty("LatitudeUrl"));
 		driver.manage().window().maximize();
 
+
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
 		//click the login button repeatedly until next page appears (don't ask)
 		for(int i=0;i<20; i++) {

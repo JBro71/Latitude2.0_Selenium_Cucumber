@@ -28,7 +28,9 @@ public class Context extends BaseTest {
 	private DesktopAddress desktopAddress;
 	private StepDefCommonFunctions stepDefCommonFunctions;
 	private DesktopBatchApi desktopBatchApi;
-	
+	private DesktopHouseholdNotes desktopHouseholdNotes;
+	private DesktopIncomeAndExpenditure desktopIncomeAndExpenditure;
+	private DesktopEvents desktopEvents;
 	
 	public Context() throws IOException
 	{
@@ -248,4 +250,30 @@ public class Context extends BaseTest {
 		return desktopBatchApi;
 	} 
 	
+	public DesktopHouseholdNotes getDesktopHouseholdNotes()
+	{
+		if(desktopHouseholdNotes==null)
+		{
+			desktopHouseholdNotes = new DesktopHouseholdNotes(driver, pageUtils);
+		}
+		return desktopHouseholdNotes;
+	} 
+	
+	public DesktopIncomeAndExpenditure getIncomeAndExpenditure()
+	{
+		if(desktopIncomeAndExpenditure==null)
+		{
+			desktopIncomeAndExpenditure = new DesktopIncomeAndExpenditure(driver, pageUtils);
+		}
+		return desktopIncomeAndExpenditure;
+	} 
+	
+	public DesktopEvents getEvents()
+	{
+		if(desktopEvents==null)
+		{
+			desktopEvents = new DesktopEvents(driver, pageUtils);
+		}
+		return desktopEvents;
+	} 
 }

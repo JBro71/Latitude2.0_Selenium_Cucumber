@@ -39,7 +39,7 @@ public class OpenAccount {
 		searchPage.openAccount(accountNumber);
 		
 		//**********************dismiss DPA screen******************
-		dpa.dismisDPA();
+		//dpa.dismisDPA();
 		
 		int sleepTime = 100;		
 		int totalSleepTime = 0;
@@ -62,6 +62,13 @@ public class OpenAccount {
 				{
 				Thread.sleep(200);
 				}
+			try {
+				// dismiss any popup that occurs
+				driver.switchTo().activeElement();
+				//driver.findElement(By.xpath("//button[normalize-space()='OK']")).click();
+				driver.findElement(By.xpath("//div[@class='modal-footer']/button")).click();
+			}catch(Exception e2) {}
+			
 		}
 		pageUtils.defaultImplictWait();
 		

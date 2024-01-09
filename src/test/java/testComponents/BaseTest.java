@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -66,11 +67,14 @@ public class BaseTest {
 					driver = new EdgeDriver();
 					break;		
 				case "firefox":	
-					System.setProperty("webdriver.gecko.driver", "C:/Users/jbroad/Drivers/geckodriver.exe");
+					//System.setProperty("webdriver.gecko.driver", "C:/Users/jbroad/Drivers/geckodriver.exe");
 					driver = new FirefoxDriver();	
-				default:
+				case "chrome":
 					System.setProperty("webdriver.chrome.driver", "C:/Users/jbroad/Drivers/chromedriver.exe");
-					driver = new ChromeDriver();
+					ChromeOptions options = new ChromeOptions();
+					options.addArguments("--remote-allow-origins=*");
+					driver = new ChromeDriver(options);
+					//driver = new ChromeDriver();
 			}
 					
 			staticDriver = driver;

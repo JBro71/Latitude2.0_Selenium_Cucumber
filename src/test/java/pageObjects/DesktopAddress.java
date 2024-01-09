@@ -48,7 +48,7 @@ public class DesktopAddress {
 				//String nextButtonIndex = buttonsWebElements.size();
 				
 				HashMap<String,String> dataMap = new HashMap<String,String>();	
-				dataMap.put("function", "findphoneNumber");
+				dataMap.put("function", "findAddressNumber");
 				dataMap.put("buttonPrevious", buttonPath+"[1]");
 				dataMap.put("buttonNext", buttonPath+"["+buttonsWebElements.size()+"]");
 				dataMap.put("buttonDisabledAttributeName", "class");
